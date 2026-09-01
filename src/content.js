@@ -39,18 +39,7 @@ export const demoWeekFields = [
 ];
 
 export const documents = [
-  ["Основные сведения", "https://fenix-school.ru/basic-svedenia"],
-  ["Структура и управление", "https://fenix-school.ru/struktura"],
-  ["Документы и локальные акты", "https://fenix-school.ru/dokumenty"],
-  ["Образование", "https://fenix-school.ru/obrazovanie"],
-  ["Стандарты и требования", "https://fenix-school.ru/obrazovatelnie-standarty"],
-  ["Руководство", "https://fenix-school.ru/rukovodstvo"],
-  ["Педагогический состав", "https://fenix-school.ru/pedagogi"],
-  ["Материальное обеспечение", "https://fenix-school.ru/matr-texn-obespechenie"],
-  ["Платные услуги", "https://fenix-school.ru/platnie-uslugi"],
-  ["Финансовая деятельность", "https://fenix-school.ru/fin-xoz-deyatelnost"],
-  ["Вакантные места", "https://fenix-school.ru/vakantnie-mesta"],
-  ["Стипендии и поддержка", "https://fenix-school.ru/stipendii"],
-  ["Международное сотрудничество", "https://fenix-school.ru/megdunarodnoe-sotrudnichestvo"],
-  ["Организация питания", "https://fenix-school.ru/pitanie"],
+  ["Устав образовательной организации", null, "Добавить актуальный PDF-файл школы"],
+  ["Уведомление о предоставлении лицензии", null, "Добавить актуальный PDF-файл школы"],
+  ["Выписка из реестра лицензий", null, "Добавить актуальный PDF-файл школы"],
 ];

@@ -1,29 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   admissionSteps, advantages, demoWeekFields, documents, navigation, prices, programs,
 } from "./content";
 
 function Documents({ compact = false }) {
   const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
   useEffect(() => {
     const close = (event) => event.key === "Escape" && setOpen(false);
+    const outside = (event) => !menuRef.current?.contains(event.target) && setOpen(false);
     window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
+    document.addEventListener("mousedown", outside);
+    return () => {
+      window.removeEventListener("keydown", close);
+      document.removeEventListener("mousedown", outside);
+    };
   }, []);
-  return <>
-    <button className={`documents-trigger${compact ? " compact" : ""}`} onClick={() => setOpen(true)}>▤ Документы</button>
-    {open && <div className="modal-backdrop" onMouseDown={() => setOpen(false)}>
-      <aside className="documents-sheet" role="dialog" aria-modal="true" aria-label="Сведения и документы" onMouseDown={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={() => setOpen(false)} aria-label="Закрыть">×</button>
-        <div className="documents-sheet-head"><h2>Сведения и документы</h2><p>Официальные разделы действующего сайта школы. Ссылки откроются в новой вкладке.</p></div>
-        <div className="documents-sheet-list">
-          {documents.map(([label, href], index) => <a href={href} target="_blank" rel="noreferrer" key={href}>
-            <span>{String(index + 1).padStart(2, "0")}</span><strong>{label}</strong><b>↗</b>
-          </a>)}
-        </div>
-      </aside>
+  return <div className="documents-menu-wrap" ref={menuRef}>
+    <button className={`documents-trigger${compact ? " compact" : ""}`} aria-expanded={open} onClick={() => setOpen((value) => !value)}>▤ Документы</button>
+    {open && <div className="documents-popover" role="menu" aria-label="Документы школы">
+      <div className="documents-popover-head"><strong>Документы</strong><span>Три файла для скачивания</span></div>
+      <div className="documents-popover-list">
+        {documents.map(([label, href, instruction], index) => href ? (
+          <a href={href} download key={label}><span>{String(index + 1).padStart(2, "0")}</span><strong>{label}</strong><b>↓</b></a>
+        ) : (
+          <div className="document-pending" key={label}><span>{String(index + 1).padStart(2, "0")}</span><strong>{label}<small>{instruction}</small></strong><b>PDF</b></div>
+        ))}
+      </div>
     </div>}
-  </>;
+  </div>;
 }
 
 const tabs = [["programs", "Обучение"], ["why", "Почему Феникс"], ["pricing", "Стоимость"], ["admission", "Поступление"]];
