@@ -284,10 +284,10 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .header-cta { background: var(--wine); color: white; }
 .documents-trigger { border: 1px solid var(--line); background: transparent; color: inherit; }
 .documents-trigger:hover { background: rgba(255,178,15,.16); }
-.documents-sheet { width: min(92vw, 560px) !important; max-width: 560px !important; overflow: hidden; background: var(--cream); }
-.documents-sheet-head { padding: 2rem 2rem 1rem; }
+.documents-sheet { width: min(92vw, 560px) !important; max-width: 560px !important; min-height: 0; overflow: hidden; background: var(--cream); }
+.documents-sheet-head { flex: 0 0 auto; padding: 2rem 4.5rem 1.25rem 2rem; border-bottom: 1px solid var(--line); }
 .documents-sheet-head [data-slot="sheet-title"] { font: 500 2rem Georgia, serif; }
-.documents-sheet-list { overflow-y: auto; padding: 0 2rem 2rem; }
+.documents-sheet-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 2rem 2rem; }
 .documents-sheet-list a { min-height: 62px; display: grid; grid-template-columns: 34px 1fr auto; gap: .8rem; align-items: center; border-bottom: 1px solid var(--line); }
 .documents-sheet-list a:hover { color: var(--wine); }
 .documents-sheet-list span { color: var(--wine); font: italic .84rem Georgia, serif; }
@@ -407,8 +407,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 
 .modal-backdrop { position: fixed; z-index: 100; inset: 0; display: flex; justify-content: flex-end; background: rgba(23,18,28,.48); }
 .documents-sheet { position: relative; height: 100%; display: flex; flex-direction: column; box-shadow: -18px 0 60px rgba(23,18,28,.24); animation: sheet-in .25s ease both; }
-.documents-sheet-head h2 { margin: 0 2.5rem .5rem 0; font: 500 2rem Georgia, serif; }
-.documents-sheet-head p { margin: 0; color: var(--muted); }
+.documents-sheet-head h2 { margin: 0 0 .55rem; font: 500 2rem/1.08 Georgia, serif; }
+.documents-sheet-head p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.45; }
 .modal-close { position: absolute; z-index: 1; top: 1.2rem; right: 1.2rem; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: var(--paper); font-size: 1.8rem; line-height: 1; cursor: pointer; }
 @keyframes sheet-in { from { transform: translateX(100%); } to { transform: none; } }
 
@@ -468,5 +468,25 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .admission-steps-compact, .demo-field-grid { grid-template-columns: 1fr; }
   .demo-details { padding: 1rem; }
   .demo-ribbon { grid-template-columns: 1fr; }
-  .documents-sheet-head, .documents-sheet-list { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .modal-backdrop { background: var(--cream); }
+  .documents-sheet { width: 100vw !important; max-width: none !important; border: 0; box-shadow: none; }
+  .documents-sheet-head { padding: 1.35rem 4rem 1rem 1.2rem; }
+  .documents-sheet-head h2 { font-size: 1.65rem; }
+  .documents-sheet-head p { font-size: .86rem; }
+  .documents-sheet-list { padding: 0 1.2rem 1.4rem; }
+  .documents-sheet-list a { min-height: 58px; grid-template-columns: 28px minmax(0, 1fr) auto; gap: .6rem; }
+  .documents-sheet-list strong { font-size: .92rem; line-height: 1.25; }
+  .modal-close { top: .9rem; right: .9rem; width: 38px; height: 38px; font-size: 1.55rem; }
+}
+
+@media (min-width: 541px) and (max-width: 640px) {
+  .modal-backdrop { background: var(--cream); }
+  .documents-sheet { width: 100vw !important; max-width: none !important; border: 0; box-shadow: none; }
+  .documents-sheet-head { padding: 1.35rem 4rem 1rem 1.2rem; }
+  .documents-sheet-head h2 { font-size: 1.65rem; }
+  .documents-sheet-head p { font-size: .86rem; }
+  .documents-sheet-list { padding: 0 1.2rem 1.4rem; }
+  .documents-sheet-list a { min-height: 58px; grid-template-columns: 28px minmax(0, 1fr) auto; gap: .6rem; }
+  .documents-sheet-list strong { font-size: .92rem; line-height: 1.25; }
+  .modal-close { top: .9rem; right: .9rem; width: 38px; height: 38px; font-size: 1.55rem; }
 }
