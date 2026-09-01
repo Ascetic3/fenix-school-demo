@@ -439,7 +439,17 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .hybrid-contact > div:first-child > span { text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; opacity: .7; }
 .hybrid-contact h2 { max-width: 720px; margin: .7rem 0; font: 500 clamp(2.4rem, 4vw, 4.7rem)/.98 Georgia, serif; letter-spacing: -.04em; }
 .hybrid-contact p { margin: 0; color: rgba(255,255,255,.72); }
-.footer-logo { width: 220px; height: 128px; display: flex; align-items: center; overflow: hidden; }
+.footer-logo {
+  width: 150px;
+  height: 116px;
+  padding: .45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: var(--cream);
+}
 .footer-logo img { width: 100%; height: 100%; object-fit: contain; }
 .footer-links { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; align-items: center; }
 .footer-links .documents-trigger { min-height: auto; padding: 0; border: 0; color: white; }
