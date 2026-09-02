@@ -1,5 +1,5 @@
 export const navigation = [
-  ["Главная", "#top"], ["О школе", "#explore"], ["Демонеделя", "#demo-week"], ["Контакты", "#contacts"],
+  ["Главная", "#top"], ["О школе", "#explore"], ["Отзывы", "#reviews-title"], ["Демонеделя", "#demo-week"], ["Контакты", "#contacts"],
 ];
 
 export const advantages = [
