@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  admissionSteps, advantages, demoWeekFields, documents, navigation, prices, programs,
+  admissionSteps, advantages, demoWeekFields, documents, navigation, prices, programs, reviews,
 } from "./content";
 
 function Documents({ compact = false }) {
@@ -77,6 +77,29 @@ function SchoolTabs() {
   </div>;
 }
 
+function ReviewCard({ review, secondary = false }) {
+  const initials = review.name.split(" ").map((part) => part[0]).join("");
+  return <article className={`review-card${secondary ? " secondary" : ""}`}>
+    <div className="review-quote">“</div>
+    <h3>{review.title}</h3>
+    <p>{review.text}</p>
+    <div className="review-author"><span>{initials}</span><div><strong>{review.name}</strong><small>{review.role}</small></div></div>
+  </article>;
+}
+
+function Reviews() {
+  const [index, setIndex] = useState(0);
+  const previous = () => setIndex((value) => (value - 1 + reviews.length) % reviews.length);
+  const next = () => setIndex((value) => (value + 1) % reviews.length);
+  return <section className="reviews-section" aria-labelledby="reviews-title">
+    <div className="reviews-heading"><div><span>Говорят родители</span><h2 id="reviews-title">Отзывы о школе</h2></div><div className="reviews-controls"><span>{String(index + 1).padStart(2, "0")} / {String(reviews.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
+    <div className="reviews-slider" aria-live="polite">
+      <ReviewCard key={reviews[index].name} review={reviews[index]} />
+      <ReviewCard key={reviews[(index + 1) % reviews.length].name} review={reviews[(index + 1) % reviews.length]} secondary />
+    </div>
+  </section>;
+}
+
 export default function App() {
   return <main>
     <header className="site-header">
@@ -94,7 +117,7 @@ export default function App() {
       <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" /><div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
     </section>
 
-    <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs /></section>
+    <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs /><Reviews /></section>
 
     <section className="hybrid-contact" id="contacts"><div><span>Знакомство со школой</span><h2>Начните с разговора или экскурсии</h2><p>Уточните условия демонедели, свободные места и подходящий формат обучения.</p></div><div className="contact-actions"><a href="tel:+79122795067">☎ +7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">✉ shkola_fenix@mail.ru</a></div></section>
 

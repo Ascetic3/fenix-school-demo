@@ -435,6 +435,27 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .trust-row span { display: flex; align-items: center; gap: .45rem; }
 .trust-row svg { width: 17px; color: var(--wine); }
 
+.reviews-section { margin-top: clamp(4rem, 7vw, 7rem); }
+.reviews-heading { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 1.5rem; }
+.reviews-heading > div:first-child > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .75rem; font-weight: 900; }
+.reviews-heading h2 { margin: .55rem 0 0; font: 500 clamp(2.6rem, 4.5vw, 4.8rem)/.96 Georgia, serif; letter-spacing: -.05em; }
+.reviews-controls { display: flex; align-items: center; gap: .55rem; }
+.reviews-controls > span { margin-right: .45rem; color: var(--muted); font: italic .9rem Georgia, serif; }
+.reviews-controls button { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: transparent; font: 700 1.2rem Arial, sans-serif; cursor: pointer; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+.reviews-controls button:hover { border-color: var(--wine); color: white; background: var(--wine); }
+.reviews-slider { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; overflow: hidden; }
+.review-card { position: relative; min-height: 430px; padding: clamp(1.4rem, 2.6vw, 2.2rem); border: 1px solid var(--line); border-radius: 1.35rem; display: flex; flex-direction: column; background: var(--cream); animation: review-in .32s ease both; }
+.review-card.secondary { animation-delay: .06s; }
+.review-quote { position: absolute; top: .65rem; right: 1.4rem; color: rgba(217,54,32,.14); font: 500 6.5rem/1 Georgia, serif; }
+.review-card h3 { position: relative; max-width: 90%; margin: 0 0 1.35rem; font-size: clamp(1.15rem, 1.5vw, 1.35rem); line-height: 1.28; }
+.review-card > p { position: relative; margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.65; }
+.review-author { display: flex; align-items: center; gap: .8rem; margin-top: auto; padding-top: 1.5rem; }
+.review-author > span { flex: 0 0 46px; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; color: white; background: linear-gradient(135deg, var(--wine), var(--apricot)); font-size: .76rem; font-weight: 900; }
+.review-author div { display: grid; }
+.review-author strong { font-size: .95rem; }
+.review-author small { margin-top: .1rem; color: var(--wine); font-size: .8rem; }
+@keyframes review-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+
 .hybrid-contact { margin: 0 4vw 5rem; padding: clamp(2rem, 5vw, 4rem); border-radius: 1.8rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; background: var(--wine); color: white; }
 .hybrid-contact > div:first-child > span { text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; opacity: .7; }
 .hybrid-contact h2 { max-width: 720px; margin: .7rem 0; font: 500 clamp(2.4rem, 4vw, 4.7rem)/.98 Georgia, serif; letter-spacing: -.04em; }
@@ -503,6 +524,10 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .demo-ribbon { grid-template-columns: auto 1fr; }
   .demo-ribbon > a { grid-column: 1 / -1; justify-content: center; }
   .hybrid-contact { grid-template-columns: 1fr; margin: 0 5vw 4rem; }
+  .reviews-heading { align-items: center; }
+  .reviews-slider { grid-template-columns: 1fr; }
+  .review-card.secondary { display: none; }
+  .review-card { min-height: 0; }
 }
 
 @media (max-width: 540px) {
@@ -528,6 +553,12 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .modal-close { top: .9rem; right: .9rem; width: 38px; height: 38px; font-size: 1.55rem; }
   .documents-popover { position: fixed; top: 82px; right: 1rem; left: 1rem; width: auto; }
   .mobile-nav-panel .documents-popover { position: static; }
+  .reviews-heading { align-items: flex-end; gap: 1rem; }
+  .reviews-heading h2 { font-size: 2.55rem; }
+  .reviews-controls > span { display: none; }
+  .reviews-controls button { width: 42px; height: 42px; }
+  .review-card { padding: 1.25rem; }
+  .review-card h3 { max-width: 88%; }
 }
 
 @media (min-width: 541px) and (max-width: 640px) {
