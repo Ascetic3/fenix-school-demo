@@ -138,7 +138,7 @@ function StudentExperience({ items }) {
   return <section className="student-experience" aria-labelledby="student-experience-title">
     <div className="student-shell">
       <div className="student-experience-heading"><span>Твой взгляд тоже важен</span><h2 id="student-experience-title">Как ощущается учёба в «Фениксе»</h2><p>Те же факты о школе — с точки зрения человека, которому предстоит учиться здесь каждый день.</p></div>
-      <div className="student-experience-grid">{items.map(({ icon, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p></article>)}</div>
+      <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
     </div>
   </section>;
 }
@@ -146,12 +146,12 @@ function StudentExperience({ items }) {
 function StudentGallery({ items }) {
   return <section className="student-gallery" aria-labelledby="student-gallery-title">
     <div className="student-shell">
-      <div className="student-section-heading"><span>Школьная жизнь</span><h2 id="student-gallery-title">Посмотри, как выглядит школьная жизнь</h2><p>Не только программа и расписание — важно увидеть людей, пространство и обычный день.</p></div>
-      <div className="student-gallery-grid">{items.map(({ src, title, label, position }, index) => <figure key={`${title}-${index}`}>
+      <div className="student-section-heading"><span>Школьная жизнь</span><h2 id="student-gallery-title">Посмотри школу изнутри</h2><p>Не только программа и расписание — важно увидеть людей, пространство и обычный день.</p></div>
+      <div className="student-gallery-grid">{items.map(({ src, title, position }, index) => <figure key={`${title}-${index}`}>
         <img src={src} alt="Временная демонстрационная фотография учебной сцены" style={{ objectPosition: position }} />
-        <div><span>{label}</span><figcaption>{title}</figcaption></div>
+        <div><figcaption>{title}</figcaption></div>
       </figure>)}</div>
-      <p className="student-placeholder-note">Для демонстрации раздела. В финальной версии здесь будут реальные фото и видео школы.</p>
+      <p className="student-placeholder-note">Демонстрационные фотографии. В финальной версии будут заменены реальными материалами школы.</p>
     </div>
   </section>;
 }
@@ -196,8 +196,13 @@ function Reviews({ items = reviews, audience = "parent" }) {
   useEffect(() => setIndex(0), [items]);
   const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
   const next = () => setIndex((value) => (value + 1) % items.length);
-  return <section className={`reviews-section${isStudent ? " student-reviews" : ""}`} aria-labelledby="reviews-title">
-    <div className="reviews-heading"><div><span>{isStudent ? "Демо-тексты · заменить реальными" : "Говорят родители"}</span><h2 id="reviews-title">{isStudent ? "Как школа может звучать глазами учеников" : "Отзывы о школе"}</h2></div><div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
+  const controls = <div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div>;
+  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="student-reviews-title">
+    <div className="student-reviews-intro"><span>Демо-тексты · заменить реальными</span><h2 id="student-reviews-title">Как школа звучит глазами учеников</h2><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
+    <div className="student-review-stage"><div className="reviews-slider" aria-live="polite"><ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} /></div>{controls}</div>
+  </section>;
+  return <section className="reviews-section" aria-labelledby="reviews-title">
+    <div className="reviews-heading"><div><span>Говорят родители</span><h2 id="reviews-title">Отзывы о школе</h2></div>{controls}</div>
     <div className="reviews-slider" aria-live="polite">
       <ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} />
       <ReviewCard key={items[(safeIndex + 1) % items.length].name || items[(safeIndex + 1) % items.length].title} review={items[(safeIndex + 1) % items.length]} secondary />

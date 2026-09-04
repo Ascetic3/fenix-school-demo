@@ -86,6 +86,7 @@ export const reviews = [
 export const studentAdvantages = [
   {
     icon: "group",
+    image: "./images/student-demo/student-demo-discussion.jpg",
     title: "Небольшие классы",
     text: "Тебя здесь знают по имени, а не как человека на предпоследней парте.",
   },
@@ -101,6 +102,7 @@ export const studentAdvantages = [
   },
   {
     icon: "spark",
+    image: "./images/student-demo/student-demo-talk.jpg",
     title: "Есть жизнь кроме уроков",
     text: "Проекты, события и школьная среда, в которой можно участвовать, а не просто присутствовать.",
   },
@@ -108,11 +110,10 @@ export const studentAdvantages = [
 
 // PLACEHOLDER: Pexels demo assets are documented in public/images/student-demo/README.md.
 export const studentGallery = [
-  { src: "./images/student-demo/student-demo-project.jpg", title: "Проекты и идеи", label: "Демо-фото · Pexels", position: "50% 45%" },
-  { src: "./images/student-demo/student-demo-discussion.jpg", title: "Обсуждение в классе", label: "Демо-фото · Pexels", position: "48% 48%" },
-  { src: "./images/student-demo/student-demo-talk.jpg", title: "Время поговорить", label: "Демо-фото · Pexels", position: "50% 48%" },
-  { src: "./images/student-demo/student-demo-class.jpg", title: "Учебная работа", label: "Демо-фото · Pexels", position: "50% 50%" },
-  { src: "./images/student-demo/student-demo-study.jpg", title: "Работа вместе", label: "Демо-фото · Pexels", position: "50% 48%" },
+  { src: "./images/student-demo/student-demo-class.jpg", title: "Обычный урок", position: "50% 50%" },
+  { src: "./images/student-demo/student-demo-discussion.jpg", title: "Общение и вопросы", position: "48% 48%" },
+  { src: "./images/student-demo/student-demo-project.jpg", title: "Проекты и идеи", position: "50% 45%" },
+  { src: "./images/student-demo/student-demo-talk.jpg", title: "События и школьная жизнь", position: "50% 48%" },
 ];
 
 // PLACEHOLDER: replace every item with a verified review from a real student before production use.
