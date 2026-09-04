@@ -97,14 +97,33 @@ export const studentAdvantages = [
   },
   {
     icon: "target",
-    title: "Сильная учёба и экзамены",
+    title: "Сильная учёба без жизни только ради экзаменов",
     text: "Подготовка к ОГЭ и ЕГЭ без ощущения, что вся школьная жизнь сводится только к тестам.",
   },
+];
+
+// DEMO/TODO: replace every field with confirmed teacher information and real portraits.
+export const teachers = [
   {
-    icon: "spark",
-    image: "./images/student-demo/student-demo-talk.jpg",
-    title: "Есть жизнь кроме уроков",
-    text: "Проекты, события и школьная среда, в которой можно участвовать, а не просто присутствовать.",
+    name: "Имя уточняется",
+    subject: "Учитель математики",
+    photo: "./images/student-demo/student-demo-study.jpg",
+    shortDescription: "Короткая информация о преподавателе и его подходе появится после подтверждения школой.",
+    placeholder: true,
+  },
+  {
+    name: "Имя уточняется",
+    subject: "Учитель русского языка",
+    photo: "./images/student-demo/student-demo-class.jpg",
+    shortDescription: "Короткая информация о преподавателе и его подходе появится после подтверждения школой.",
+    placeholder: true,
+  },
+  {
+    name: "Имя уточняется",
+    subject: "Классный руководитель",
+    photo: "./images/student-demo/student-demo-discussion.jpg",
+    shortDescription: "Короткая информация о преподавателе и его подходе появится после подтверждения школой.",
+    placeholder: true,
   },
 ];
 

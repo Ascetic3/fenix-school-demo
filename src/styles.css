@@ -383,86 +383,109 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hero-badge { position: absolute; z-index: 3; top: 1.2rem; left: 1.2rem; padding: .65rem .9rem; border: 1px solid rgba(255,255,255,.72); border-radius: 999px; color: var(--ink); background: rgba(255,249,241,.92); backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; font-weight: 900; transform: rotate(-2deg); }
 .student-hero-badge span { color: var(--wine); }
 
-.student-experience { position: relative; padding: clamp(4.5rem, 8vw, 8rem) 4vw; background: #fff3e3; animation: audience-in .35s ease both; }
-.student-experience::before { content: "01"; position: absolute; top: 1rem; right: 4vw; color: rgba(217,54,32,.09); font: italic clamp(7rem, 14vw, 14rem)/1 Georgia, serif; pointer-events: none; }
-.student-experience-heading, .student-section-heading { position: relative; z-index: 1; display: grid; grid-template-columns: .65fr 1.25fr .8fr; gap: 2rem; align-items: end; margin-bottom: 3rem; }
-.student-experience-heading > span, .student-section-heading > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
-.student-experience-heading h2, .student-section-heading h2 { max-width: 760px; margin: 0; font: 500 clamp(2.8rem, 4.8vw, 5.3rem)/.94 Georgia, serif; letter-spacing: -.055em; }
-.student-experience-heading p, .student-section-heading p { max-width: 60ch; margin: 0; color: var(--muted); }
-.student-experience-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(190px, auto)) minmax(220px, auto); gap: .9rem; }
-.student-advantage-card { position: relative; min-width: 0; overflow: hidden; padding: clamp(1.35rem, 2.5vw, 2.2rem); border: 1px solid var(--line); border-radius: 1.25rem; display: flex; flex-direction: column; background: var(--paper); transition: transform .2s ease, box-shadow .2s ease; }
+.student-experience { position: relative; padding: clamp(3.5rem, 5vw, 5.5rem) 4vw; background: #fff3e3; animation: audience-in .35s ease both; }
+.student-experience::before { content: "01"; position: absolute; top: .5rem; right: 4vw; color: rgba(217,54,32,.08); font: italic clamp(6rem, 11vw, 11rem)/1 Georgia, serif; pointer-events: none; }
+.student-experience-heading { position: relative; z-index: 1; display: grid; grid-template-columns: .55fr 1fr .75fr; gap: 2rem; align-items: end; margin-bottom: 2rem; }
+.student-experience-heading > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
+.student-experience-heading h2 { margin: 0; font: 500 clamp(2.7rem, 4.5vw, 4.8rem)/.94 Georgia, serif; letter-spacing: -.055em; }
+.student-experience-heading p { max-width: 46ch; margin: 0; color: var(--muted); }
+.student-experience-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: .9rem; }
+.student-advantage-card { position: relative; min-width: 0; min-height: 285px; overflow: hidden; padding: clamp(1.25rem, 2vw, 1.8rem); border: 1px solid var(--line); border-radius: 1.2rem; display: flex; flex-direction: column; background: var(--paper); transition: transform .2s ease, box-shadow .2s ease; }
 .student-advantage-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(36,33,36,.09); }
-.student-advantage-card.card-1 { grid-column: 1 / span 7; grid-row: 1 / span 2; }
-.student-advantage-card.card-2 { grid-column: 8 / -1; grid-row: 1; border-color: transparent; background: var(--apricot); }
-.student-advantage-card.card-3 { grid-column: 8 / -1; grid-row: 2; border-color: transparent; color: white; background: var(--ink); }
-.student-advantage-card.card-1 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, .72fr); grid-template-rows: auto 1fr auto; column-gap: 1.5rem; }
-.student-advantage-card.card-4 { grid-column: 3 / span 8; grid-row: 3; display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(220px, .65fr); grid-template-rows: 1fr auto; column-gap: 1.5rem; border-color: rgba(217,54,32,.25); background: #fffaf4; }
+.student-advantage-card.card-2 { border-color: transparent; background: var(--apricot); }
+.student-advantage-card.card-3 { border-color: transparent; color: white; background: var(--ink); }
 .student-card-number { position: absolute; top: 1.1rem; right: 1.2rem; color: rgba(36,33,36,.24); font: italic .82rem Georgia, serif; }
 .card-3 .student-card-number { color: rgba(255,255,255,.4); }
-.student-advantage-icon { width: 62px; height: 62px; display: grid; place-items: center; border-radius: 50%; color: var(--wine); background: rgba(217,54,32,.1); }
-.student-advantage-icon svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.student-advantage-icon { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; color: var(--wine); background: rgba(217,54,32,.1); }
+.student-advantage-icon svg { width: 31px; height: 31px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .card-2 .student-advantage-icon { color: var(--ink); background: rgba(255,255,255,.48); }
 .card-3 .student-advantage-icon { color: var(--apricot); background: rgba(255,255,255,.1); }
-.card-4 .student-advantage-icon { grid-row: 1 / span 2; align-self: center; }
-.student-advantage-card.card-1 .student-advantage-icon { grid-column: 1; grid-row: 1; }
-.student-advantage-card.card-1 h3 { grid-column: 1; grid-row: 2; align-self: end; }
-.student-advantage-card.card-1 p { grid-column: 1; grid-row: 3; }
-.student-advantage-photo { display: block; width: 100%; height: 125px; object-fit: cover; border-radius: .85rem; }
-.student-advantage-card.card-1 .student-advantage-photo { grid-column: 2; grid-row: 1 / span 3; align-self: start; }
-.student-advantage-card.card-4 .student-advantage-photo { grid-column: 3; grid-row: 1 / span 2; align-self: center; height: 120px; }
-.student-experience-grid h3 { max-width: 24ch; margin: auto 0 .8rem; font: 500 clamp(1.45rem, 2.4vw, 2.4rem)/1.05 Georgia, serif; letter-spacing: -.035em; }
-.student-experience-grid p { max-width: 58ch; margin: 0; color: var(--muted); }
+.student-experience-grid h3 { margin: 1.1rem 0 .65rem; font: 500 clamp(1.4rem, 2vw, 2rem)/1.08 Georgia, serif; letter-spacing: -.03em; }
+.student-experience-grid p { margin: 0; color: var(--muted); }
 .card-2 p { color: rgba(36,33,36,.7); }
 .card-3 p { color: rgba(255,255,255,.7); }
-.card-4 h3 { align-self: end; margin-top: 0; }
+.student-advantage-photo { width: 100%; height: 88px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
 
-.student-gallery { position: relative; padding: clamp(4.5rem, 8vw, 8rem) 4vw; background: var(--paper); }
-.student-gallery::before { content: "DEMO / PHOTO"; position: absolute; top: 2.2rem; right: 4vw; color: var(--wine); letter-spacing: .18em; font-size: .62rem; font-weight: 900; transform: rotate(2deg); }
-.student-gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(420px, 48vh) 240px; gap: .9rem; }
-.student-gallery-grid figure { position: relative; min-width: 0; margin: 0; overflow: hidden; border-radius: 1rem; background: #d8c4b6; }
-.student-gallery-grid figure:first-child { grid-column: 1 / -1; }
-.student-gallery-grid figure::after { content: ""; position: absolute; inset: 42% 0 0; background: linear-gradient(transparent, rgba(23,18,28,.76)); }
-.student-gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
-.student-gallery-grid figure:hover img { transform: scale(1.015); }
-.student-gallery-grid figure > div { position: absolute; z-index: 1; left: 1rem; right: 1rem; bottom: .9rem; color: white; }
-.student-gallery-grid figcaption { font: 500 clamp(1.15rem, 2vw, 1.8rem) Georgia, serif; }
-.student-placeholder-note { margin: 1rem 0 0; color: var(--muted); font-size: .82rem; }
+.student-hub { padding: clamp(4.5rem, 7vw, 7rem) 4vw; background: var(--paper); }
+.student-hub-heading { display: grid; grid-template-columns: .55fr 1.75fr; gap: 2rem; align-items: end; margin-bottom: 2rem; }
+.student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
+.student-hub-heading h2 { max-width: 1000px; margin: 0; font: 500 clamp(3.2rem, 5.5vw, 6.2rem)/.92 Georgia, serif; letter-spacing: -.06em; }
+.student-hub-tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
+.student-hub-tabs button { position: relative; flex: 0 0 auto; min-height: 56px; padding: .9rem clamp(1rem, 2.5vw, 2.3rem); border: 0; color: var(--muted); background: transparent; font: inherit; font-weight: 850; cursor: pointer; white-space: nowrap; }
+.student-hub-tabs button::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 3px; background: transparent; }
+.student-hub-tabs button.active { color: var(--wine); }
+.student-hub-tabs button.active::after { background: var(--wine); }
+.student-hub-stage { min-height: 620px; padding: clamp(1.5rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: panel-in .28s ease both; }
+.student-panel-heading { display: grid; grid-template-columns: .45fr 1fr .8fr; gap: 1.5rem; align-items: end; margin-bottom: 1.7rem; }
+.student-panel-heading h3 { margin: 0; font: 500 clamp(2.3rem, 3.5vw, 4rem)/.96 Georgia, serif; letter-spacing: -.045em; }
+.student-panel-heading p { max-width: 55ch; margin: 0; color: var(--muted); }
+.student-teacher-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .85rem; }
+.student-teacher-grid article { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 1rem; background: var(--paper); }
+.student-teacher-grid article > img { width: 100%; height: 185px; object-fit: cover; }
+.student-teacher-grid article > div { padding: 1rem; }
+.student-teacher-grid span { color: var(--wine); text-transform: uppercase; letter-spacing: .1em; font-size: .62rem; font-weight: 900; }
+.student-teacher-grid h4 { margin: .55rem 0 .2rem; font: 500 1.35rem Georgia, serif; }
+.student-teacher-grid strong { color: var(--muted); font-size: .82rem; }
+.student-teacher-grid p { margin: .8rem 0 0; color: var(--muted); font-size: .86rem; }
+.student-program-picker { display: flex; flex-wrap: wrap; gap: .55rem; margin-bottom: 1.2rem; }
+.student-program-picker button { min-height: 43px; padding: .65rem 1rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: var(--paper); font: inherit; font-weight: 850; cursor: pointer; }
+.student-program-picker button.active { border-color: var(--wine); color: white; background: var(--wine); }
+.student-study-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); gap: 1rem; }
+.student-program-card { min-height: 300px; padding: clamp(1.5rem, 3vw, 2.7rem); border-radius: 1.1rem; color: white; background: var(--wine); }
+.student-program-card > span { color: var(--apricot); text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; font-weight: 900; }
+.student-program-card h4 { margin: 1rem 0 .8rem; font: 500 clamp(2.2rem, 3.5vw, 4rem)/.95 Georgia, serif; }
+.student-program-card p { max-width: 60ch; margin: 0; color: rgba(255,255,255,.72); }
+.student-study-points { display: grid; align-content: start; border-top: 1px solid var(--line); }
+.student-study-points > div { padding: 1rem .2rem; border-bottom: 1px solid var(--line); }
+.student-study-points p { margin: .35rem 0 0; color: var(--muted); font-size: .85rem; }
+.student-life-grid { height: 410px; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(240px, .7fr); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.student-life-grid button { position: relative; min-width: 0; overflow: hidden; padding: 0; border: 0; border-radius: 1rem; color: white; background: #d8c4b6; cursor: zoom-in; }
+.student-life-grid button.featured { grid-row: 1 / -1; }
+.student-life-grid button::after, .student-media-video::after, .student-media-previews figure::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent, rgba(23,18,28,.78)); }
+.student-life-grid img, .student-media-video > img, .student-media-previews img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.student-life-grid button:hover img, .student-media-video:hover > img { transform: scale(1.015); }
+.student-life-grid button > span { position: absolute; z-index: 1; right: 1rem; bottom: .9rem; left: 1rem; text-align: left; font: 500 clamp(1rem, 1.6vw, 1.45rem) Georgia, serif; }
+.student-placeholder-note { margin: .85rem 0 0; color: var(--muted); font-size: .78rem; }
+.student-lightbox { position: fixed; z-index: 200; inset: 0; display: grid; place-items: center; padding: 3vw; background: rgba(23,18,28,.88); }
+.student-lightbox-dialog { position: relative; width: min(1100px, 100%); display: grid; grid-template-columns: 58px minmax(0, 1fr) 58px; gap: 1rem; align-items: center; }
+.student-lightbox figure { min-width: 0; margin: 0; overflow: hidden; border-radius: 1.2rem; color: white; background: var(--ink); }
+.student-lightbox figure img { width: 100%; max-height: 76vh; display: block; object-fit: contain; }
+.student-lightbox figcaption { padding: .85rem 1rem; }
+.student-lightbox-arrow, .student-lightbox-close { min-width: 52px; height: 52px; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; color: white; background: rgba(255,255,255,.08); font: 700 1rem Arial, sans-serif; cursor: pointer; }
+.student-lightbox-close { position: absolute; z-index: 2; top: -4rem; right: 0; padding: 0 1rem; }
+.student-media-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(330px, .75fr); gap: 1rem; }
+.student-media-video { position: relative; min-height: 380px; overflow: hidden; border-radius: 1rem; color: white; background: var(--ink); }
+.student-media-video > span { position: absolute; z-index: 2; top: 1.4rem; right: 1.4rem; width: 62px; height: 62px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; background: rgba(23,18,28,.3); }
+.student-media-video > div { position: absolute; z-index: 2; right: 1.3rem; bottom: 1.2rem; left: 1.3rem; display: grid; }
+.student-media-video small { color: var(--apricot); text-transform: uppercase; letter-spacing: .1em; font-weight: 900; }
+.student-media-video strong { margin-top: .3rem; font: 500 clamp(1.8rem, 3vw, 3rem) Georgia, serif; }
+.student-media-side { min-width: 0; display: grid; grid-template-rows: 1fr auto; gap: .8rem; }
+.student-media-previews { min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+.student-media-previews figure { position: relative; min-width: 0; min-height: 155px; overflow: hidden; margin: 0; border-radius: .8rem; color: white; }
+.student-media-previews figcaption { position: absolute; z-index: 1; right: .7rem; bottom: .65rem; left: .7rem; font-size: .78rem; }
+.student-media-socials { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+.student-media-socials a { min-width: 0; min-height: 72px; padding: .75rem; border: 1px solid var(--line); border-radius: .8rem; display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: .65rem; align-items: center; background: var(--paper); }
+.student-media-socials a > b { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--wine); font-size: .7rem; }
+.student-media-socials a > span { min-width: 0; display: grid; font-weight: 900; }
+.student-media-socials small { color: var(--muted); font-size: .62rem; font-weight: 400; }
+.student-media-socials i { color: var(--wine); font-style: normal; }
 
-.student-connect { padding: clamp(4.5rem, 8vw, 8rem) 4vw; background: #fff3e3; }
-.student-connect-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(330px, .65fr); gap: clamp(1rem, 2vw, 2rem); align-items: stretch; }
-.student-video-card { position: relative; min-height: 620px; overflow: hidden; border-radius: 1.3rem; color: white; background: var(--ink); }
-.student-video-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23,18,28,.05) 35%, rgba(23,18,28,.88)); }
-.student-video-card > img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
-.student-video-card:hover > img { transform: scale(1.02); }
-.student-video-play { position: absolute; z-index: 2; top: 2rem; right: 2rem; width: 76px; height: 76px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; background: rgba(23,18,28,.28); backdrop-filter: blur(8px); font-size: 1.35rem; }
-.student-video-copy { position: absolute; z-index: 2; right: clamp(1.3rem, 3vw, 2.5rem); bottom: clamp(1.3rem, 3vw, 2.5rem); left: clamp(1.3rem, 3vw, 2.5rem); }
-.student-video-copy > span, .student-socials > span, .student-proof span { color: var(--apricot); text-transform: uppercase; letter-spacing: .13em; font-size: .68rem; font-weight: 900; }
-.student-video-copy h2, .student-socials h2 { max-width: 16ch; margin: .55rem 0 .65rem; font: 500 clamp(2.3rem, 3.8vw, 4.2rem)/.94 Georgia, serif; letter-spacing: -.05em; }
-.student-video-copy p { max-width: 55ch; margin: 0; color: rgba(255,255,255,.72); }
-.student-socials { padding: clamp(.5rem, 1vw, 1rem) 0; display: flex; flex-direction: column; }
-.student-socials > p { max-width: 48ch; color: var(--muted); }
-.student-socials > div { display: grid; gap: .75rem; margin-top: auto; padding-top: 2rem; }
-.student-socials a { min-height: 112px; padding: 1rem; border: 1px solid var(--line); border-radius: 1rem; display: grid; grid-template-columns: 52px 1fr auto; gap: 1rem; align-items: center; background: var(--paper); transition: transform .2s ease, border-color .2s ease; }
-.student-socials a:hover { transform: translateX(4px); border-color: var(--wine); }
-.student-socials a[aria-disabled="true"] { cursor: not-allowed; }
-.student-socials a > b { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--wine); font-size: .86rem; }
-.student-socials a > span { display: grid; }
-.student-socials a strong { font: 500 1.45rem Georgia, serif; }
-.student-socials a small { margin-top: .15rem; color: var(--muted); font-size: .76rem; }
-.student-socials a > i { color: var(--wine); font-style: normal; font-size: 1.25rem; transition: transform .2s ease; }
-.student-socials a:hover > i { transform: translate(3px, -3px); }
-.student-socials > small { margin-top: .9rem; color: var(--muted); font-size: .72rem; }
-
-.student-proof { position: relative; overflow: hidden; padding: clamp(4.5rem, 8vw, 8rem) 4vw; color: white; background: var(--wine); }
-.student-proof::after { content: "✦"; position: absolute; right: -3rem; bottom: -8rem; color: rgba(255,255,255,.08); font: 500 24rem/1 Georgia, serif; }
-.student-proof-layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .35fr); gap: 3rem; align-items: end; }
-.student-proof h2 { max-width: 900px; margin: .6rem 0 1.2rem; font: 500 clamp(4.2rem, 8.5vw, 9rem)/.82 Georgia, serif; letter-spacing: -.075em; }
-.student-proof p { max-width: 65ch; margin: 0; color: rgba(255,255,255,.74); }
-.student-proof-action { display: grid; justify-items: start; gap: 1rem; }
-.student-proof-action > b { color: var(--apricot); font: 400 clamp(5rem, 9vw, 9rem)/.7 Georgia, serif; }
-.student-proof .button { min-width: 210px; background: var(--apricot); color: var(--ink); }
-.student-details { padding-top: clamp(4rem, 7vw, 7rem); }
-.audience-student .student-details > * { width: min(100%, 1500px); margin-inline: auto; }
+.student-next { padding: clamp(4rem, 6vw, 6rem) 4vw; background: #fff3e3; }
+.student-next-cta { padding: clamp(2rem, 4vw, 4rem); border-radius: 1.5rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; color: white; background: var(--wine); }
+.student-next-cta span { color: var(--apricot); }
+.student-next-cta h2 { max-width: 1050px; margin: .7rem 0 1rem; font: 500 clamp(3rem, 5vw, 5.8rem)/.9 Georgia, serif; letter-spacing: -.06em; }
+.student-next-cta p { max-width: 65ch; margin: 0; color: rgba(255,255,255,.72); }
+.student-next-cta .button { min-width: 235px; color: var(--ink); background: var(--apricot); }
+.student-practical { display: grid; grid-template-columns: 1.25fr .75fr; gap: 1rem; margin-top: 1rem; }
+.student-practical article { padding: 1.3rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--paper); }
+.student-practical article > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: 1rem; }
+.student-practical article p { min-width: 0; margin: 0; padding: .8rem; border-radius: .7rem; display: grid; background: var(--cream); }
+.student-practical article p b { font-size: .78rem; }
+.student-practical article p strong { margin-top: .4rem; color: var(--wine); font: 500 1.35rem Georgia, serif; }
+.student-practical article > small { display: block; margin-top: .8rem; color: var(--muted); }
+.student-practical ol { margin: 1rem 0; padding-left: 1.3rem; columns: 2; color: var(--muted); }
+.student-practical li { margin-bottom: .5rem; break-inside: avoid; }
+.student-practical a { color: var(--wine); font-weight: 900; }
 .explore-intro { display: grid; grid-template-columns: 1fr 1.2fr .8fr; gap: 2rem; align-items: end; margin-bottom: 3rem; }
 .explore-intro > span { color: var(--wine); text-transform: uppercase; letter-spacing: .15em; font-size: .75rem; font-weight: 900; }
 .explore-intro h2 { margin: 0; font: 500 clamp(2.6rem, 4.7vw, 5.2rem)/.96 Georgia, serif; letter-spacing: -.05em; }
@@ -564,23 +587,23 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .review-author div { display: grid; }
 .review-author strong { font-size: .95rem; }
 .review-author small { margin-top: .1rem; color: var(--wine); font-size: .8rem; }
-.student-reviews { margin-top: 0; padding: clamp(3rem, 4vw, 4.5rem) 4vw clamp(4.5rem, 8vw, 8rem); overflow: hidden; color: var(--ink); background: var(--cream); }
+.student-reviews { margin-top: 0; padding: clamp(3rem, 4vw, 4.5rem) 4vw clamp(3.5rem, 5vw, 5rem); overflow: hidden; color: var(--ink); background: var(--cream); }
 .student-reviews-intro, .student-review-stage { width: min(100%, 1500px); margin-inline: auto; }
-.student-reviews-intro { margin-bottom: clamp(2rem, 3vw, 3rem); }
+.student-reviews-intro { margin-bottom: clamp(1.4rem, 2vw, 2rem); }
 .student-reviews-intro > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
-.student-reviews-intro h2 { max-width: 980px; margin: .7rem 0 1rem; font: 500 clamp(3rem, 5.5vw, 6.2rem)/.92 Georgia, serif; letter-spacing: -.055em; }
+.student-reviews-intro h2 { max-width: 900px; margin: .7rem 0 .8rem; font: 500 clamp(2.8rem, 4.4vw, 4.8rem)/.94 Georgia, serif; letter-spacing: -.05em; }
 .student-reviews-intro p { max-width: 65ch; margin: 0; color: var(--muted); }
 .student-review-stage { position: relative; overflow: hidden; border-radius: 1.7rem; color: white; background: #17121c; }
 .student-reviews .reviews-controls > span { color: rgba(255,255,255,.55); }
 .student-reviews .reviews-controls button { border-color: rgba(255,255,255,.28); color: white; }
 .student-reviews .reviews-controls { position: absolute; z-index: 2; right: clamp(1.5rem, 4vw, 4rem); bottom: clamp(1.5rem, 3vw, 3rem); }
 .student-reviews .reviews-slider { grid-template-columns: 1fr; }
-.student-reviews .review-card { min-height: 430px; padding: clamp(3rem, 5vw, 5rem) clamp(12rem, 17vw, 18rem) clamp(3rem, 5vw, 5rem) clamp(5.5rem, 12vw, 13rem); border: 0; border-radius: 0; color: white; background: transparent; }
+.student-reviews .review-card { min-height: 350px; padding: clamp(2.5rem, 4vw, 4rem) clamp(11rem, 15vw, 16rem) clamp(2.5rem, 4vw, 4rem) clamp(5rem, 10vw, 10rem); border: 0; border-radius: 0; color: white; background: transparent; }
 .student-reviews .review-card.secondary { display: none; }
-.student-reviews .review-card h3 { max-width: 1050px; margin-bottom: 1.5rem; font: 500 clamp(2rem, 3.8vw, 4.4rem)/1.02 Georgia, serif; letter-spacing: -.045em; }
+.student-reviews .review-card h3 { max-width: 980px; margin-bottom: 1.2rem; font: 500 clamp(2rem, 3.2vw, 3.7rem)/1.02 Georgia, serif; letter-spacing: -.045em; }
 .student-reviews .review-card > p { max-width: 760px; color: rgba(255,255,255,.7); font-size: clamp(1rem, 1.35vw, 1.22rem); }
-.student-reviews .review-quote { top: clamp(1.4rem, 4vw, 4rem); right: auto; left: 0; color: var(--apricot); font-size: clamp(8rem, 16vw, 17rem); line-height: .72; }
-.student-reviews .review-author { margin-top: clamp(2.5rem, 5vw, 5rem); }
+.student-reviews .review-quote { top: clamp(1.4rem, 3vw, 3rem); right: auto; left: 0; color: var(--apricot); font-size: clamp(8rem, 13vw, 14rem); line-height: .72; }
+.student-reviews .review-author { margin-top: clamp(2rem, 3vw, 3rem); }
 .student-reviews .review-author > span { width: 54px; height: 54px; flex-basis: 54px; color: var(--ink); background: var(--apricot); }
 .student-reviews .review-author small { color: var(--apricot); }
 .review-card.placeholder { min-height: 360px; }
@@ -627,10 +650,9 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .why-compact-heading { grid-column: 1 / -1; padding: 0 0 .5rem; }
   .founder-mini { min-height: 390px; }
   .demo-field-grid { grid-template-columns: repeat(3, 1fr); }
-  .student-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
-  .student-advantage-card.card-1, .student-advantage-card.card-4 { grid-column: 1 / -1; grid-row: auto; min-height: 300px; }
-  .student-advantage-card.card-2, .student-advantage-card.card-3 { grid-column: auto; grid-row: auto; min-height: 280px; }
-  .student-advantage-card.card-4 { grid-template-columns: auto minmax(0, 1fr) minmax(180px, .55fr); }
+  .student-hub-stage { min-height: 650px; }
+  .student-teacher-grid article > img { height: 165px; }
+  .student-media-layout { grid-template-columns: minmax(0, 1.1fr) minmax(330px, .9fr); }
   .audience-student .hybrid-hero { grid-template-columns: 1fr .75fr; }
 }
 
@@ -663,21 +685,21 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .reviews-slider { grid-template-columns: 1fr; }
   .review-card.secondary { display: none; }
   .review-card { min-height: 0; }
-  .student-experience-heading, .student-section-heading { grid-template-columns: 1fr; gap: .8rem; }
+  .student-experience-heading { grid-template-columns: 1fr; gap: .8rem; }
   .student-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .student-advantage-card.card-1, .student-advantage-card.card-4 { grid-column: 1 / -1; min-height: 270px; }
-  .student-advantage-card.card-2, .student-advantage-card.card-3 { min-height: 260px; }
-  .student-advantage-photo { height: 110px; }
-  .student-gallery-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: 360px 180px; }
-  .student-gallery-grid figure, .student-gallery-grid figure:nth-child(n) { grid-column: span 1; grid-row: span 1; }
-  .student-gallery-grid figure:first-child { grid-column: 1 / -1; }
-  .student-connect { padding-inline: 5vw; }
-  .student-connect-layout { grid-template-columns: 1fr; }
-  .student-video-card { min-height: 460px; }
-  .student-socials { padding-top: 1.5rem; }
-  .student-socials > div { margin-top: 1rem; }
-  .student-proof-layout { grid-template-columns: 1fr; align-items: start; gap: 2rem; }
-  .student-proof .button { width: fit-content; }
+  .student-advantage-card:first-child { grid-column: 1 / -1; min-height: 220px; }
+  .student-advantage-card { min-height: 235px; }
+  .student-hub { padding-inline: 5vw; }
+  .student-hub-heading, .student-panel-heading { grid-template-columns: 1fr; gap: .7rem; }
+  .student-hub-stage { min-height: 0; }
+  .student-teacher-grid article > img { height: 145px; }
+  .student-study-layout, .student-media-layout { grid-template-columns: 1fr; }
+  .student-study-points { grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 0; gap: .6rem; }
+  .student-study-points > div { padding: .8rem; border: 1px solid var(--line); border-radius: .8rem; background: var(--paper); }
+  .student-media-video { min-height: 320px; }
+  .student-next { padding-inline: 5vw; }
+  .student-next-cta { grid-template-columns: 1fr; align-items: start; }
+  .student-next-cta .button { width: fit-content; }
   .student-reviews { padding-inline: 5vw; }
   .student-reviews-intro h2 { font-size: clamp(3rem, 9vw, 5rem); }
 }
@@ -723,24 +745,36 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card h3 { max-width: 88%; }
   .student-experience { padding-inline: 5vw; }
   .student-experience-grid { grid-template-columns: 1fr; }
-  .student-advantage-card.card-1, .student-advantage-card.card-2, .student-advantage-card.card-3, .student-advantage-card.card-4 { grid-column: auto; grid-row: auto; min-height: 230px; }
-  .student-advantage-card.card-1, .student-advantage-card.card-4 { display: flex; }
-  .student-advantage-photo { height: 90px; margin-top: 1rem; }
-  .student-advantage-card.card-4 .student-advantage-photo { display: none; }
-  .student-gallery { padding-inline: 5vw; }
-  .student-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 260px 155px 155px; gap: .65rem; }
-  .student-gallery-grid figure:first-child { grid-column: 1 / -1; grid-row: span 1; }
-  .student-gallery-grid figure:nth-child(4) { grid-column: 1 / -1; }
-  .student-gallery-grid figcaption { font-size: 1rem; }
-  .student-gallery-grid figure > div { left: .75rem; right: .75rem; bottom: .7rem; }
-  .student-video-card { min-height: 400px; }
-  .student-video-play { width: 64px; height: 64px; }
-  .student-socials { padding: 1.2rem 0 0; }
-  .student-socials a { min-height: 78px; padding: .9rem; }
-  .student-proof { padding-inline: 5vw; }
-  .student-proof h2 { font-size: clamp(2.6rem, 13vw, 3.8rem); }
-  .student-proof .button { width: 100%; }
-  .student-proof-action > b { font-size: 5rem; }
+  .student-advantage-card, .student-advantage-card:first-child { grid-column: auto; min-height: 195px; }
+  .student-advantage-photo { height: 80px; }
+  .student-hub-heading h2 { font-size: clamp(2.6rem, 12vw, 3.7rem); }
+  .student-hub-tabs button { min-height: 50px; padding: .75rem 1rem; }
+  .student-hub-stage { padding: 1rem; border-radius: 0 0 1rem 1rem; }
+  .student-panel-heading h3 { font-size: clamp(2rem, 9vw, 2.8rem); }
+  .student-teacher-grid { grid-template-columns: 1fr; }
+  .student-teacher-grid article { display: grid; grid-template-columns: 105px minmax(0, 1fr); }
+  .student-teacher-grid article > img { height: 100%; min-height: 155px; }
+  .student-program-picker { flex-wrap: nowrap; overflow-x: auto; }
+  .student-program-picker button { flex: 0 0 auto; }
+  .student-study-points { grid-template-columns: 1fr; }
+  .student-life-grid { height: 390px; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 240px 140px; }
+  .student-life-grid button.featured { grid-column: 1 / -1; grid-row: auto; }
+  .student-lightbox { padding: 4.5rem 1rem; }
+  .student-lightbox-dialog { display: block; }
+  .student-lightbox figure img { max-height: 68vh; }
+  .student-lightbox-arrow { position: absolute; bottom: -3.7rem; }
+  .student-lightbox-arrow.previous { left: 0; }
+  .student-lightbox-arrow.next { right: 0; }
+  .student-lightbox-close { top: -3.7rem; }
+  .student-media-video { min-height: 270px; }
+  .student-media-previews figure { min-height: 110px; }
+  .student-media-socials { grid-template-columns: 1fr; }
+  .student-next-cta { padding: 1.5rem; }
+  .student-next-cta h2 { font-size: clamp(2.5rem, 11vw, 3.5rem); }
+  .student-next-cta .button { width: 100%; min-width: 0; }
+  .student-practical { grid-template-columns: 1fr; }
+  .student-practical article > div { grid-template-columns: 1fr; }
+  .student-practical ol { columns: 1; }
   .student-reviews { padding-top: 3rem; }
   .student-reviews-intro h2 { font-size: clamp(2.25rem, 11vw, 3.1rem); }
   .student-review-stage { border-radius: 1.15rem; }

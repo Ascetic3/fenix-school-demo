@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
-  studentAdvantages, studentGallery, studentReviews, studentSocials,
+  studentAdvantages, studentGallery, studentReviews, studentSocials, teachers,
 } from "./content";
 
 const audienceIds = ["parent", "student"];
@@ -137,46 +137,49 @@ function StudentIcon({ name }) {
 function StudentExperience({ items }) {
   return <section className="student-experience" aria-labelledby="student-experience-title">
     <div className="student-shell">
-      <div className="student-experience-heading"><span>Твой взгляд тоже важен</span><h2 id="student-experience-title">Как ощущается учёба в «Фениксе»</h2><p>Те же факты о школе — с точки зрения человека, которому предстоит учиться здесь каждый день.</p></div>
+      <div className="student-experience-heading"><span>Коротко о главном</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
       <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
     </div>
   </section>;
 }
 
-function StudentGallery({ items }) {
-  return <section className="student-gallery" aria-labelledby="student-gallery-title">
-    <div className="student-shell">
-      <div className="student-section-heading"><span>Школьная жизнь</span><h2 id="student-gallery-title">Посмотри школу изнутри</h2><p>Не только программа и расписание — важно увидеть людей, пространство и обычный день.</p></div>
-      <div className="student-gallery-grid">{items.map(({ src, title, position }, index) => <figure key={`${title}-${index}`}>
-        <img src={src} alt="Временная демонстрационная фотография учебной сцены" style={{ objectPosition: position }} />
-        <div><figcaption>{title}</figcaption></div>
-      </figure>)}</div>
-      <p className="student-placeholder-note">Демонстрационные фотографии. В финальной версии будут заменены реальными материалами школы.</p>
-    </div>
-  </section>;
+function StudentPeople({ teachers }) {
+  return <div className="student-hub-panel student-people"><div className="student-panel-heading"><span>Люди</span><h3>С кем ты будешь учиться</h3><p>В школе важны не только предметы. Важно, кто объясняет их каждый день.</p></div><div className="student-teacher-grid">{teachers.map((teacher, index) => <article key={`${teacher.subject}-${index}`}><img src={teacher.photo} alt="Временное демонстрационное изображение для карточки преподавателя" /><div><span>{teacher.placeholder ? "Demo · данные уточняются" : teacher.subject}</span><h4>{teacher.subject}</h4><strong>{teacher.name}</strong><p>{teacher.shortDescription}</p></div></article>)}</div></div>;
 }
 
-function StudentConnect() {
-  return <section className="student-connect" aria-label="Видео и социальные сети школы">
-    <div className="student-shell student-connect-layout">
-      <article className="student-video-card">
-        <img src="./images/student-demo/student-demo-talk.jpg" alt="Временная демонстрационная фотография для видеоблока" />
-        <div className="student-video-play" aria-hidden="true">▶</div>
-        <div className="student-video-copy"><span>Видео · placeholder</span><h2>Посмотреть школу в движении</h2><p>Здесь можно разместить короткое видео о школьной жизни.</p></div>
-      </article>
-      <aside className="student-socials">
-        <span>За пределами сайта</span><h2>Посмотри, чем школа живёт сейчас</h2><p>На сайте — основная информация, а в соцсетях можно увидеть повседневную жизнь школы, события и фотографии.</p>
-        <div>{studentSocials.map(({ icon, title, text, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span><strong>{title}</strong><small>{text}</small></span><i>↗</i></a>)}</div>
-        <small>Ссылки появятся после подтверждения официальных аккаунтов школы.</small>
-      </aside>
-    </div>
-  </section>;
+function StudentStudy() {
+  const [activeProgram, setActiveProgram] = useState(0);
+  const [number, ages, title, text] = programs[activeProgram];
+  return <div className="student-hub-panel student-study"><div className="student-panel-heading"><span>Учёба</span><h3>Что и как здесь изучают</h3><p>Выбери свой этап — подробности поменяются внутри блока.</p></div><div className="student-program-picker" role="tablist" aria-label="Возрастной этап">{programs.map(([, programAges], index) => <button key={programAges} role="tab" aria-selected={activeProgram === index} className={activeProgram === index ? "active" : ""} onClick={() => setActiveProgram(index)}>{programAges.replace(" классы", "")}</button>)}</div><div className="student-study-layout"><article className="student-program-card"><span>{number} · {ages}</span><h4>{title}</h4><p>{text}</p></article><div className="student-study-points">{audienceContent.student.advantages.map(([pointTitle, pointText]) => <div key={pointTitle}><strong>{pointTitle}</strong><p>{pointText}</p></div>)}</div></div></div>;
 }
 
-function StudentProof() {
-  return <section className="student-proof">
-    <div className="student-shell student-proof-layout"><div><span>Лучший способ проверить</span><h2>Не верь сайту<br />на слово</h2><p>Посмотри фотографии, загляни в соцсети и приходи на пробные дни. Лучше провести здесь один обычный учебный день, чем читать десять страниц описания.</p></div><div className="student-proof-action"><b aria-hidden="true">→</b><a className="button button-dark" href="#demo-week">Попробовать школу</a></div></div>
-  </section>;
+function StudentLife({ items }) {
+  const photos = items.slice(0, 3);
+  const [selected, setSelected] = useState(null);
+  useEffect(() => {
+    if (selected === null) return undefined;
+    const onKeyDown = (event) => event.key === "Escape" && setSelected(null);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selected]);
+  const move = (step) => setSelected((value) => (value + step + photos.length) % photos.length);
+  return <div className="student-hub-panel student-life"><div className="student-panel-heading"><span>Школьная жизнь</span><h3>Как выглядит обычный день</h3><p>Один главный кадр и несколько деталей — без бесконечной фотоленты.</p></div><div className="student-life-grid">{photos.map((photo, index) => <button key={photo.title} className={index === 0 ? "featured" : ""} onClick={() => setSelected(index)}><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /><span>{photo.title}</span></button>)}</div><p className="student-placeholder-note">Демонстрационные фотографии. В финальной версии будут заменены реальными материалами школы.</p>{selected !== null && <div className="student-lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фотографии" onMouseDown={(event) => event.target === event.currentTarget && setSelected(null)}><div className="student-lightbox-dialog"><button className="student-lightbox-close" onClick={() => setSelected(null)}>Закрыть ×</button><button className="student-lightbox-arrow previous" onClick={() => move(-1)} aria-label="Предыдущая фотография">←</button><figure><img src={photos[selected].src} alt={photos[selected].title} style={{ objectPosition: photos[selected].position }} /><figcaption>{photos[selected].title}</figcaption></figure><button className="student-lightbox-arrow next" onClick={() => move(1)} aria-label="Следующая фотография">→</button></div></div>}</div>;
+}
+
+function StudentMedia({ items }) {
+  return <div className="student-hub-panel student-media"><div className="student-panel-heading"><span>Фото и видео</span><h3>Посмотри школу своими глазами</h3><p>Видео, несколько кадров и соцсети — как второй способ увидеть актуальную жизнь школы.</p></div><div className="student-media-layout"><article className="student-media-video"><img src="./images/student-demo/student-demo-talk.jpg" alt="Временная демонстрационная фотография для видеоблока" /><span aria-hidden="true">▶</span><div><small>Видео · placeholder</small><strong>Школа в движении</strong></div></article><div className="student-media-side"><div className="student-media-previews">{items.slice(1, 3).map((item) => <figure key={item.title}><img src={item.src} alt={item.title} style={{ objectPosition: item.position }} /><figcaption>{item.title}</figcaption></figure>)}</div><div className="student-media-socials">{studentSocials.map(({ icon, title, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span>{title}<small>Ссылка уточняется</small></span><i aria-hidden="true">↗</i></a>)}</div></div></div></div>;
+}
+
+const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life", "Школьная жизнь"], ["media", "Фото и видео"]];
+
+function StudentHub() {
+  const [active, setActive] = useState("people");
+  const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentStudy />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
+  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри">{studentHubTabs.map(([id, label]) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => setActive(id)}>{label}</button>)}</div><div className="student-hub-stage" id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+}
+
+function StudentNextSteps({ content }) {
+  return <section className="student-next" id="demo-week"><div className="student-shell"><div className="student-next-cta"><div><span>Попробовать школу</span><h2>Лучше один день здесь,<br />чем десять страниц описания</h2><p>{content.demoDescription}</p></div><a className="button" href="tel:+79122795067">Попробовать школу 5 дней</a></div><div className="student-practical"><article><span>Стоимость</span><div>{prices.map(([title, price]) => <p key={title}><b>{title}</b><strong>{price}</strong></p>)}</div><small>Вступительный взнос при поступлении — 75 000 ₽.</small></article><article><span>Как поступить</span><ol>{admissionSteps.map(([, title]) => <li key={title}>{title}</li>)}</ol><a href="tel:+79122795067">Уточнить условия →</a></article></div></div></section>;
 }
 
 function ReviewCard({ review, secondary = false }) {
@@ -197,8 +200,8 @@ function Reviews({ items = reviews, audience = "parent" }) {
   const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
   const next = () => setIndex((value) => (value + 1) % items.length);
   const controls = <div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div>;
-  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="student-reviews-title">
-    <div className="student-reviews-intro"><span>Демо-тексты · заменить реальными</span><h2 id="student-reviews-title">Как школа звучит глазами учеников</h2><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
+  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="reviews-title">
+    <div className="student-reviews-intro"><span>Демо-тексты · заменить реальными</span><h2 id="reviews-title">Как школа звучит глазами учеников</h2><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
     <div className="student-review-stage"><div className="reviews-slider" aria-live="polite"><ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} /></div>{controls}</div>
   </section>;
   return <section className="reviews-section" aria-labelledby="reviews-title">
@@ -263,13 +266,12 @@ export default function App() {
 
     {audience === "student" && <>
       <StudentExperience items={studentAdvantages} />
-      <StudentGallery items={studentGallery} />
-      <StudentConnect />
-      <StudentProof />
+      <StudentHub />
       <Reviews items={studentReviews} audience="student" />
+      <StudentNextSteps content={content} />
     </>}
 
-    <section className={`hybrid-explore${audience === "student" ? " student-details" : ""}`} id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} />{audience === "parent" && <Reviews />}</section>
+    {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} /><Reviews /></section>}
 
     <section className="hybrid-contact" id="contacts"><div><span>Знакомство со школой</span><h2>Начните с разговора или экскурсии</h2><p>Уточните условия демонедели, свободные места и подходящий формат обучения.</p></div><div className="contact-actions"><a href="tel:+79122795067">☎ +7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">✉ shkola_fenix@mail.ru</a></div></section>
 
