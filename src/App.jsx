@@ -25,6 +25,31 @@ function AudienceSwitch({ audience, onChange, compact = false }) {
   </div>;
 }
 
+const audienceChoices = {
+  parent: "Программа, условия, стоимость и поступление",
+  student: "Атмосфера, экзамены и школьная жизнь",
+};
+
+function AudienceWelcome({ onChoose }) {
+  return <div className="audience-welcome-layer">
+    <section className="audience-welcome" role="dialog" aria-labelledby="audience-welcome-title" aria-describedby="audience-welcome-description">
+      <div className="audience-welcome-heading">
+        <span>Персональная версия сайта</span>
+        <h2 id="audience-welcome-title">Кто выбирает школу?</h2>
+        <p id="audience-welcome-description">Мы немного изменим сайт под то, что важно именно вам.</p>
+      </div>
+      <div className="audience-choice-list">
+        {audienceIds.map((id) => <button key={id} type="button" onClick={() => onChoose(id)}>
+          <strong>{id === "student" ? "Я ученик 8–11 класса" : audienceContent[id].choiceLabel}</strong>
+          <span>{audienceChoices[id]}</span>
+          <b aria-hidden="true">→</b>
+        </button>)}
+      </div>
+      <small>Выбор можно изменить в любой момент</small>
+    </section>
+  </div>;
+}
+
 function Documents({ compact = false }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
@@ -165,13 +190,13 @@ export default function App() {
     <header className="site-header">
       <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></a>
       <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav>
-      <div className="header-actions"><AudienceSwitch audience={audience} onChange={changeAudience} compact /><Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
+      <div className="header-actions">{hasChosenAudience && <AudienceSwitch audience={audience} onChange={changeAudience} compact />}<Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
       <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Documents /><a href="tel:+79122795067">Позвонить в школу</a></div></details>
     </header>
 
     <section className="hybrid-hero" id="top">
+      {!hasChosenAudience && <AudienceWelcome onChoose={changeAudience} />}
       <div className="hybrid-hero-copy">
-        {!hasChosenAudience && <div className="audience-welcome"><span>Кто выбирает школу?</span><p>Покажем самое важное с вашей точки зрения.</p><AudienceSwitch audience={audience} onChange={changeAudience} /></div>}
         <div className="audience-transition" key={audience}><div className="eyebrow">✦ Частная школа в Екатеринбурге</div><h1>{content.hero.title}<br /><em>{content.hero.accent}</em></h1><p>{content.hero.description}</p>
         <div className="hero-actions"><a className="button button-primary" href="#demo-week">{content.hero.primaryCta}</a><a className="button button-ghost" href="#explore">{content.hero.secondaryCta}</a></div>
         <div className="hero-meta"><span>⌖ Большакова, 109</span><span>До 14 учеников в классе</span><span>3 минуты до Зелёной рощи</span></div>
