@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
+  studentAdvantages, studentGallery, studentReviews, studentSocials,
 } from "./content";
 
 const audienceIds = ["parent", "student"];
@@ -40,7 +41,7 @@ function AudienceWelcome({ onChoose }) {
       </div>
       <div className="audience-choice-list">
         {audienceIds.map((id) => <button key={id} type="button" onClick={() => onChoose(id)}>
-          <strong>{id === "student" ? "Я ученик 8–11 класса" : audienceContent[id].choiceLabel}</strong>
+          <strong>{audienceContent[id].choiceLabel}</strong>
           <span>{audienceChoices[id]}</span>
           <b aria-hidden="true">→</b>
         </button>)}
@@ -127,29 +128,65 @@ function SchoolTabs({ content }) {
 function StudentExperience({ items }) {
   return <section className="student-experience" aria-labelledby="student-experience-title">
     <div className="student-experience-heading"><span>Твой взгляд тоже важен</span><h2 id="student-experience-title">Как ощущается учёба в «Фениксе»</h2><p>Те же факты о школе — с точки зрения человека, которому предстоит учиться здесь каждый день.</p></div>
-    <div className="student-experience-grid">{items.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+    <div className="student-experience-grid">{items.map(({ icon, title, text }) => <article key={title}><span className="student-advantage-icon" aria-hidden="true">{icon}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+  </section>;
+}
+
+function StudentGallery({ items }) {
+  return <section className="student-gallery" aria-labelledby="student-gallery-title">
+    <div className="student-section-heading"><span>Школьная жизнь</span><h2 id="student-gallery-title">Посмотри, как выглядит школьная жизнь</h2><p>Не только программа и расписание — важно увидеть людей, пространство и обычный день.</p></div>
+    <div className="student-gallery-grid">{items.map(({ src, title, label, position }, index) => <figure key={`${title}-${index}`}>
+      <img src={src} alt="Демонстрационный кадр из текущей фототеки школы" style={{ objectPosition: position }} />
+      <div><span>{label}</span><figcaption>{title}</figcaption></div>
+    </figure>)}</div>
+    <p className="student-placeholder-note">Для демонстрации раздела. В финальной версии здесь будут реальные фото и видео школы.</p>
+  </section>;
+}
+
+function StudentConnect() {
+  return <section className="student-connect" aria-label="Видео и социальные сети школы">
+    <article className="student-video-card">
+      <img src="./images/school-event.jpg" alt="Ученики на занятии — фон демонстрационного видеоблока" />
+      <div className="student-video-play" aria-hidden="true">▶</div>
+      <div className="student-video-copy"><span>Видео · placeholder</span><h2>Посмотреть школу в движении</h2><p>Здесь можно разместить короткое видео о школьной жизни.</p></div>
+    </article>
+    <aside className="student-socials">
+      <span>За пределами сайта</span><h2>Посмотри, чем школа живёт сейчас</h2><p>На сайте — основная информация, а в соцсетях можно увидеть повседневную жизнь школы, события и фотографии.</p>
+      <div>{studentSocials.map(({ icon, title, text, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span><strong>{title}</strong><small>{text}</small></span><i>↗</i></a>)}</div>
+      <small>Ссылки появятся после подтверждения официальных аккаунтов школы.</small>
+    </aside>
+  </section>;
+}
+
+function StudentProof() {
+  return <section className="student-proof">
+    <div><span>Лучший способ проверить</span><h2>Не верь сайту на слово</h2><p>Посмотри фотографии, загляни в соцсети и приходи на пробные дни. Лучше провести здесь один обычный учебный день, чем читать десять страниц описания.</p></div>
+    <a className="button button-dark" href="#demo-week">Попробовать школу →</a>
   </section>;
 }
 
 function ReviewCard({ review, secondary = false }) {
-  const initials = review.name.split(" ").map((part) => part[0]).join("");
-  return <article className={`review-card${secondary ? " secondary" : ""}`}>
+  const initials = review.placeholder ? "✦" : review.name.split(" ").map((part) => part[0]).join("");
+  return <article className={`review-card${secondary ? " secondary" : ""}${review.placeholder ? " placeholder" : ""}`}>
     <div className="review-quote">“</div>
     <h3>{review.title}</h3>
     <p>{review.text}</p>
-    <div className="review-author"><span>{initials}</span><div><strong>{review.name}</strong><small>{review.role}</small></div></div>
+    <div className="review-author"><span>{initials}</span><div><strong>{review.placeholder ? review.role : review.name}</strong><small>{review.placeholder ? "Текст для демонстрации" : review.role}</small></div></div>
   </article>;
 }
 
-function Reviews() {
+function Reviews({ items = reviews, audience = "parent" }) {
   const [index, setIndex] = useState(0);
-  const previous = () => setIndex((value) => (value - 1 + reviews.length) % reviews.length);
-  const next = () => setIndex((value) => (value + 1) % reviews.length);
-  return <section className="reviews-section" aria-labelledby="reviews-title">
-    <div className="reviews-heading"><div><span>Говорят родители</span><h2 id="reviews-title">Отзывы о школе</h2></div><div className="reviews-controls"><span>{String(index + 1).padStart(2, "0")} / {String(reviews.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
+  const isStudent = audience === "student";
+  const safeIndex = index % items.length;
+  useEffect(() => setIndex(0), [items]);
+  const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
+  const next = () => setIndex((value) => (value + 1) % items.length);
+  return <section className={`reviews-section${isStudent ? " student-reviews" : ""}`} aria-labelledby="reviews-title">
+    <div className="reviews-heading"><div><span>{isStudent ? "Демо-тексты · заменить реальными" : "Говорят родители"}</span><h2 id="reviews-title">{isStudent ? "Как школа может звучать глазами учеников" : "Отзывы о школе"}</h2></div><div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
     <div className="reviews-slider" aria-live="polite">
-      <ReviewCard key={reviews[index].name} review={reviews[index]} />
-      <ReviewCard key={reviews[(index + 1) % reviews.length].name} review={reviews[(index + 1) % reviews.length]} secondary />
+      <ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} />
+      <ReviewCard key={items[(safeIndex + 1) % items.length].name || items[(safeIndex + 1) % items.length].title} review={items[(safeIndex + 1) % items.length]} secondary />
     </div>
   </section>;
 }
@@ -205,9 +242,15 @@ export default function App() {
       <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" /><div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
     </section>
 
-    {audience === "student" && <StudentExperience items={content.experience} />}
+    {audience === "student" && <>
+      <StudentExperience items={studentAdvantages} />
+      <StudentGallery items={studentGallery} />
+      <StudentConnect />
+      <StudentProof />
+      <Reviews items={studentReviews} audience="student" />
+    </>}
 
-    <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} /><Reviews /></section>
+    <section className={`hybrid-explore${audience === "student" ? " student-details" : ""}`} id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} />{audience === "parent" && <Reviews />}</section>
 
     <section className="hybrid-contact" id="contacts"><div><span>Знакомство со школой</span><h2>Начните с разговора или экскурсии</h2><p>Уточните условия демонедели, свободные места и подходящий формат обучения.</p></div><div className="contact-actions"><a href="tel:+79122795067">☎ +7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">✉ shkola_fenix@mail.ru</a></div></section>
 
