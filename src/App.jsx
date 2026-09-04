@@ -125,43 +125,57 @@ function SchoolTabs({ content }) {
   </div>;
 }
 
+function StudentIcon({ name }) {
+  return <svg viewBox="0 0 48 48" aria-hidden="true">
+    {name === "group" && <><circle cx="18" cy="17" r="6" /><circle cx="32" cy="19" r="5" /><path d="M7 37c1-7 5-11 11-11s10 4 11 11M27 29c2-2 4-3 7-3 5 0 8 4 9 10" /></>}
+    {name === "dialog" && <><path d="M8 10h32v23H22l-9 7v-7H8z" /><path d="M15 18h18M15 24h12" /></>}
+    {name === "target" && <><circle cx="23" cy="25" r="15" /><circle cx="23" cy="25" r="8" /><path d="M23 25 39 9M32 9h7v7" /></>}
+    {name === "spark" && <><path d="m24 7 3.5 10.5L38 21l-10.5 3.5L24 35l-3.5-10.5L10 21l10.5-3.5z" /><path d="m38 31 1.5 4.5L44 37l-4.5 1.5L38 43l-1.5-4.5L32 37l4.5-1.5z" /></>}
+  </svg>;
+}
+
 function StudentExperience({ items }) {
   return <section className="student-experience" aria-labelledby="student-experience-title">
-    <div className="student-experience-heading"><span>Твой взгляд тоже важен</span><h2 id="student-experience-title">Как ощущается учёба в «Фениксе»</h2><p>Те же факты о школе — с точки зрения человека, которому предстоит учиться здесь каждый день.</p></div>
-    <div className="student-experience-grid">{items.map(({ icon, title, text }) => <article key={title}><span className="student-advantage-icon" aria-hidden="true">{icon}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+    <div className="student-shell">
+      <div className="student-experience-heading"><span>Твой взгляд тоже важен</span><h2 id="student-experience-title">Как ощущается учёба в «Фениксе»</h2><p>Те же факты о школе — с точки зрения человека, которому предстоит учиться здесь каждый день.</p></div>
+      <div className="student-experience-grid">{items.map(({ icon, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p></article>)}</div>
+    </div>
   </section>;
 }
 
 function StudentGallery({ items }) {
   return <section className="student-gallery" aria-labelledby="student-gallery-title">
-    <div className="student-section-heading"><span>Школьная жизнь</span><h2 id="student-gallery-title">Посмотри, как выглядит школьная жизнь</h2><p>Не только программа и расписание — важно увидеть людей, пространство и обычный день.</p></div>
-    <div className="student-gallery-grid">{items.map(({ src, title, label, position }, index) => <figure key={`${title}-${index}`}>
-      <img src={src} alt="Демонстрационный кадр из текущей фототеки школы" style={{ objectPosition: position }} />
-      <div><span>{label}</span><figcaption>{title}</figcaption></div>
-    </figure>)}</div>
-    <p className="student-placeholder-note">Для демонстрации раздела. В финальной версии здесь будут реальные фото и видео школы.</p>
+    <div className="student-shell">
+      <div className="student-section-heading"><span>Школьная жизнь</span><h2 id="student-gallery-title">Посмотри, как выглядит школьная жизнь</h2><p>Не только программа и расписание — важно увидеть людей, пространство и обычный день.</p></div>
+      <div className="student-gallery-grid">{items.map(({ src, title, label, position }, index) => <figure key={`${title}-${index}`}>
+        <img src={src} alt="Временная демонстрационная фотография учебной сцены" style={{ objectPosition: position }} />
+        <div><span>{label}</span><figcaption>{title}</figcaption></div>
+      </figure>)}</div>
+      <p className="student-placeholder-note">Для демонстрации раздела. В финальной версии здесь будут реальные фото и видео школы.</p>
+    </div>
   </section>;
 }
 
 function StudentConnect() {
   return <section className="student-connect" aria-label="Видео и социальные сети школы">
-    <article className="student-video-card">
-      <img src="./images/school-event.jpg" alt="Ученики на занятии — фон демонстрационного видеоблока" />
-      <div className="student-video-play" aria-hidden="true">▶</div>
-      <div className="student-video-copy"><span>Видео · placeholder</span><h2>Посмотреть школу в движении</h2><p>Здесь можно разместить короткое видео о школьной жизни.</p></div>
-    </article>
-    <aside className="student-socials">
-      <span>За пределами сайта</span><h2>Посмотри, чем школа живёт сейчас</h2><p>На сайте — основная информация, а в соцсетях можно увидеть повседневную жизнь школы, события и фотографии.</p>
-      <div>{studentSocials.map(({ icon, title, text, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span><strong>{title}</strong><small>{text}</small></span><i>↗</i></a>)}</div>
-      <small>Ссылки появятся после подтверждения официальных аккаунтов школы.</small>
-    </aside>
+    <div className="student-shell student-connect-layout">
+      <article className="student-video-card">
+        <img src="./images/student-demo/student-demo-talk.jpg" alt="Временная демонстрационная фотография для видеоблока" />
+        <div className="student-video-play" aria-hidden="true">▶</div>
+        <div className="student-video-copy"><span>Видео · placeholder</span><h2>Посмотреть школу в движении</h2><p>Здесь можно разместить короткое видео о школьной жизни.</p></div>
+      </article>
+      <aside className="student-socials">
+        <span>За пределами сайта</span><h2>Посмотри, чем школа живёт сейчас</h2><p>На сайте — основная информация, а в соцсетях можно увидеть повседневную жизнь школы, события и фотографии.</p>
+        <div>{studentSocials.map(({ icon, title, text, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span><strong>{title}</strong><small>{text}</small></span><i>↗</i></a>)}</div>
+        <small>Ссылки появятся после подтверждения официальных аккаунтов школы.</small>
+      </aside>
+    </div>
   </section>;
 }
 
 function StudentProof() {
   return <section className="student-proof">
-    <div><span>Лучший способ проверить</span><h2>Не верь сайту на слово</h2><p>Посмотри фотографии, загляни в соцсети и приходи на пробные дни. Лучше провести здесь один обычный учебный день, чем читать десять страниц описания.</p></div>
-    <a className="button button-dark" href="#demo-week">Попробовать школу →</a>
+    <div className="student-shell student-proof-layout"><div><span>Лучший способ проверить</span><h2>Не верь сайту<br />на слово</h2><p>Посмотри фотографии, загляни в соцсети и приходи на пробные дни. Лучше провести здесь один обычный учебный день, чем читать десять страниц описания.</p></div><div className="student-proof-action"><b aria-hidden="true">→</b><a className="button button-dark" href="#demo-week">Попробовать школу</a></div></div>
   </section>;
 }
 
@@ -239,7 +253,7 @@ export default function App() {
         <div className="hero-meta"><span>⌖ Большакова, 109</span><span>До 14 учеников в классе</span><span>3 минуты до Зелёной рощи</span></div>
         </div>
       </div>
-      <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" /><div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
+      <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" />{audience === "student" && <div className="student-hero-badge"><span>✦</span> Твой выбор тоже важен</div>}<div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
     </section>
 
     {audience === "student" && <>

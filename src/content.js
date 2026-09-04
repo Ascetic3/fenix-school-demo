@@ -85,34 +85,34 @@ export const reviews = [
 
 export const studentAdvantages = [
   {
-    icon: "◎",
+    icon: "group",
     title: "Небольшие классы",
     text: "Тебя здесь знают по имени, а не как человека на предпоследней парте.",
   },
   {
-    icon: "◌",
+    icon: "dialog",
     title: "Можно нормально разговаривать с преподавателями",
     text: "Не нужно делать вид, что всё понял. Можно спросить, обсудить и разобраться.",
   },
   {
-    icon: "⌁",
+    icon: "target",
     title: "Сильная учёба и экзамены",
     text: "Подготовка к ОГЭ и ЕГЭ без ощущения, что вся школьная жизнь сводится только к тестам.",
   },
   {
-    icon: "✦",
+    icon: "spark",
     title: "Есть жизнь кроме уроков",
     text: "Проекты, события и школьная среда, в которой можно участвовать, а не просто присутствовать.",
   },
 ];
 
-// PLACEHOLDER: repeated existing school photo keeps the demo honest until the school provides a real gallery.
+// PLACEHOLDER: Pexels demo assets are documented in public/images/student-demo/README.md.
 export const studentGallery = [
-  { src: "./images/school-event.jpg", title: "Обычный урок", label: "Фото школы", position: "50% 48%" },
-  { src: "./images/school-event.jpg", title: "Общение и вопросы", label: "Место для фото", position: "22% 48%" },
-  { src: "./images/school-event.jpg", title: "Проекты и идеи", label: "Место для фото", position: "73% 48%" },
-  { src: "./images/school-event.jpg", title: "Подготовка к экзаменам", label: "Место для фото", position: "42% 50%" },
-  { src: "./images/school-event.jpg", title: "События и школьная среда", label: "Место для фото", position: "84% 48%" },
+  { src: "./images/student-demo/student-demo-project.jpg", title: "Проекты и идеи", label: "Демо-фото · Pexels", position: "50% 45%" },
+  { src: "./images/student-demo/student-demo-discussion.jpg", title: "Обсуждение в классе", label: "Демо-фото · Pexels", position: "48% 48%" },
+  { src: "./images/student-demo/student-demo-talk.jpg", title: "Время поговорить", label: "Демо-фото · Pexels", position: "50% 48%" },
+  { src: "./images/student-demo/student-demo-class.jpg", title: "Учебная работа", label: "Демо-фото · Pexels", position: "50% 50%" },
+  { src: "./images/student-demo/student-demo-study.jpg", title: "Работа вместе", label: "Демо-фото · Pexels", position: "50% 48%" },
 ];
 
 // PLACEHOLDER: replace every item with a verified review from a real student before production use.
