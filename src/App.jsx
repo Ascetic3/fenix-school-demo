@@ -1,7 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  admissionSteps, advantages, demoWeekFields, documents, navigation, prices, programs, reviews,
+  admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
 } from "./content";
+
+const audienceIds = ["parent", "student"];
+
+function readAudienceFromQuery() {
+  const value = new URLSearchParams(window.location.search).get("audience");
+  return audienceIds.includes(value) ? value : null;
+}
+
+function readStoredAudience() {
+  try {
+    const value = window.localStorage.getItem("fenix-audience");
+    return audienceIds.includes(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function AudienceSwitch({ audience, onChange, compact = false }) {
+  return <div className={`audience-switch${compact ? " compact" : ""}`} aria-label="Выбор аудитории">
+    {audienceIds.map((id) => <button key={id} type="button" aria-pressed={audience === id} className={audience === id ? "active" : ""} onClick={() => onChange(id)}>{compact ? audienceContent[id].switchLabel : audienceContent[id].choiceLabel}</button>)}
+  </div>;
+}
 
 function Documents({ compact = false }) {
   const [open, setOpen] = useState(false);
@@ -40,10 +62,10 @@ function Programs() {
   </section>;
 }
 
-function Why() {
+function Why({ content }) {
   return <section className="tab-panel why-panel"><div className="why-compact">
-    <div className="why-compact-heading"><span>Почему Феникс</span><h2>Сильное образование без лишнего давления</h2><p>Академический результат, внимание к ребёнку и движение работают вместе.</p></div>
-    <div className="why-list">{advantages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+    <div className="why-compact-heading"><span>Почему Феникс</span><h2>{content.whyTitle}</h2><p>{content.whyDescription}</p></div>
+    <div className="why-list">{content.advantages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
     <aside className="founder-mini"><img src="./images/founder.jpg" alt="Наталья Сергеевна Маковецкая" /><div><span>Основатель школы</span><h3>Наталья Сергеевна Маковецкая</h3><p>Педагог с 25-летним стажем, тренер по олимпиадной математике и ТРИЗ-играм.</p></div></aside>
   </div></section>;
 }
@@ -66,15 +88,22 @@ function Admission() {
   </section>;
 }
 
-function SchoolTabs() {
+function SchoolTabs({ content }) {
   const [active, setActive] = useState("programs");
-  const panels = { programs: <Programs />, why: <Why />, pricing: <Pricing />, admission: <Admission /> };
+  const panels = { programs: <Programs />, why: <Why content={content} />, pricing: <Pricing />, admission: <Admission /> };
   return <div className="school-tabs">
     <div className="school-tabs-list" role="tablist" aria-label="Информация о школе">{tabs.map(([id, label]) => <button key={id} role="tab" aria-selected={active === id} className={active === id ? "active" : ""} onClick={() => setActive(id)}>{label}</button>)}</div>
     <div className="school-tabs-stage">{panels[active]}</div>
-    <section className="demo-ribbon" id="demo-week"><div className="demo-ribbon-icon">✦</div><div><span>Попробовать школу</span><h2>Пять дней в «Фениксе» до принятия решения</h2><p>Демонеделя проходит во время учебного года. Остальные условия школа уточнит при записи.</p></div><a href="tel:+79122795067">Уточнить условия →</a></section>
-    <div className="trust-row"><span>◉ До 14 учеников в классе</span><span>♡ Бережное сопровождение</span><span>◷ Открытая стоимость</span></div>
+    <section className="demo-ribbon" id="demo-week"><div className="demo-ribbon-icon">✦</div><div><span>Попробовать школу</span><h2>{content.demoTitle}</h2><p>{content.demoDescription}</p></div><a href="tel:+79122795067">{content.demoCta}</a></section>
+    <div className="trust-row">{content.trust.map((item) => <span key={item}>{item}</span>)}</div>
   </div>;
+}
+
+function StudentExperience({ items }) {
+  return <section className="student-experience" aria-labelledby="student-experience-title">
+    <div className="student-experience-heading"><span>Твой взгляд тоже важен</span><h2 id="student-experience-title">Как ощущается учёба в «Фениксе»</h2><p>Те же факты о школе — с точки зрения человека, которому предстоит учиться здесь каждый день.</p></div>
+    <div className="student-experience-grid">{items.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+  </section>;
 }
 
 function ReviewCard({ review, secondary = false }) {
@@ -101,23 +130,59 @@ function Reviews() {
 }
 
 export default function App() {
-  return <main>
+  const [audience, setAudience] = useState(() => readAudienceFromQuery() || readStoredAudience() || "parent");
+  const [hasChosenAudience, setHasChosenAudience] = useState(() => Boolean(readAudienceFromQuery() || readStoredAudience()));
+  const content = audienceContent[audience];
+
+  const changeAudience = (nextAudience) => {
+    setAudience(nextAudience);
+    setHasChosenAudience(true);
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set("audience", nextAudience);
+    window.history.replaceState({}, "", nextUrl);
+  };
+
+  useEffect(() => {
+    if (!hasChosenAudience) return;
+    try {
+      window.localStorage.setItem("fenix-audience", audience);
+    } catch {
+      // The selector remains usable when storage is unavailable.
+    }
+  }, [audience, hasChosenAudience]);
+
+  useEffect(() => {
+    const syncFromHistory = () => {
+      const nextAudience = readAudienceFromQuery() || readStoredAudience();
+      setAudience(nextAudience || "parent");
+      setHasChosenAudience(Boolean(nextAudience));
+    };
+    window.addEventListener("popstate", syncFromHistory);
+    return () => window.removeEventListener("popstate", syncFromHistory);
+  }, []);
+
+  return <main className={`audience-${audience}`}>
     <header className="site-header">
       <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></a>
       <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav>
-      <div className="header-actions"><Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
+      <div className="header-actions"><AudienceSwitch audience={audience} onChange={changeAudience} compact /><Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
       <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Documents /><a href="tel:+79122795067">Позвонить в школу</a></div></details>
     </header>
 
     <section className="hybrid-hero" id="top">
-      <div className="hybrid-hero-copy"><div className="eyebrow">✦ Частная школа в Екатеринбурге</div><h1>Сильная школа.<br /><em>Спокойное детство.</em></h1><p>С 1 по 11 класс и подготовка к школе. Небольшие классы, сильная программа и образовательная среда, в которой ребёнка видят и слышат.</p>
-        <div className="hero-actions"><a className="button button-primary" href="#demo-week">Попробовать пять дней ↓</a><a className="button button-ghost" href="#explore">Посмотреть школу</a></div>
+      <div className="hybrid-hero-copy">
+        {!hasChosenAudience && <div className="audience-welcome"><span>Кто выбирает школу?</span><p>Покажем самое важное с вашей точки зрения.</p><AudienceSwitch audience={audience} onChange={changeAudience} /></div>}
+        <div className="audience-transition" key={audience}><div className="eyebrow">✦ Частная школа в Екатеринбурге</div><h1>{content.hero.title}<br /><em>{content.hero.accent}</em></h1><p>{content.hero.description}</p>
+        <div className="hero-actions"><a className="button button-primary" href="#demo-week">{content.hero.primaryCta}</a><a className="button button-ghost" href="#explore">{content.hero.secondaryCta}</a></div>
         <div className="hero-meta"><span>⌖ Большакова, 109</span><span>До 14 учеников в классе</span><span>3 минуты до Зелёной рощи</span></div>
+        </div>
       </div>
       <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" /><div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
     </section>
 
-    <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs /><Reviews /></section>
+    {audience === "student" && <StudentExperience items={content.experience} />}
+
+    <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} /><Reviews /></section>
 
     <section className="hybrid-contact" id="contacts"><div><span>Знакомство со школой</span><h2>Начните с разговора или экскурсии</h2><p>Уточните условия демонедели, свободные места и подходящий формат обучения.</p></div><div className="contact-actions"><a href="tel:+79122795067">☎ +7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">✉ shkola_fenix@mail.ru</a></div></section>
 
