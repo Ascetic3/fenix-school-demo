@@ -388,8 +388,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-accent .accent-main { stroke-width: 3.2; }
 .student-accent .accent-barb { stroke-width: 2.1; opacity: .72; }
 .student-accent .accent-spark { fill: currentColor; stroke: none; }
-.student-accent-hub { top: -2rem; left: clamp(15rem, 28vw, 34rem); width: min(64vw, 900px); height: 150px; opacity: .42; transform: rotate(-1deg); }
-.student-accent-review { top: -.9rem; left: max(4vw, calc((100% - 1500px) / 2)); width: min(32vw, 480px); height: 90px; opacity: .36; transform: rotate(-1deg); }
 .student-accent-cta { right: clamp(14rem, 22vw, 22rem); bottom: 2.5rem; width: min(39vw, 600px); height: 130px; color: var(--apricot); opacity: .42; }
 .audience-student .hybrid-hero { grid-template-columns: minmax(0, 550px) minmax(500px, 900px); justify-content: center; background: radial-gradient(circle at 12% 18%, rgba(255,178,15,.22), transparent 28%), var(--cream); }
 .audience-student .hybrid-hero-visual { min-height: 650px; border-radius: 1.6rem 42% 1.6rem 1.6rem; }
@@ -722,8 +720,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card.secondary { display: none; }
   .review-card { min-height: 0; }
   .student-experience-heading { grid-template-columns: 1fr; gap: .8rem; }
-  .student-accent-hub { top: -1rem; left: auto; right: -1rem; width: min(66vw, 520px); height: 110px; opacity: .34; }
-  .student-accent-review { top: -.6rem; width: min(46vw, 360px); height: 72px; opacity: .3; }
   .student-accent-cta { right: 1rem; bottom: 4.8rem; width: min(48vw, 310px); height: 100px; opacity: .34; }
   .student-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .student-advantage-card:first-child { grid-column: 1 / -1; min-height: 220px; }
@@ -793,8 +789,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card { padding: 1.25rem; }
   .review-card h3 { max-width: 88%; }
   .student-experience { padding-inline: 5vw; }
-  .student-accent-review { display: none; }
-  .student-accent-hub { top: -.35rem; right: -2.2rem; width: 260px; height: 90px; opacity: .3; }
   .student-accent-cta { right: -1rem; bottom: 4.8rem; width: 190px; height: 72px; opacity: .3; }
   .student-experience-grid { grid-template-columns: 1fr; }
   .student-advantage-card, .student-advantage-card:first-child { grid-column: auto; min-height: 195px; }

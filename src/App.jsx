@@ -137,15 +137,6 @@ function StudentIcon({ name }) {
 
 function StudentAccent({ variant }) {
   return <span className={`student-accent student-accent-${variant}`} aria-hidden="true">
-    {variant === "hub" && <svg viewBox="0 0 720 150" focusable="false">
-      <path className="accent-main" d="M16 123C145 31 316 126 493 68c78-25 139-37 211-23" />
-      <path className="accent-barb" d="M505 64c43-29 88-36 135-29M526 75c39 3 79-5 119-26M552 88c33 4 63-3 93-19" />
-      <path className="accent-spark" d="m672 25 4 9 10 3-9 4-3 10-4-9-10-3 9-4z" />
-    </svg>}
-    {variant === "review" && <svg viewBox="0 0 430 90" focusable="false">
-      <path className="accent-main" d="M8 63c86-37 177 16 269-12 55-17 98-22 145-14" />
-      <path className="accent-barb" d="M288 48c27-19 57-25 88-22M304 58c26 2 52-4 78-18" />
-    </svg>}
     {variant === "cta" && <svg viewBox="0 0 430 130" focusable="false">
       <path className="accent-main" d="M8 104c76 5 139-52 220-43 72 8 108 46 194 15" />
       <path className="accent-barb" d="M339 74c30-18 55-21 78-16M354 86c23 1 43-4 63-14M372 96c17 0 31-4 45-11" />
@@ -278,7 +269,7 @@ function StudentHub() {
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><StudentAccent variant="hub" /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
@@ -303,7 +294,7 @@ function Reviews({ items = reviews, audience = "parent" }) {
   const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
   const next = () => setIndex((value) => (value + 1) % items.length);
   const controls = <div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div>;
-  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="reviews-title"><StudentAccent variant="review" />
+  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="reviews-title">
     <div className="student-reviews-intro"><span>Демо-тексты · заменить реальными</span><h2 id="reviews-title">Как школа звучит глазами учеников</h2><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
     <div className="student-review-stage"><div className="reviews-slider" aria-live="polite"><ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} /></div>{controls}</div>
   </section>;
