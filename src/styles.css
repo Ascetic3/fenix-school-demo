@@ -382,6 +382,17 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 
 .hybrid-explore { padding: clamp(4.5rem, 8vw, 8rem) 4vw; background: var(--paper); }
 .student-shell { width: min(100%, 1500px); margin-inline: auto; }
+.student-accent { position: absolute; z-index: 0; display: block; color: var(--wine); pointer-events: none; }
+.student-accent svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.student-accent .accent-line, .student-accent .accent-soft { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.student-accent .accent-line { stroke-width: 2.2; }
+.student-accent .accent-soft { stroke-width: 1.4; opacity: .55; }
+.student-accent .accent-fill { fill: currentColor; opacity: .08; }
+.student-accent .accent-spark { fill: currentColor; stroke: none; }
+.student-accent-flight { top: -2rem; left: max(4vw, calc((100% - 1500px) / 2)); width: min(54vw, 760px); height: 120px; opacity: .26; transform: rotate(-1deg); }
+.student-accent-wing { top: -3.5rem; right: -2rem; width: min(48vw, 760px); height: 240px; color: var(--ink); opacity: .12; transform: rotate(-3deg); }
+.student-accent-divider { top: -1.5rem; left: max(4vw, calc((100% - 1500px) / 2)); width: min(38vw, 560px); height: 90px; opacity: .22; transform: rotate(-1deg); }
+.student-accent-cta { top: 1rem; right: 2.5rem; width: min(29vw, 430px); height: 160px; color: var(--apricot); opacity: .2; }
 .audience-student .hybrid-hero { grid-template-columns: minmax(0, 550px) minmax(500px, 900px); justify-content: center; background: radial-gradient(circle at 12% 18%, rgba(255,178,15,.22), transparent 28%), var(--cream); }
 .audience-student .hybrid-hero-visual { min-height: 650px; border-radius: 1.6rem 42% 1.6rem 1.6rem; }
 .audience-student .hybrid-hero-visual > img { transform: scale(1.04); }
@@ -389,8 +400,9 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hero-badge { position: absolute; z-index: 3; top: 1.2rem; left: 1.2rem; padding: .65rem .9rem; border: 1px solid rgba(255,255,255,.72); border-radius: 999px; color: var(--ink); background: rgba(255,249,241,.92); backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; font-weight: 900; transform: rotate(-2deg); }
 .student-hero-badge span { color: var(--wine); }
 
-.student-experience { position: relative; padding: clamp(3.5rem, 5vw, 5.5rem) 4vw; background: #fff3e3; animation: audience-in .35s ease both; }
+.student-experience { position: relative; overflow: hidden; padding: clamp(3.5rem, 5vw, 5.5rem) 4vw; background: #fff3e3; animation: audience-in .35s ease both; }
 .student-experience::before { content: "01"; position: absolute; top: .5rem; right: 4vw; color: rgba(217,54,32,.08); font: italic clamp(6rem, 11vw, 11rem)/1 Georgia, serif; pointer-events: none; }
+.student-experience > .student-shell, .student-hub > .student-shell, .student-next > .student-shell { position: relative; z-index: 1; }
 .student-experience-heading { position: relative; z-index: 1; display: grid; grid-template-columns: .55fr 1fr .75fr; gap: 2rem; align-items: end; margin-bottom: 2rem; }
 .student-experience-heading > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-experience-heading h2 { margin: 0; font: 500 clamp(2.7rem, 4.5vw, 4.8rem)/.94 Georgia, serif; letter-spacing: -.055em; }
@@ -412,7 +424,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .card-3 p { color: rgba(255,255,255,.7); }
 .student-advantage-photo { width: 100%; height: 88px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
 
-.student-hub { padding: clamp(4.5rem, 7vw, 7rem) 4vw; background: var(--paper); }
+.student-hub { position: relative; overflow: hidden; padding: clamp(4.5rem, 7vw, 7rem) 4vw; background: var(--paper); }
 .student-hub-heading { display: grid; grid-template-columns: .55fr 1.75fr; gap: 2rem; align-items: end; margin-bottom: 2rem; }
 .student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-hub-heading h2 { max-width: 1000px; margin: 0; font: 500 clamp(3.2rem, 5.5vw, 6.2rem)/.92 Georgia, serif; letter-spacing: -.06em; }
@@ -492,8 +504,9 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-media-socials small { color: var(--muted); font-size: .62rem; font-weight: 400; }
 .student-media-socials i { color: var(--wine); font-style: normal; }
 
-.student-next { padding: clamp(4rem, 6vw, 6rem) 4vw; background: #fff3e3; }
-.student-next-cta { padding: clamp(2rem, 4vw, 4rem); border-radius: 1.5rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; color: white; background: var(--wine); }
+.student-next { position: relative; overflow: hidden; padding: clamp(4rem, 6vw, 6rem) 4vw; background: #fff3e3; }
+.student-next-cta { position: relative; overflow: hidden; isolation: isolate; padding: clamp(2rem, 4vw, 4rem); border-radius: 1.5rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; color: white; background: var(--wine); }
+.student-next-cta > div, .student-next-cta > a { position: relative; z-index: 1; }
 .student-next-cta span { color: var(--apricot); }
 .student-next-cta h2 { max-width: 1050px; margin: .7rem 0 1rem; font: 500 clamp(3rem, 5vw, 5.8rem)/.9 Georgia, serif; letter-spacing: -.06em; }
 .student-next-cta p { max-width: 65ch; margin: 0; color: rgba(255,255,255,.72); }
@@ -609,8 +622,9 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .review-author div { display: grid; }
 .review-author strong { font-size: .95rem; }
 .review-author small { margin-top: .1rem; color: var(--wine); font-size: .8rem; }
-.student-reviews { margin-top: 0; padding: clamp(3rem, 4vw, 4.5rem) 4vw clamp(3.5rem, 5vw, 5rem); overflow: hidden; color: var(--ink); background: var(--cream); }
+.student-reviews { position: relative; margin-top: 0; padding: clamp(3rem, 4vw, 4.5rem) 4vw clamp(3.5rem, 5vw, 5rem); overflow: hidden; color: var(--ink); background: var(--cream); }
 .student-reviews-intro, .student-review-stage { width: min(100%, 1500px); margin-inline: auto; }
+.student-reviews-intro, .student-review-stage { position: relative; z-index: 1; }
 .student-reviews-intro { margin-bottom: clamp(1.4rem, 2vw, 2rem); }
 .student-reviews-intro > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-reviews-intro h2 { max-width: 900px; margin: .7rem 0 .8rem; font: 500 clamp(2.8rem, 4.4vw, 4.8rem)/.94 Georgia, serif; letter-spacing: -.05em; }
@@ -710,6 +724,10 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card.secondary { display: none; }
   .review-card { min-height: 0; }
   .student-experience-heading { grid-template-columns: 1fr; gap: .8rem; }
+  .student-accent-flight { top: -1.5rem; width: min(72vw, 560px); height: 96px; opacity: .2; }
+  .student-accent-wing { top: -2rem; right: -1rem; width: min(70vw, 520px); height: 180px; opacity: .1; }
+  .student-accent-divider { top: -1rem; width: min(54vw, 420px); height: 72px; opacity: .17; }
+  .student-accent-cta { top: .5rem; right: 1rem; width: min(40vw, 300px); height: 120px; opacity: .16; }
   .student-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .student-advantage-card:first-child { grid-column: 1 / -1; min-height: 220px; }
   .student-advantage-card { min-height: 235px; }
@@ -778,6 +796,9 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card { padding: 1.25rem; }
   .review-card h3 { max-width: 88%; }
   .student-experience { padding-inline: 5vw; }
+  .student-accent-flight, .student-accent-divider { display: none; }
+  .student-accent-wing { top: -.5rem; right: -3rem; width: 260px; height: 100px; opacity: .08; }
+  .student-accent-cta { top: auto; right: -1rem; bottom: .3rem; width: 190px; height: 88px; opacity: .13; }
   .student-experience-grid { grid-template-columns: 1fr; }
   .student-advantage-card, .student-advantage-card:first-child { grid-column: auto; min-height: 195px; }
   .student-advantage-photo { height: 80px; }

@@ -135,8 +135,35 @@ function StudentIcon({ name }) {
   </svg>;
 }
 
+function StudentAccent({ variant }) {
+  return <span className={`student-accent student-accent-${variant}`} aria-hidden="true">
+    {variant === "flight" && <svg viewBox="0 0 760 120" focusable="false">
+      <path className="accent-line" d="M12 91C151 16 331 109 506 55c77-24 139-39 231-29" />
+      <path className="accent-soft" d="M557 49c36-24 72-30 111-26M575 61c34 2 69-4 105-20" />
+      <path className="accent-spark" d="m705 15 5 10 11 3-10 5-3 11-5-10-11-3 10-5z" />
+    </svg>}
+    {variant === "wing" && <svg viewBox="0 0 620 240" focusable="false">
+      <path className="accent-line" d="M72 216C177 154 284 82 548 20c-88 55-175 109-260 174" />
+      <path className="accent-soft" d="M151 179c73-6 134-28 205-69M208 145c71-10 137-38 202-72M272 108c55-10 109-31 167-61M334 77c42-8 80-24 125-43" />
+      <path className="accent-fill" d="M120 197c127-24 236-75 375-151-75 67-150 121-228 171z" />
+      <path className="accent-spark" d="m536 54 5 11 12 4-11 5-4 12-5-11-12-4 11-5zM568 93l3 7 8 3-7 3-3 8-3-7-8-3 7-3z" />
+    </svg>}
+    {variant === "divider" && <svg viewBox="0 0 560 90" focusable="false">
+      <path className="accent-line" d="M9 52c111-17 210 11 322-5 63-9 126-28 211-18" />
+      <path className="accent-soft" d="M51 66c83-9 145 8 223-2M392 48l25-21M414 51l16-11" />
+      <path className="accent-spark" d="m472 13 4 8 9 3-8 4-3 9-4-8-9-3 8-4z" />
+    </svg>}
+    {variant === "cta" && <svg viewBox="0 0 430 160" focusable="false">
+      <path className="accent-line" d="M9 133c85 3 139-56 223-54 70 2 102 39 177 17" />
+      <path className="accent-soft" d="M373 80l36 16-27 28M43 122c19-18 36-27 57-33" />
+      <path className="accent-spark" d="m289 52 5 11 12 4-11 5-4 12-5-11-12-4 11-5z" />
+    </svg>}
+  </span>;
+}
+
 function StudentExperience({ items }) {
   return <section className="student-experience" aria-labelledby="student-experience-title">
+    <StudentAccent variant="flight" />
     <div className="student-shell">
       <div className="student-experience-heading"><span>Коротко о главном</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
       <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
@@ -259,11 +286,11 @@ function StudentHub() {
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><StudentAccent variant="wing" /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
-  return <section className="student-next" id="demo-week"><div className="student-shell"><div className="student-next-cta"><div><span>Попробовать школу</span><h2>Лучше один день здесь,<br />чем десять страниц описания</h2><p>{content.demoDescription}</p></div><a className="button" href="tel:+79122795067">Попробовать школу 5 дней</a></div><div className="student-practical"><article><span>Стоимость</span><div>{prices.map(([title, price]) => <p key={title}><b>{title}</b><strong>{price}</strong></p>)}</div><small>Вступительный взнос при поступлении — 75 000 ₽.</small></article><article><span>Как поступить</span><ol>{admissionSteps.map(([, title]) => <li key={title}>{title}</li>)}</ol><a href="tel:+79122795067">Уточнить условия →</a></article></div></div></section>;
+  return <section className="student-next" id="demo-week"><div className="student-shell"><div className="student-next-cta"><div><span>Попробовать школу</span><h2>Лучше один день здесь,<br />чем десять страниц описания</h2><p>{content.demoDescription}</p></div><a className="button" href="tel:+79122795067">Попробовать школу 5 дней</a><StudentAccent variant="cta" /></div><div className="student-practical"><article><span>Стоимость</span><div>{prices.map(([title, price]) => <p key={title}><b>{title}</b><strong>{price}</strong></p>)}</div><small>Вступительный взнос при поступлении — 75 000 ₽.</small></article><article><span>Как поступить</span><ol>{admissionSteps.map(([, title]) => <li key={title}>{title}</li>)}</ol><a href="tel:+79122795067">Уточнить условия →</a></article></div></div></section>;
 }
 
 function ReviewCard({ review, secondary = false }) {
@@ -284,7 +311,7 @@ function Reviews({ items = reviews, audience = "parent" }) {
   const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
   const next = () => setIndex((value) => (value + 1) % items.length);
   const controls = <div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div>;
-  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="reviews-title">
+  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="reviews-title"><StudentAccent variant="divider" />
     <div className="student-reviews-intro"><span>Демо-тексты · заменить реальными</span><h2 id="reviews-title">Как школа звучит глазами учеников</h2><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
     <div className="student-review-stage"><div className="reviews-slider" aria-live="polite"><ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} /></div>{controls}</div>
   </section>;
