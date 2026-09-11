@@ -347,15 +347,29 @@ export default function App() {
       <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Documents /><a href="tel:+79122795067">Позвонить в школу</a></div></details>
     </header>
 
-    <section className="hybrid-hero" id="top">
+    <section className={`hybrid-hero${audience === "student" ? " student-hero-dynamic" : ""}`} id="top">
       {!hasChosenAudience && <AudienceWelcome onChoose={changeAudience} />}
+      {audience === "student" ? <>
+        <div className="student-hero-copy">
+          <div className="student-hero-eyebrow"><span>+</span> Твой выбор тоже важен</div>
+          <h1><span>Школа,</span><span>которую</span><em>можно</em><em>выбрать</em><em>самому</em></h1>
+          <p>{content.hero.description}</p>
+          <a className="button student-hero-cta" href="#demo-week">Попробовать 5 дней <span aria-hidden="true">→</span></a>
+        </div>
+        <div className="student-hero-visual">
+          <div className="student-hero-photo"><img src="./images/student-demo/student-hero-seniors.jpg" alt="Старшеклассники обсуждают учебное задание" /></div>
+          <img className="student-hero-band student-hero-band-main" src="./images/student-demo/student-hero-band.png" alt="" aria-hidden="true" />
+          <img className="student-hero-band student-hero-band-edge" src="./images/student-demo/student-hero-band.png" alt="" aria-hidden="true" />
+        </div>
+      </> : <>
       <div className="hybrid-hero-copy">
         <div className="audience-transition" key={audience}><div className="eyebrow">✦ Частная школа в Екатеринбурге</div><h1>{content.hero.title}<br /><em>{content.hero.accent}</em></h1><p>{content.hero.description}</p>
         <div className="hero-actions"><a className="button button-primary" href="#demo-week">{content.hero.primaryCta}</a><a className="button button-ghost" href="#explore">{content.hero.secondaryCta}</a></div>
         <div className="hero-meta"><span>⌖ Большакова, 109</span><span>До 14 учеников в классе</span><span>3 минуты до Зелёной рощи</span></div>
         </div>
       </div>
-      <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" />{audience === "student" && <div className="student-hero-badge"><span>✦</span> Твой выбор тоже важен</div>}<div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
+      <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" /><div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
+      </>}
     </section>
 
     {audience === "student" && <>
