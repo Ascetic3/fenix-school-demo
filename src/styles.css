@@ -429,6 +429,12 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-advantage-photo { width: 100%; height: 88px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
 
 .student-hub { position: relative; overflow: hidden; padding: clamp(4.5rem, 7vw, 7rem) 4vw; background: var(--paper); }
+.student-hub-accents { position: absolute; z-index: 2; inset: 0; overflow: hidden; pointer-events: none; }
+.student-hub-accent { position: absolute; display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; will-change: transform; }
+.student-hub-accent-line { top: 31%; left: -.9rem; width: 82px; height: 42px; color: var(--wine); opacity: .34; transform: translate3d(var(--hub-accent-1-x, 0px), var(--hub-accent-1-y, 0px), 0); }
+.student-hub-accent-sparks { top: 13%; right: 1rem; width: 42px; height: 48px; color: var(--apricot); opacity: .44; fill: currentColor; stroke: none; transform: translate3d(var(--hub-accent-2-x, 0px), var(--hub-accent-2-y, 0px), 0); }
+.student-hub-accent-strokes { right: -.5rem; bottom: 15%; width: 66px; height: 34px; color: var(--coral); opacity: .3; transform: translate3d(var(--hub-accent-3-x, 0px), var(--hub-accent-3-y, 0px), 0); }
+.student-hub.is-cursor-resetting .student-hub-accent { transition: transform .34s ease-out; }
 .student-hub-heading { display: grid; grid-template-columns: .55fr 1.75fr; gap: 2rem; align-items: end; margin-bottom: 2rem; }
 .student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-hub-heading h2 { max-width: 1000px; margin: 0; font: 500 clamp(3.2rem, 5.5vw, 6.2rem)/.92 Georgia, serif; letter-spacing: -.06em; }
@@ -439,10 +445,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub-tabs button.active { color: var(--wine); }
 .student-hub-stage { position: relative; min-height: 620px; overflow: hidden; padding: clamp(1.5rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
 .student-hub-stage.direction-backward { animation-name: student-panel-backward-in; }
-.student-hub-stage > .student-hub-panel { position: relative; z-index: 1; }
-.student-hub-watermark { position: absolute; z-index: 0; right: -10%; bottom: -12%; width: min(62%, 820px); height: 94%; color: #766d66; opacity: .065; pointer-events: none; transform: translate3d(0, var(--student-hub-parallax, 0px), 0); will-change: transform; }
-.student-hub-watermark path:first-child { stroke-width: 12; }
-.student-hub-watermark path:not(:first-child) { stroke-width: 7; }
 @keyframes student-panel-forward-in { from { opacity: .4; transform: translateX(10px); } to { opacity: 1; transform: none; } }
 @keyframes student-panel-backward-in { from { opacity: .4; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
 .student-panel-heading { display: grid; grid-template-columns: .45fr 1fr .8fr; gap: 1.5rem; align-items: end; margin-bottom: 1.7rem; }
@@ -747,7 +749,10 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-hub-tabs button { flex: 0 0 auto; }
   .student-hub-tabs button.active::after { background: var(--wine); }
   .student-hub-stage { min-height: 0; }
-  .student-hub-watermark { display: none; }
+  .student-hub-accent { transform: none; will-change: auto; }
+  .student-hub-accent-line { top: 29%; left: -.8rem; width: 58px; opacity: .28; }
+  .student-hub-accent-sparks { top: 16%; right: .7rem; width: 28px; height: 34px; opacity: .35; }
+  .student-hub-accent-strokes { display: none; }
   .student-hub-stage, .student-hub-stage.direction-backward { animation: panel-in-mobile .14s ease both; }
   .student-teacher-grid article > img { height: 145px; }
   .student-study-layout, .student-media-layout { grid-template-columns: 1fr; }
@@ -772,7 +777,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
     transform: none !important;
     animation: none !important;
   }
-  .student-hub-watermark { transform: none !important; will-change: auto; }
+  .student-hub-accent { transform: none !important; transition: none !important; will-change: auto; }
 }
 
 @keyframes panel-in-mobile { from { opacity: .35; } to { opacity: 1; } }

@@ -280,6 +280,14 @@ function StudentMedia({ items }) {
 
 const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life", "Школьная жизнь"], ["media", "Фото и видео"]];
 
+function StudentHubAccents() {
+  return <div className="student-hub-accents" aria-hidden="true">
+    <svg className="student-hub-accent student-hub-accent-line" viewBox="0 0 84 42" focusable="false"><path d="M2 31C24 7 49 8 82 17" /><path d="M10 38C27 24 45 20 61 22" /></svg>
+    <svg className="student-hub-accent student-hub-accent-sparks" viewBox="0 0 52 58" focusable="false"><path d="m17 2 3.4 10.6L31 16l-10.6 3.4L17 30l-3.4-10.6L3 16l10.6-3.4z" /><path d="m40 31 2 6 6 2-6 2-2 6-2-6-6-2 6-2z" /></svg>
+    <svg className="student-hub-accent student-hub-accent-strokes" viewBox="0 0 66 34" focusable="false"><path d="M3 24C21 8 39 8 63 14" /><path d="M20 31C33 22 46 20 58 22" /></svg>
+  </div>;
+}
+
 function StudentHub() {
   const [active, setActive] = useState("people");
   const [direction, setDirection] = useState("forward");
@@ -288,40 +296,62 @@ function StudentHub() {
   const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentStudy />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 821px)");
+    const desktopPointer = window.matchMedia("(min-width: 821px) and (hover: hover) and (pointer: fine)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let animationFrame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
 
-    const updateWatermark = () => {
+    const updateAccents = () => {
       animationFrame = 0;
       const section = sectionRef.current;
       if (!section) return;
-      if (!desktop.matches || reducedMotion.matches) {
-        section.style.setProperty("--student-hub-parallax", "0px");
-        return;
-      }
-
-      const bounds = section.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
-      const offset = (progress - 0.5) * 18;
-      section.style.setProperty("--student-hub-parallax", `${offset.toFixed(2)}px`);
+      const canMove = desktopPointer.matches && !reducedMotion.matches;
+      const x = canMove ? pointerX : 0;
+      const y = canMove ? pointerY : 0;
+      section.style.setProperty("--hub-accent-1-x", `${(x * 4).toFixed(2)}px`);
+      section.style.setProperty("--hub-accent-1-y", `${(y * 3).toFixed(2)}px`);
+      section.style.setProperty("--hub-accent-2-x", `${(x * 7).toFixed(2)}px`);
+      section.style.setProperty("--hub-accent-2-y", `${(y * 6).toFixed(2)}px`);
+      section.style.setProperty("--hub-accent-3-x", `${(x * 5).toFixed(2)}px`);
+      section.style.setProperty("--hub-accent-3-y", `${(y * 4).toFixed(2)}px`);
     };
 
     const scheduleUpdate = () => {
-      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateWatermark);
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateAccents);
     };
 
-    updateWatermark();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
-    desktop.addEventListener?.("change", scheduleUpdate);
-    reducedMotion.addEventListener?.("change", scheduleUpdate);
+    const handleMouseMove = (event) => {
+      const section = sectionRef.current;
+      if (!section || !desktopPointer.matches || reducedMotion.matches) return;
+      const bounds = section.getBoundingClientRect();
+      pointerX = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width - 0.5) * 2));
+      pointerY = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height - 0.5) * 2));
+      section.classList.remove("is-cursor-resetting");
+      scheduleUpdate();
+    };
+
+    const resetAccents = () => {
+      const section = sectionRef.current;
+      if (!section) return;
+      pointerX = 0;
+      pointerY = 0;
+      section.classList.add("is-cursor-resetting");
+      scheduleUpdate();
+    };
+
+    const section = sectionRef.current;
+    updateAccents();
+    section?.addEventListener("mousemove", handleMouseMove);
+    section?.addEventListener("mouseleave", resetAccents);
+    desktopPointer.addEventListener?.("change", resetAccents);
+    reducedMotion.addEventListener?.("change", resetAccents);
     return () => {
       window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-      desktop.removeEventListener?.("change", scheduleUpdate);
-      reducedMotion.removeEventListener?.("change", scheduleUpdate);
+      section?.removeEventListener("mousemove", handleMouseMove);
+      section?.removeEventListener("mouseleave", resetAccents);
+      desktopPointer.removeEventListener?.("change", resetAccents);
+      reducedMotion.removeEventListener?.("change", resetAccents);
     };
   }, []);
 
@@ -330,7 +360,7 @@ function StudentHub() {
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section ref={sectionRef} className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}><svg className="student-hub-watermark" viewBox="0 0 760 720" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M708 676C610 591 540 467 510 319C488 210 434 111 332 34" /><path d="M657 615C558 531 439 485 304 472C210 463 124 421 45 353" /><path d="M616 553C515 460 394 401 255 374C169 357 104 314 52 251" /><path d="M578 488C486 383 376 311 248 273C170 250 109 194 72 129" /><path d="M543 421C466 302 378 220 275 164C214 131 167 84 139 34" /><path d="M512 354C455 253 390 180 310 122" /></g></svg>{panels[active]}</div></div></section>;
+  return <section ref={sectionRef} className="student-hub" id="explore" aria-labelledby="student-hub-title"><StudentHubAccents /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
