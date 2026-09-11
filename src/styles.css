@@ -437,8 +437,12 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub-tabs button { position: relative; z-index: 1; min-height: 56px; padding: .9rem clamp(1rem, 2.5vw, 2.3rem); border: 0; color: var(--muted); background: transparent; font: inherit; font-weight: 850; cursor: pointer; white-space: nowrap; transition: color .18s ease; }
 .student-hub-tabs button::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 3px; background: transparent; }
 .student-hub-tabs button.active { color: var(--wine); }
-.student-hub-stage { min-height: 620px; padding: clamp(1.5rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
+.student-hub-stage { position: relative; min-height: 620px; overflow: hidden; padding: clamp(1.5rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
 .student-hub-stage.direction-backward { animation-name: student-panel-backward-in; }
+.student-hub-stage > .student-hub-panel { position: relative; z-index: 1; }
+.student-hub-watermark { position: absolute; z-index: 0; right: -10%; bottom: -12%; width: min(62%, 820px); height: 94%; color: #766d66; opacity: .065; pointer-events: none; transform: translate3d(0, var(--student-hub-parallax, 0px), 0); will-change: transform; }
+.student-hub-watermark path:first-child { stroke-width: 12; }
+.student-hub-watermark path:not(:first-child) { stroke-width: 7; }
 @keyframes student-panel-forward-in { from { opacity: .4; transform: translateX(10px); } to { opacity: 1; transform: none; } }
 @keyframes student-panel-backward-in { from { opacity: .4; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
 .student-panel-heading { display: grid; grid-template-columns: .45fr 1fr .8fr; gap: 1.5rem; align-items: end; margin-bottom: 1.7rem; }
@@ -743,6 +747,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-hub-tabs button { flex: 0 0 auto; }
   .student-hub-tabs button.active::after { background: var(--wine); }
   .student-hub-stage { min-height: 0; }
+  .student-hub-watermark { display: none; }
   .student-hub-stage, .student-hub-stage.direction-backward { animation: panel-in-mobile .14s ease both; }
   .student-teacher-grid article > img { height: 145px; }
   .student-study-layout, .student-media-layout { grid-template-columns: 1fr; }
@@ -767,6 +772,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
     transform: none !important;
     animation: none !important;
   }
+  .student-hub-watermark { transform: none !important; will-change: auto; }
 }
 
 @keyframes panel-in-mobile { from { opacity: .35; } to { opacity: 1; } }

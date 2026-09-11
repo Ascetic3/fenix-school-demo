@@ -283,14 +283,54 @@ const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life"
 function StudentHub() {
   const [active, setActive] = useState("people");
   const [direction, setDirection] = useState("forward");
+  const sectionRef = useRef(null);
   const activeIndex = studentHubTabs.findIndex(([id]) => id === active);
   const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentStudy />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 821px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let animationFrame = 0;
+
+    const updateWatermark = () => {
+      animationFrame = 0;
+      const section = sectionRef.current;
+      if (!section) return;
+      if (!desktop.matches || reducedMotion.matches) {
+        section.style.setProperty("--student-hub-parallax", "0px");
+        return;
+      }
+
+      const bounds = section.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
+      const offset = (progress - 0.5) * 18;
+      section.style.setProperty("--student-hub-parallax", `${offset.toFixed(2)}px`);
+    };
+
+    const scheduleUpdate = () => {
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateWatermark);
+    };
+
+    updateWatermark();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    desktop.addEventListener?.("change", scheduleUpdate);
+    reducedMotion.addEventListener?.("change", scheduleUpdate);
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      desktop.removeEventListener?.("change", scheduleUpdate);
+      reducedMotion.removeEventListener?.("change", scheduleUpdate);
+    };
+  }, []);
+
   const selectTab = (id, nextIndex) => {
     if (id === active) return;
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  return <section ref={sectionRef} className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}><svg className="student-hub-watermark" viewBox="0 0 760 720" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M708 676C610 591 540 467 510 319C488 210 434 111 332 34" /><path d="M657 615C558 531 439 485 304 472C210 463 124 421 45 353" /><path d="M616 553C515 460 394 401 255 374C169 357 104 314 52 251" /><path d="M578 488C486 383 376 311 248 273C170 250 109 194 72 129" /><path d="M543 421C466 302 378 220 275 164C214 131 167 84 139 34" /><path d="M512 354C455 253 390 180 310 122" /></g></svg>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
