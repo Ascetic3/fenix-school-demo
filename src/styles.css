@@ -406,6 +406,14 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-experience-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: .9rem; }
 .student-advantage-card { position: relative; min-width: 0; min-height: 285px; overflow: hidden; padding: clamp(1.25rem, 2vw, 1.8rem); border: 1px solid var(--line); border-radius: 1.2rem; display: flex; flex-direction: column; background: var(--paper); transition: transform .2s ease, box-shadow .2s ease; }
 .student-advantage-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(36,33,36,.09); }
+.student-experience:not(.is-revealed) .student-advantage-card { opacity: 0; transform: translateY(12px); }
+.student-experience.is-revealed .student-advantage-card { animation: student-experience-card-in 600ms ease-out backwards; }
+.student-experience.is-revealed .student-advantage-card:nth-child(2) { animation-delay: 70ms; }
+.student-experience.is-revealed .student-advantage-card:nth-child(3) { animation-delay: 140ms; }
+@keyframes student-experience-card-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
 .student-advantage-card.card-2 { border-color: transparent; background: var(--apricot); }
 .student-advantage-card.card-3 { border-color: transparent; color: white; background: var(--ink); }
 .student-card-number { position: absolute; top: 1.1rem; right: 1.2rem; color: rgba(36,33,36,.24); font: italic .82rem Georgia, serif; }
@@ -724,6 +732,10 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .student-advantage-card:first-child { grid-column: 1 / -1; min-height: 220px; }
   .student-advantage-card { min-height: 235px; }
+  .student-experience:not(.is-revealed) .student-advantage-card { transform: none; }
+  .student-experience.is-revealed .student-advantage-card { animation-name: student-experience-card-in-mobile; animation-duration: 520ms; }
+  .student-experience.is-revealed .student-advantage-card:nth-child(2) { animation-delay: 30ms; }
+  .student-experience.is-revealed .student-advantage-card:nth-child(3) { animation-delay: 60ms; }
   .student-hub { padding-inline: 5vw; }
   .student-hub-heading, .student-panel-heading { grid-template-columns: 1fr; gap: .7rem; }
   .student-hub-tabs { display: flex; }
@@ -742,6 +754,19 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-next-cta .button { width: fit-content; }
   .student-reviews { padding-inline: 5vw; }
   .student-reviews-intro h2 { font-size: clamp(3rem, 9vw, 5rem); }
+}
+
+@keyframes student-experience-card-in-mobile {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-experience .student-advantage-card {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
 }
 
 @keyframes panel-in-mobile { from { opacity: .35; } to { opacity: 1; } }

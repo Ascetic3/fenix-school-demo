@@ -146,7 +146,28 @@ function StudentAccent({ variant }) {
 }
 
 function StudentExperience({ items }) {
-  return <section className="student-experience" aria-labelledby="student-experience-title">
+  const sectionRef = useRef(null);
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      setIsRevealed(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setIsRevealed(true);
+      observer.disconnect();
+    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  return <section ref={sectionRef} className={`student-experience${isRevealed ? " is-revealed" : ""}`} aria-labelledby="student-experience-title">
     <div className="student-shell">
       <div className="student-experience-heading"><span>Коротко о главном</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
       <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
