@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
   studentAdvantages, studentGallery, studentReviews, studentSocials, teachers,
@@ -21,7 +22,7 @@ function readStoredAudience() {
 }
 
 function AudienceSwitch({ audience, onChange, compact = false }) {
-  return <div className={`audience-switch${compact ? " compact" : ""}`} aria-label="Выбор аудитории">
+  return <div className={`audience-switch is-${audience}${compact ? " compact" : ""}`} aria-label="Выбор аудитории">
     {audienceIds.map((id) => <button key={id} type="button" aria-pressed={audience === id} className={audience === id ? "active" : ""} onClick={() => onChange(id)}>{compact ? audienceContent[id].switchLabel : audienceContent[id].choiceLabel}</button>)}
   </div>;
 }
@@ -156,14 +157,90 @@ function StudentStudy() {
 function StudentLife({ items }) {
   const photos = items.slice(0, 3);
   const [selected, setSelected] = useState(null);
+  const [closing, setClosing] = useState(false);
+  const [photoDirection, setPhotoDirection] = useState("forward");
+  const triggerRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const closeTimerRef = useRef(null);
+  const isOpen = selected !== null;
+
+  const finishClose = () => {
+    window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = null;
+    setSelected(null);
+    setClosing(false);
+  };
+
+  const closeLightbox = () => {
+    if (closing) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      finishClose();
+      return;
+    }
+    setClosing(true);
+    closeTimerRef.current = window.setTimeout(finishClose, 210);
+  };
+
+  const openLightbox = (index, trigger) => {
+    triggerRef.current = trigger;
+    setPhotoDirection("forward");
+    setClosing(false);
+    setSelected(index);
+  };
+
+  const move = (step) => {
+    setPhotoDirection(step > 0 ? "forward" : "backward");
+    setSelected((value) => (value + step + photos.length) % photos.length);
+  };
+
   useEffect(() => {
-    if (selected === null) return undefined;
-    const onKeyDown = (event) => event.key === "Escape" && setSelected(null);
+    if (!isOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    const previousPaddingRight = document.body.style.paddingRight;
+    const scrollbarGap = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = "hidden";
+    if (scrollbarGap > 0) document.body.style.paddingRight = `${scrollbarGap}px`;
+
+    const focusFrame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") move(-1);
+      if (event.key === "ArrowRight") move(1);
+      if (event.key !== "Tab") return;
+      const controls = [...document.querySelectorAll(".student-lightbox button")];
+      if (!controls.length) return;
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [selected]);
-  const move = (step) => setSelected((value) => (value + step + photos.length) % photos.length);
-  return <div className="student-hub-panel student-life"><div className="student-panel-heading"><span>Школьная жизнь</span><h3>Как выглядит обычный день</h3><p>Один главный кадр и несколько деталей — без бесконечной фотоленты.</p></div><div className="student-life-grid">{photos.map((photo, index) => <button key={photo.title} className={index === 0 ? "featured" : ""} onClick={() => setSelected(index)}><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /><span>{photo.title}</span></button>)}</div><p className="student-placeholder-note">Демонстрационные фотографии. В финальной версии будут заменены реальными материалами школы.</p>{selected !== null && <div className="student-lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фотографии" onMouseDown={(event) => event.target === event.currentTarget && setSelected(null)}><div className="student-lightbox-dialog"><button className="student-lightbox-close" onClick={() => setSelected(null)}>Закрыть ×</button><button className="student-lightbox-arrow previous" onClick={() => move(-1)} aria-label="Предыдущая фотография">←</button><figure><img src={photos[selected].src} alt={photos[selected].title} style={{ objectPosition: photos[selected].position }} /><figcaption>{photos[selected].title}</figcaption></figure><button className="student-lightbox-arrow next" onClick={() => move(1)} aria-label="Следующая фотография">→</button></div></div>}</div>;
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      document.body.style.paddingRight = previousPaddingRight;
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+      triggerRef.current?.focus();
+    };
+  }, [isOpen]);
+
+  const lightbox = selected !== null && <div className={`student-lightbox${closing ? " is-closing" : ""}`} role="dialog" aria-modal="true" aria-label="Просмотр фотографии" onMouseDown={(event) => event.target === event.currentTarget && closeLightbox()}>
+    <div className="student-lightbox-dialog">
+      <button type="button" ref={closeButtonRef} className="student-lightbox-close" onClick={closeLightbox} aria-label="Закрыть просмотр фотографии">Закрыть ×</button>
+      <button type="button" className="student-lightbox-arrow previous" onClick={() => move(-1)} aria-label="Предыдущая фотография">←</button>
+      <figure key={selected} className={`photo-${photoDirection}`}><img src={photos[selected].src} alt={photos[selected].title} style={{ objectPosition: photos[selected].position }} /><figcaption>{photos[selected].title}</figcaption></figure>
+      <button type="button" className="student-lightbox-arrow next" onClick={() => move(1)} aria-label="Следующая фотография">→</button>
+    </div>
+  </div>;
+
+  return <div className="student-hub-panel student-life"><div className="student-panel-heading"><span>Школьная жизнь</span><h3>Как выглядит обычный день</h3><p>Один главный кадр и несколько деталей — без бесконечной фотоленты.</p></div><div className="student-life-grid">{photos.map((photo, index) => <button type="button" key={photo.title} className={index === 0 ? "featured" : ""} onClick={(event) => openLightbox(index, event.currentTarget)}><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /><span>{photo.title}</span></button>)}</div><p className="student-placeholder-note">Демонстрационные фотографии. В финальной версии будут заменены реальными материалами школы.</p>{lightbox && createPortal(lightbox, document.body)}</div>;
 }
 
 function StudentMedia({ items }) {
@@ -174,8 +251,15 @@ const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life"
 
 function StudentHub() {
   const [active, setActive] = useState("people");
+  const [direction, setDirection] = useState("forward");
+  const activeIndex = studentHubTabs.findIndex(([id]) => id === active);
   const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentStudy />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
-  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри">{studentHubTabs.map(([id, label]) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => setActive(id)}>{label}</button>)}</div><div className="student-hub-stage" id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  const selectTab = (id, nextIndex) => {
+    if (id === active) return;
+    setDirection(nextIndex > activeIndex ? "forward" : "backward");
+    setActive(id);
+  };
+  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
