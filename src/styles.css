@@ -398,6 +398,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hero-badge span { color: var(--wine); }
 
 .student-experience { position: relative; overflow: hidden; padding: clamp(4.5rem, 7vw, 7.2rem) 4vw; background: #fff8ee; animation: audience-in .35s ease both; }
+.student-hub-stage .student-experience-embedded { padding: 0; background: transparent; animation: none; }
+.student-hub-stage .student-experience-embedded::before { top: 0; right: 0; }
 .student-experience::before { content: "01"; position: absolute; z-index: 1; top: clamp(1.4rem, 3vw, 3rem); right: 5vw; color: rgba(217,54,32,.075); font: italic clamp(7rem, 12vw, 12.5rem)/1 Georgia, serif; pointer-events: none; }
 .student-experience > .student-shell, .student-hub > .student-shell, .student-next > .student-shell { position: relative; z-index: 1; }
 .student-experience-heading { position: relative; z-index: 2; display: grid; grid-template-columns: .6fr 1.35fr .85fr; gap: 2rem; align-items: end; margin-bottom: clamp(2rem, 3vw, 3rem); }
@@ -516,17 +518,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-teacher-grid h4 { margin: .55rem 0 .2rem; font: 500 1.35rem Georgia, serif; }
 .student-teacher-grid strong { color: var(--muted); font-size: .82rem; }
 .student-teacher-grid p { margin: .8rem 0 0; color: var(--muted); font-size: .86rem; }
-.student-program-picker { display: flex; flex-wrap: wrap; gap: .55rem; margin-bottom: 1.2rem; }
-.student-program-picker button { min-height: 43px; padding: .65rem 1rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: var(--paper); font: inherit; font-weight: 850; cursor: pointer; }
-.student-program-picker button.active { border-color: var(--wine); color: white; background: var(--wine); }
-.student-study-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); gap: 1rem; }
-.student-program-card { min-height: 300px; padding: clamp(1.5rem, 3vw, 2.7rem); border-radius: 1.1rem; color: white; background: var(--wine); }
-.student-program-card > span { color: var(--apricot); text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; font-weight: 900; }
-.student-program-card h4 { margin: 1rem 0 .8rem; font: 500 clamp(2.2rem, 3.5vw, 4rem)/.95 Georgia, serif; }
-.student-program-card p { max-width: 60ch; margin: 0; color: rgba(255,255,255,.72); }
-.student-study-points { display: grid; align-content: start; border-top: 1px solid var(--line); }
-.student-study-points > div { padding: 1rem .2rem; border-bottom: 1px solid var(--line); }
-.student-study-points p { margin: .35rem 0 0; color: var(--muted); font-size: .85rem; }
 .student-life-grid { height: 410px; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(240px, .7fr); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: .75rem; }
 .student-life-grid button { position: relative; min-width: 0; overflow: hidden; padding: 0; border: 0; border-radius: 1rem; color: white; background: #d8c4b6; cursor: zoom-in; }
 .student-life-grid button.featured { grid-row: 1 / -1; }
@@ -841,9 +832,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-hub-stage { min-height: 0; }
   .student-hub-stage, .student-hub-stage.direction-backward { animation: panel-in-mobile .14s ease both; }
   .student-teacher-grid article > img { height: 145px; }
-  .student-study-layout, .student-media-layout { grid-template-columns: 1fr; }
-  .student-study-points { grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 0; gap: .6rem; }
-  .student-study-points > div { padding: .8rem; border: 1px solid var(--line); border-radius: .8rem; background: var(--paper); }
+  .student-media-layout { grid-template-columns: 1fr; }
   .student-media-video { min-height: 320px; }
   .student-next { padding-inline: 5vw; }
   .student-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -943,9 +932,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-teacher-grid { grid-template-columns: 1fr; }
   .student-teacher-grid article { display: grid; grid-template-columns: 105px minmax(0, 1fr); }
   .student-teacher-grid article > img { height: 100%; min-height: 155px; }
-  .student-program-picker { flex-wrap: nowrap; overflow-x: auto; }
-  .student-program-picker button { flex: 0 0 auto; }
-  .student-study-points { grid-template-columns: 1fr; }
   .student-life-grid { height: 390px; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 240px 140px; }
   .student-life-grid button.featured { grid-column: 1 / -1; grid-row: auto; }
   .student-lightbox { padding: 4.5rem 1rem; }

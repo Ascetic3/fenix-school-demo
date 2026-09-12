@@ -189,28 +189,7 @@ function StudentHubUnderline() {
 }
 
 function StudentExperience({ items }) {
-  const sectionRef = useRef(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return undefined;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-      setIsRevealed(true);
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setIsRevealed(true);
-      observer.disconnect();
-    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  return <section ref={sectionRef} className={`student-experience${isRevealed ? " is-revealed" : ""}`} aria-labelledby="student-experience-title">
+  return <section className="student-experience student-experience-embedded is-revealed" aria-labelledby="student-experience-title">
     <div className="student-shell">
       <div className="student-experience-heading"><span>Коротко о главном</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
       <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
@@ -220,12 +199,6 @@ function StudentExperience({ items }) {
 
 function StudentPeople({ teachers }) {
   return <div className="student-hub-panel student-people"><div className="student-panel-heading"><span>Люди</span><h3>С кем ты будешь учиться</h3><p>В школе важны не только предметы. Важно, кто объясняет их каждый день.</p></div><div className="student-teacher-grid">{teachers.map((teacher, index) => <article key={`${teacher.subject}-${index}`}><img src={teacher.photo} alt="Временное демонстрационное изображение для карточки преподавателя" /><div><span>{teacher.placeholder ? "Demo · данные уточняются" : teacher.subject}</span><h4>{teacher.subject}</h4><strong>{teacher.name}</strong><p>{teacher.shortDescription}</p></div></article>)}</div></div>;
-}
-
-function StudentStudy() {
-  const [activeProgram, setActiveProgram] = useState(0);
-  const [number, ages, title, text] = programs[activeProgram];
-  return <div className="student-hub-panel student-study"><div className="student-panel-heading"><span>Учёба</span><h3>Что и как здесь изучают</h3><p>Выбери свой этап — подробности поменяются внутри блока.</p></div><div className="student-program-picker" role="tablist" aria-label="Возрастной этап">{programs.map(([, programAges], index) => <button key={programAges} role="tab" aria-selected={activeProgram === index} className={activeProgram === index ? "active" : ""} onClick={() => setActiveProgram(index)}>{programAges.replace(" классы", "")}</button>)}</div><div className="student-study-layout"><article className="student-program-card"><span>{number} · {ages}</span><h4>{title}</h4><p>{text}</p></article><div className="student-study-points">{audienceContent.student.advantages.map(([pointTitle, pointText]) => <div key={pointTitle}><strong>{pointTitle}</strong><p>{pointText}</p></div>)}</div></div></div>;
 }
 
 function StudentLife({ items }) {
@@ -329,7 +302,7 @@ function StudentHub() {
   const [isRevealed, setIsRevealed] = useState(false);
   const sectionRef = useRef(null);
   const activeIndex = studentHubTabs.findIndex(([id]) => id === active);
-  const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentStudy />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
+  const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentExperience items={studentAdvantages} />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -482,7 +455,6 @@ export default function App() {
     </section>
 
     {audience === "student" && <>
-      <StudentExperience items={studentAdvantages} />
       <StudentHub />
       <StudentStories items={studentReviews} content={content} />
       <StudentNextSteps />
