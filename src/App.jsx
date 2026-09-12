@@ -165,8 +165,8 @@ function StudentHeroBands() {
   </svg>;
 }
 
-function StudentHubDecor() {
-  return <div className="student-hub-decor" aria-hidden="true">
+function StudentHubDecor({ className = "" }) {
+  return <div className={`student-hub-decor${className ? ` ${className}` : ""}`} aria-hidden="true">
     <svg className="student-hub-decor-piece decor-left" viewBox="0 0 360 270" focusable="false">
       <defs><linearGradient id="fenixRibbon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#d92f20" /><stop offset="1" stopColor="#ff6a1a" /></linearGradient></defs>
       <path className="decor-fill" d="M0 12 L118 0 L18 98 L0 111 Z" fill="url(#fenixRibbon)" />
@@ -331,6 +331,8 @@ function StudentHub() {
 function StudentStories({ items, content }) {
   const carouselItems = items.filter(({ title }) => title !== "Самое полезное — сначала попробовать");
   const [index, setIndex] = useState(0);
+  const [isDecorRevealed, setIsDecorRevealed] = useState(false);
+  const sectionRef = useRef(null);
   const safeIndex = index % carouselItems.length;
   const review = carouselItems[safeIndex];
   const photo = studentGallery.find(({ src }) => src.endsWith("student-demo-project.jpg")) || studentGallery[0];
@@ -339,7 +341,23 @@ function StudentStories({ items, content }) {
 
   useEffect(() => setIndex(0), [items]);
 
-  return <section className="student-stories" id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      setIsDecorRevealed(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setIsDecorRevealed(true);
+      observer.disconnect();
+    }, { threshold: 0.38, rootMargin: "0px 0px -5%" });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  return <section ref={sectionRef} className={`student-stories${isDecorRevealed ? " is-revealed" : ""}`} id="reviews" aria-labelledby="student-stories-title"><StudentHubDecor className="student-stories-decor" /><div className="student-shell">
     <div className="student-stories-heading"><div><span>Истории учеников</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>В Фениксе учатся такие же ребята, как ты. Они рассказывают, что на самом деле значит быть здесь.</p></div>
     <div className="student-stories-grid">
       <figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure>

@@ -688,8 +688,16 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .review-author strong { font-size: .95rem; }
 .review-author small { margin-top: .1rem; color: var(--wine); font-size: .8rem; }
 .student-stories { width: 100%; padding: clamp(4rem, 6vw, 7rem) 4vw; overflow: hidden; background: var(--cream); }
-.student-stories > .student-shell { width: min(100%, 1500px); max-width: 100%; }
-.student-stories-heading { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(250px, .45fr); gap: clamp(2rem, 5vw, 6rem); align-items: start; margin-bottom: clamp(1.8rem, 3vw, 3rem); }
+.student-stories > .student-shell { position: relative; z-index: 1; width: min(100%, 1500px); max-width: 100%; }
+.student-stories-decor .decor-left { top: .75rem; left: clamp(-9rem, -7vw, -6rem); width: clamp(190px, 16vw, 280px); }
+.student-stories-decor .decor-right { top: .75rem; right: clamp(-4rem, -3vw, -2rem); width: clamp(210px, 17vw, 300px); }
+.student-stories.is-revealed .student-stories-decor .student-hub-decor-piece { opacity: 1; transform: translate3d(0, 0, 0); }
+.student-stories.is-revealed .student-stories-decor .decor-fill { opacity: 1; }
+.student-stories.is-revealed .student-stories-decor .decor-stroke { stroke-dashoffset: 0; }
+.student-stories.is-revealed .student-stories-decor .decor-spark { opacity: 1; }
+.student-stories.is-revealed .student-stories-decor .decor-right path { fill-opacity: 1; stroke-opacity: 0; stroke-dashoffset: 0; }
+.student-stories-heading { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(250px, .5fr) minmax(150px, .3fr); gap: clamp(1.5rem, 3vw, 3rem); align-items: start; margin-bottom: clamp(1.8rem, 3vw, 3rem); }
+.student-stories-heading > p { grid-column: 2; }
 .student-stories-heading > div > span, .student-story-cta > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-stories-heading h2 { max-width: 950px; margin: .7rem 0 0; font: 500 clamp(3.4rem, 5.2vw, 6rem)/.9 Georgia, serif; letter-spacing: -.06em; }
 .student-stories-heading > p { max-width: 38ch; margin: 3rem 0 0; color: var(--muted); line-height: 1.5; }
@@ -773,7 +781,9 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 }
 
 @media (max-width: 1199px) and (min-width: 821px) {
-  .student-stories-heading { grid-template-columns: minmax(0, 1.25fr) minmax(240px, .75fr); }
+  .student-stories-decor .decor-left { width: clamp(170px, 16vw, 220px); }
+  .student-stories-decor .decor-right { width: clamp(170px, 17vw, 230px); }
+  .student-stories-heading { grid-template-columns: minmax(0, 1.1fr) minmax(240px, .75fr) minmax(110px, .35fr); }
   .student-stories-grid { grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); }
   .student-stories-photo { grid-column: 1; grid-row: 1; }
   .student-story-review { grid-column: 2; grid-row: 1; padding-right: .5rem; }
