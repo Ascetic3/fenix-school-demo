@@ -145,6 +145,13 @@ function StudentAccent({ variant }) {
   </span>;
 }
 
+function StudentHeroBands() {
+  return <svg className="student-hero-bands" viewBox="0 0 240 720" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path className="student-hero-band-shape-primary" d="M -36 -40 H 48 L 250 238 V 350 L -36 44 Z" />
+    <path className="student-hero-band-shape-secondary" d="M -28 110 L 246 430 V 505 L -28 186 Z" />
+  </svg>;
+}
+
 function StudentHubDecor() {
   return <div className="student-hub-decor" aria-hidden="true">
     <svg className="student-hub-decor-piece decor-left" viewBox="0 0 360 360" focusable="false">
@@ -428,9 +435,7 @@ export default function App() {
           <a className="button student-hero-cta" href="#demo-week">Попробовать 5 дней <span aria-hidden="true">→</span></a>
         </div>
         <div className="student-hero-visual">
-          <div className="student-hero-photo"><img src="./images/student-demo/student-hero-seniors.jpg" alt="Старшеклассники обсуждают учебное задание" /></div>
-          <img className="student-hero-band student-hero-band-main" src="./images/student-demo/student-hero-band.png" alt="" aria-hidden="true" />
-          <img className="student-hero-band student-hero-band-edge" src="./images/student-demo/student-hero-band.png" alt="" aria-hidden="true" />
+          <div className="student-hero-photo"><img src="./images/student-demo/student-hero-seniors.jpg" alt="Старшеклассники обсуждают учебное задание" /><StudentHeroBands /></div>
         </div>
       </> : <>
       <div className="hybrid-hero-copy">
