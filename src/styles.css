@@ -430,38 +430,35 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 
 .student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw clamp(5.5rem, 8vw, 8.5rem); background: var(--paper); }
 .student-hub-decor { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
-.student-hub-decor-piece { position: absolute; display: block; overflow: visible; opacity: 0; transform: translate3d(0, 28px, 0); transition: opacity 1.5s ease-out, transform 1.5s cubic-bezier(.2,.7,.2,1); }
-.student-hub-decor-piece.decor-left { top: -118px; left: -132px; width: clamp(360px, 31vw, 530px); }
-.student-hub-decor-piece.decor-right { right: -145px; bottom: -116px; width: clamp(390px, 32vw, 560px); transition-delay: .08s; }
+.student-hub-decor-piece { position: absolute; display: block; overflow: visible; opacity: 0; transition: opacity 1.8s ease-out, transform 1.8s cubic-bezier(.2,.7,.2,1); }
+.student-hub-decor-piece.decor-left { top: 0; left: 0; width: clamp(300px, 23vw, 400px); transform: translate3d(-50px, 0, 0); }
+.student-hub-decor-piece.decor-right { top: 0; right: 0; width: clamp(350px, 27vw, 470px); transform: translate3d(30px, 10px, 0); transition-duration: 2s, 2s; }
 .student-hub.is-revealed .student-hub-decor-piece { opacity: 1; transform: translate3d(0, 0, 0); }
-.student-hub-decor .decor-stroke { fill: none; stroke: var(--wine); stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.7s cubic-bezier(.2,.7,.2,1) .08s; }
-.student-hub-decor .decor-right .decor-stroke { transition-delay: .16s; }
-.student-hub-decor .decor-stroke-heavy { stroke-width: 18; }
-.student-hub-decor .decor-stroke-mid { stroke: #f05424; stroke-width: 8; }
-.student-hub-decor .decor-stroke-fine { stroke: #ff7a24; stroke-width: 2.5; }
-.student-hub-decor .decor-stroke-feather { stroke: #e93620; stroke-width: 5; }
+.student-hub-decor .decor-stroke { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.85s cubic-bezier(.2,.7,.2,1) .25s; }
+.student-hub-decor .decor-right .decor-stroke { transition-duration: 2.05s; }
+.student-hub-decor .decor-right .decor-stroke:nth-child(2) { transition-delay: .3s; }
+.student-hub-decor .decor-right .decor-stroke:nth-child(3) { transition-delay: .35s; }
+.student-hub-decor .decor-right .decor-stroke:nth-child(4) { transition-delay: .4s; }
+.student-hub-decor .decor-right .decor-stroke:nth-child(n+5) { transition-delay: .45s; }
 .student-hub.is-revealed .student-hub-decor .decor-stroke { stroke-dashoffset: 0; }
-.student-hub-decor .decor-spark { opacity: 0; transform: scale(.92); transform-box: fill-box; transform-origin: center; transition: opacity .82s ease-out .42s, transform .82s ease-out .42s; }
-.student-hub-decor .decor-spark-red { fill: #e93620; }
-.student-hub-decor .decor-spark-orange { fill: #ff6a1a; }
-.student-hub.is-revealed .student-hub-decor .decor-spark { opacity: 1; transform: scale(1); }
+.student-hub-decor .decor-spark { opacity: 0; transition: opacity .8s ease-out .8s; }
+.student-hub.is-revealed .student-hub-decor .decor-spark { opacity: 1; }
 .student-hub > .student-shell { z-index: 1; }
 .student-hub-heading { position: relative; display: grid; grid-template-columns: .58fr 1.75fr .55fr; gap: 2rem; align-items: center; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
 .student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-hub-heading h2 { grid-column: 2 / 4; max-width: 980px; margin: 0; font: 500 clamp(4rem, 6.2vw, 7rem)/.82 Georgia, serif; letter-spacing: -.07em; text-align: center; }
-.student-hub-underline { position: absolute; z-index: 0; left: 60%; bottom: -1.45rem; width: min(23vw, 310px); height: auto; overflow: visible; pointer-events: none; }
-.student-hub-underline path { fill: none; stroke: #f05a24; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset 1.2s cubic-bezier(.2,.7,.2,1) .55s, opacity .5s ease-out .55s; }
-.student-hub-underline-main { stroke-width: 4; }
-.student-hub-underline-detail { stroke-width: 2; }
+.student-hub-underline { position: absolute; z-index: 0; left: 59%; bottom: -1rem; width: min(20vw, 260px); height: auto; overflow: visible; pointer-events: none; }
+.student-hub-underline path { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset 1.3s cubic-bezier(.2,.7,.2,1) .9s, opacity .35s ease-out .9s; }
+.student-hub-underline-main { stroke: #f05a24; stroke-width: 3.4; }
+.student-hub-underline-detail { stroke: #ff6a1a; stroke-width: 2.2; }
 .student-hub.is-revealed .student-hub-underline path { stroke-dashoffset: 0; opacity: .9; }
 @media (min-width: 821px) {
-  .student-hub-decor-piece { transition-duration: 1.8s, 1.8s; }
-  .student-hub-decor-piece.decor-left { transform: translate3d(-60px, 20px, 0); }
-  .student-hub-decor-piece.decor-right { transform: translate3d(70px, 25px, 0); transition-duration: 1.9s, 1.9s; transition-delay: 0s, 0s; }
-  .student-hub-decor .decor-stroke { transition-duration: 1.8s; transition-delay: 0s; }
-  .student-hub-decor .decor-right .decor-stroke { transition-duration: 1.9s; transition-delay: 0s; }
-  .student-hub-decor .decor-spark { transform: scale(.88); transition-duration: .8s, .8s; transition-delay: .75s, .75s; }
-  .student-hub-underline path { transition: stroke-dashoffset 1.25s cubic-bezier(.2,.7,.2,1) .8s, opacity .4s ease-out .8s; }
+  .student-hub-decor .decor-left .decor-fill { opacity: 0; transition: opacity 1.1s ease-out .1s; }
+  .student-hub.is-revealed .student-hub-decor .decor-left .decor-fill { opacity: 1; }
+}
+@media (max-width: 1399px) and (min-width: 821px) {
+  .student-hub-decor-piece.decor-left { width: clamp(240px, 22vw, 320px); }
+  .student-hub-decor-piece.decor-right { width: clamp(280px, 25vw, 360px); }
 }
 .student-hub-tabs { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
 .student-hub-tabs button { position: relative; z-index: 1; min-height: 56px; padding: .9rem clamp(1rem, 2.5vw, 2.3rem); border: 0; color: var(--muted); background: transparent; font: inherit; font-weight: 850; cursor: pointer; white-space: nowrap; transition: color .18s ease; }
@@ -469,7 +466,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub-tab-label { position: relative; display: inline-block; }
 .student-hub-tab-spark { position: absolute; top: 50%; right: calc(100% + .6rem); width: 15px; height: 15px; fill: #f05a24; opacity: 0; transform: translateY(-50%); pointer-events: none; transition: opacity .4s ease-out; }
 .student-hub-tab-underline { position: absolute; left: 50%; bottom: -.5rem; width: calc(100% + .85rem); height: 10px; overflow: visible; transform: translateX(-50%); pointer-events: none; }
-.student-hub-tab-underline path { fill: none; stroke: #f05a24; stroke-width: 1.7; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset .46s cubic-bezier(.2,.7,.2,1), opacity .12s ease-out; }
+.student-hub-tab-underline path { fill: none; stroke: #f05a24; stroke-width: 1.7; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset 1s ease-out, opacity .12s ease-out; }
 .student-hub-tabs button.active .student-hub-tab-underline path { stroke-dashoffset: 0; opacity: .9; }
 @media (min-width: 821px) {
   .student-hub-tabs button {
@@ -499,7 +496,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 
   .student-hub-tab-underline path {
     stroke-width: 2.8;
-    transition: stroke-dashoffset 1.2s ease-out, opacity .12s ease-out;
+    transition: stroke-dashoffset 1.05s ease-out, opacity .12s ease-out;
   }
 }
 .student-hub-stage { position: relative; min-height: 590px; overflow: hidden; padding: clamp(1.7rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
@@ -816,12 +813,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-experience.is-revealed .student-advantage-card:nth-child(2) { animation-delay: 30ms; }
   .student-experience.is-revealed .student-advantage-card:nth-child(3) { animation-delay: 60ms; }
   .student-hub { padding-inline: 5vw; }
-  .student-hub-decor-piece { transform: translate3d(0, 8px, 0); transition: opacity .65s ease-out, transform .65s ease-out; }
-  .student-hub-decor-piece.decor-left { top: -74px; left: -128px; width: 330px; }
-  .student-hub-decor-piece.decor-right { display: none; }
-  .student-hub.is-revealed .student-hub-decor-piece { opacity: .58; transform: translate3d(0, 0, 0); }
-  .student-hub-decor .decor-stroke { stroke-dashoffset: 0; transition: none; }
-  .student-hub-decor .decor-spark { transition: opacity .65s ease-out .15s, transform .65s ease-out .15s; }
+  .student-hub-decor-piece { display: none; }
   .student-hub-heading, .student-panel-heading { grid-template-columns: 1fr; gap: .7rem; }
   .student-hub-heading h2 { grid-column: auto; text-align: left; }
   .student-hub-underline { left: 1rem; bottom: -1.25rem; width: 180px; opacity: 0; transition: opacity .65s ease-out .15s; }
@@ -855,7 +847,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
     transform: none !important;
     animation: none !important;
   }
-  .student-hub-decor-piece, .student-hub-decor .decor-spark, .student-hub-underline {
+  .student-hub-decor-piece, .student-hub-decor .decor-fill, .student-hub-decor .decor-spark, .student-hub-underline {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;

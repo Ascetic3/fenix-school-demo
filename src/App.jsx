@@ -166,27 +166,44 @@ function StudentHeroBands() {
 
 function StudentHubDecor() {
   return <div className="student-hub-decor" aria-hidden="true">
-    <svg className="student-hub-decor-piece decor-left" viewBox="0 0 360 360" focusable="false">
-      <path className="decor-stroke decor-stroke-heavy" pathLength="1" d="M-20 322C20 236 58 154 154 82C218 34 280 12 375-8" />
-      <path className="decor-stroke decor-stroke-mid" pathLength="1" d="M-25 351C42 254 105 184 198 124C264 82 316 59 384 42" />
-      <path className="decor-stroke decor-stroke-fine" pathLength="1" d="M-14 286C46 209 104 150 182 104C249 64 306 41 370 26" />
-      <path className="decor-stroke decor-stroke-feather" pathLength="1" d="M35 277C73 245 113 226 155 218M49 247C88 219 124 204 169 198M72 216C108 194 141 183 182 180" />
-      <path className="decor-spark decor-spark-red" d="m211 137 7 19 19 7-19 7-7 19-7-19-19-7 19-7z" />
+    <svg className="student-hub-decor-piece decor-left" viewBox="0 0 360 270" focusable="false">
+      <defs><linearGradient id="fenixRibbon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#d92f20" /><stop offset="1" stopColor="#ff6a1a" /></linearGradient></defs>
+      <path className="decor-fill" d="M0 12 L118 0 L18 98 L0 111 Z" fill="url(#fenixRibbon)" />
+      <path className="decor-fill" d="M0 112 L170 6 L192 10 L0 143 Z" fill="#f05a24" />
+      <path className="decor-fill" d="M0 151 L234 16 L256 20 L0 181 Z" fill="#ef3d22" />
+      <path className="decor-stroke" pathLength="1" d="M0 182 C38 160 76 151 125 147" fill="none" stroke="#e73722" strokeWidth="8" strokeLinecap="round" />
+      <path className="decor-stroke" pathLength="1" d="M0 207 C34 188 67 180 108 176" fill="none" stroke="#f05a24" strokeWidth="7" strokeLinecap="round" />
+      <path className="decor-stroke" pathLength="1" d="M0 229 C26 215 52 207 84 203" fill="none" stroke="#ef3d22" strokeWidth="6" strokeLinecap="round" />
+      <path className="decor-spark" d="M184 72 C190 90 194 94 212 100 C194 106 190 110 184 128 C178 110 174 106 156 100 C174 94 178 90 184 72 Z" fill="#e73722" />
     </svg>
-    <svg className="student-hub-decor-piece decor-right" viewBox="0 0 400 400" focusable="false">
-      <path className="decor-stroke decor-stroke-heavy" pathLength="1" d="M432 30C369 108 342 199 276 274C213 345 126 389-26 430" />
-      <path className="decor-stroke decor-stroke-mid" pathLength="1" d="M425 84C370 150 345 225 286 290C230 352 159 383 20 419" />
-      <path className="decor-stroke decor-stroke-fine" pathLength="1" d="M410 120C365 174 343 234 296 286C246 342 183 371 73 399" />
-      <path className="decor-stroke decor-stroke-feather" pathLength="1" d="M355 100C338 134 326 168 323 204M378 115C360 153 350 187 348 224M398 139C382 173 375 204 374 238" />
-      <path className="decor-spark decor-spark-orange" d="m249 235 8 22 22 8-22 8-8 22-8-22-22-8 22-8z" />
+    <svg className="student-hub-decor-piece decor-right" viewBox="0 0 430 340" focusable="false">
+      <g fill="none" stroke="#f05a24" strokeLinecap="round" strokeLinejoin="round">
+        <path className="decor-stroke" pathLength="1" d="M422 8 C386 58 349 93 300 118 C250 144 211 179 183 224 C168 247 155 276 151 324" strokeWidth="2.8" />
+        <path className="decor-stroke" pathLength="1" d="M416 18 C387 78 341 126 279 149 C236 165 202 194 177 236" strokeWidth="2.2" />
+        <path className="decor-stroke" pathLength="1" d="M407 27 C374 96 321 143 252 164 C214 176 186 197 164 226" strokeWidth="2.2" />
+        <path className="decor-stroke" pathLength="1" d="M399 38 C359 112 302 158 228 177 C195 185 171 198 150 216" strokeWidth="2.1" />
+        <path className="decor-stroke" pathLength="1" d="M388 51 C340 131 282 171 208 187 C181 193 160 203 143 218" strokeWidth="2" />
+        <path className="decor-stroke" pathLength="1" d="M374 67 C321 144 264 182 194 195 C169 200 149 208 132 222" strokeWidth="1.9" />
+        <path className="decor-stroke" pathLength="1" d="M339 104 C314 139 287 164 252 178 C225 189 204 202 187 221" strokeWidth="1.8" />
+        <path className="decor-stroke" pathLength="1" d="M323 116 C298 150 270 174 236 186 C211 195 191 207 176 225" strokeWidth="1.7" />
+        <path className="decor-stroke" pathLength="1" d="M302 130 C280 159 256 180 227 192 C204 201 185 214 171 232" strokeWidth="1.7" />
+        <path className="decor-stroke" pathLength="1" d="M279 145 C257 171 236 190 210 202 C190 211 174 223 161 240" strokeWidth="1.6" />
+        <path className="decor-stroke" pathLength="1" d="M254 160 C234 181 215 198 193 210 C176 219 162 232 153 248" strokeWidth="1.5" />
+        <path className="decor-stroke" pathLength="1" d="M184 222 C210 227 238 225 264 214 C286 205 307 190 325 171" strokeWidth="1.8" />
+        <path className="decor-stroke" pathLength="1" d="M171 244 C204 251 237 248 270 233 C294 222 316 206 334 185" strokeWidth="1.6" />
+        <path className="decor-stroke" pathLength="1" d="M160 268 C201 278 241 274 281 254 C306 242 329 225 349 203" strokeWidth="1.5" />
+        <path className="decor-stroke" pathLength="1" d="M424 37 C417 102 415 161 422 214 C425 243 424 273 414 311" strokeWidth="2.4" />
+        <path className="decor-stroke" pathLength="1" d="M401 72 C396 128 399 175 409 215 C414 238 414 260 407 285" strokeWidth="1.6" />
+      </g>
+      <path className="decor-spark" d="M286 48 C290 61 293 64 306 68 C293 72 290 75 286 88 C282 75 279 72 266 68 C279 64 282 61 286 48 Z" fill="#e73722" />
     </svg>
   </div>;
 }
 
 function StudentHubUnderline() {
-  return <svg className="student-hub-underline" viewBox="0 0 320 56" aria-hidden="true" focusable="false">
-    <path className="student-hub-underline-main" pathLength="1" d="M8 37C73 15 144 18 206 28C246 34 278 34 312 24" />
-    <path className="student-hub-underline-detail" pathLength="1" d="M198 36C237 42 275 39 307 30" />
+  return <svg className="student-hub-underline" viewBox="0 0 260 34" aria-hidden="true" focusable="false">
+    <path className="student-hub-underline-main" pathLength="1" d="M6 20 C54 5 101 8 142 14 C185 20 221 21 254 12" />
+    <path className="student-hub-underline-detail" pathLength="1" d="M156 22 C190 27 223 24 252 17" />
   </svg>;
 }
 
@@ -354,7 +371,7 @@ function StudentHub() {
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title"><StudentHubDecor /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2><StudentHubUnderline /></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}><span className="student-hub-tab-label"><svg className="student-hub-tab-spark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 1.5 2.7 7.8 7.8 2.7-7.8 2.7-2.7 7.8-2.7-7.8L1.5 12l7.8-2.7z" /></svg>{label}<svg className="student-hub-tab-underline" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 8C28 2 54 4 78 7C94 9 106 8 118 4" /></svg></span></button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title"><StudentHubDecor /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2><StudentHubUnderline /></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}><span className="student-hub-tab-label"><svg className="student-hub-tab-spark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 2 C27.5 14.5 30 17 42 24 C30 31 27.5 33.5 24 46 C20.5 33.5 18 31 6 24 C18 17 20.5 14.5 24 2 Z" /></svg>{label}<svg className="student-hub-tab-underline" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 8C28 2 54 4 78 7C94 9 106 8 118 4" /></svg></span></button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
