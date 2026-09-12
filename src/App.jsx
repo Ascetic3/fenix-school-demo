@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import studentHubRightWingSvg from "./assets/studenthub-right-wing.svg?raw";
 import {
   admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
   studentAdvantages, studentGallery, studentReviews, studentSocials, teachers,
@@ -176,27 +177,7 @@ function StudentHubDecor() {
       <path className="decor-stroke" pathLength="1" d="M0 229 C26 215 52 207 84 203" fill="none" stroke="#ef3d22" strokeWidth="6" strokeLinecap="round" />
       <path className="decor-spark" d="M184 72 C190 90 194 94 212 100 C194 106 190 110 184 128 C178 110 174 106 156 100 C174 94 178 90 184 72 Z" fill="#e73722" />
     </svg>
-    <svg className="student-hub-decor-piece decor-right" viewBox="0 0 430 340" focusable="false">
-      <g fill="none" stroke="#f05a24" strokeLinecap="round" strokeLinejoin="round">
-        <path className="decor-stroke" pathLength="1" d="M422 8 C386 58 349 93 300 118 C250 144 211 179 183 224 C168 247 155 276 151 324" strokeWidth="2.8" />
-        <path className="decor-stroke" pathLength="1" d="M416 18 C387 78 341 126 279 149 C236 165 202 194 177 236" strokeWidth="2.2" />
-        <path className="decor-stroke" pathLength="1" d="M407 27 C374 96 321 143 252 164 C214 176 186 197 164 226" strokeWidth="2.2" />
-        <path className="decor-stroke" pathLength="1" d="M399 38 C359 112 302 158 228 177 C195 185 171 198 150 216" strokeWidth="2.1" />
-        <path className="decor-stroke" pathLength="1" d="M388 51 C340 131 282 171 208 187 C181 193 160 203 143 218" strokeWidth="2" />
-        <path className="decor-stroke" pathLength="1" d="M374 67 C321 144 264 182 194 195 C169 200 149 208 132 222" strokeWidth="1.9" />
-        <path className="decor-stroke" pathLength="1" d="M339 104 C314 139 287 164 252 178 C225 189 204 202 187 221" strokeWidth="1.8" />
-        <path className="decor-stroke" pathLength="1" d="M323 116 C298 150 270 174 236 186 C211 195 191 207 176 225" strokeWidth="1.7" />
-        <path className="decor-stroke" pathLength="1" d="M302 130 C280 159 256 180 227 192 C204 201 185 214 171 232" strokeWidth="1.7" />
-        <path className="decor-stroke" pathLength="1" d="M279 145 C257 171 236 190 210 202 C190 211 174 223 161 240" strokeWidth="1.6" />
-        <path className="decor-stroke" pathLength="1" d="M254 160 C234 181 215 198 193 210 C176 219 162 232 153 248" strokeWidth="1.5" />
-        <path className="decor-stroke" pathLength="1" d="M184 222 C210 227 238 225 264 214 C286 205 307 190 325 171" strokeWidth="1.8" />
-        <path className="decor-stroke" pathLength="1" d="M171 244 C204 251 237 248 270 233 C294 222 316 206 334 185" strokeWidth="1.6" />
-        <path className="decor-stroke" pathLength="1" d="M160 268 C201 278 241 274 281 254 C306 242 329 225 349 203" strokeWidth="1.5" />
-        <path className="decor-stroke" pathLength="1" d="M424 37 C417 102 415 161 422 214 C425 243 424 273 414 311" strokeWidth="2.4" />
-        <path className="decor-stroke" pathLength="1" d="M401 72 C396 128 399 175 409 215 C414 238 414 260 407 285" strokeWidth="1.6" />
-      </g>
-      <path className="decor-spark" d="M286 48 C290 61 293 64 306 68 C293 72 290 75 286 88 C282 75 279 72 266 68 C279 64 282 61 286 48 Z" fill="#e73722" />
-    </svg>
+    <div className="student-hub-decor-piece decor-right" dangerouslySetInnerHTML={{ __html: studentHubRightWingSvg }} />
   </div>;
 }
 
