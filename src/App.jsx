@@ -355,10 +355,33 @@ function StudentHub() {
   return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title"><StudentHubDecor /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2><StudentHubUnderline /></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}><span className="student-hub-tab-label"><svg className="student-hub-tab-spark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 2 C27.5 14.5 30 17 42 24 C30 31 27.5 33.5 24 46 C20.5 33.5 18 31 6 24 C18 17 20.5 14.5 24 2 Z" /></svg>{label}<svg className="student-hub-tab-underline" viewBox="0 0 160 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 8 C30 3 57 4 82 7 C108 10 134 9 158 5" /></svg></span></button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
-function StudentNextSteps({ content }) {
+function StudentStories({ items, content }) {
+  const [index, setIndex] = useState(0);
+  const safeIndex = index % items.length;
+  const review = items[safeIndex];
+  const photo = studentGallery[(safeIndex + 3) % studentGallery.length];
+  const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
+  const next = () => setIndex((value) => (value + 1) % items.length);
+
+  useEffect(() => setIndex(0), [items]);
+
+  return <section className="student-stories" id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
+    <div className="student-stories-heading"><div><span>Демо-тексты · заменить реальными</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
+    <div className="student-stories-grid">
+      <figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /><figcaption>Демонстрационное изображение</figcaption></figure>
+      <article className="student-story-review" aria-live="polite" key={review.title}>
+        <div className="student-story-quote" aria-hidden="true">“</div><h3>{review.title}</h3><p>{review.text}</p>
+        <div className="student-story-footer"><div className="student-story-author"><span>✦</span><div><strong>{review.role}</strong><small>Текст для демонстрации</small></div></div><div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
+      </article>
+      <article className="student-story-cta" id="demo-week"><span>Попробовать школу</span><h3>5 дней<br />в Фениксе</h3><p>{content.demoDescription}</p><ul>{content.trust.map((benefit) => <li key={benefit}>{benefit}</li>)}</ul><a className="button" href="tel:+79122795067">Попробовать 5 дней →</a></article>
+    </div>
+  </div></section>;
+}
+
+function StudentNextSteps() {
   const priceIcons = ["spark", "dialog", "target"];
   const stepIcons = ["dialog", "group", "target", "spark"];
-  return <section className="student-next" id="demo-week"><div className="student-shell"><div className="student-next-cta"><div><span>Попробовать школу</span><h2>Лучше один день здесь,<br />чем десять страниц описания</h2><p>{content.demoDescription}</p></div><a className="button" href="tel:+79122795067">Попробовать школу 5 дней</a><StudentAccent variant="cta" /></div><div className="student-practical">
+  return <section className="student-next"><div className="student-shell"><div className="student-practical">
     <article className="student-pricing-card"><span>Стоимость</span><h3>Инвестиция<br />в большое будущее</h3><div className="student-price-grid">{prices.map(([title, price, period, details], index) => <section className="student-price-card" key={title}><span className="student-price-icon"><StudentIcon name={priceIcons[index]} /></span><h4>{title}</h4><p>{details[0]}</p><strong>{price}</strong><small>{period}</small></section>)}</div><small className="student-entry-fee">Вступительный взнос при поступлении — 75 000 ₽.</small></article>
     <article className="student-admission-card"><span>Как поступить</span><h3>Простой путь<br />к большим возможностям</h3><div className="student-admission-path">{admissionSteps.map(([number, title, text], index) => <section key={number}><b>{number}</b><span className="student-admission-icon"><StudentIcon name={stepIcons[index]} /></span><div><h4>{title}</h4><p>{text}</p></div></section>)}</div><div className="student-admission-actions"><a className="button" href="tel:+79122795067">Записаться на встречу →</a><a href="tel:+79122795067">Уточнить условия →</a></div></article>
   </div></div></section>;
@@ -374,18 +397,13 @@ function ReviewCard({ review, secondary = false }) {
   </article>;
 }
 
-function Reviews({ items = reviews, audience = "parent" }) {
+function Reviews({ items = reviews }) {
   const [index, setIndex] = useState(0);
-  const isStudent = audience === "student";
   const safeIndex = index % items.length;
   useEffect(() => setIndex(0), [items]);
   const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
   const next = () => setIndex((value) => (value + 1) % items.length);
   const controls = <div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div>;
-  if (isStudent) return <section className="reviews-section student-reviews" aria-labelledby="reviews-title">
-    <div className="student-reviews-intro"><span>Демо-тексты · заменить реальными</span><h2 id="reviews-title">Как школа звучит глазами учеников</h2><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
-    <div className="student-review-stage"><div className="reviews-slider" aria-live="polite"><ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} /></div>{controls}</div>
-  </section>;
   return <section className="reviews-section" aria-labelledby="reviews-title">
     <div className="reviews-heading"><div><span>Говорят родители</span><h2 id="reviews-title">Отзывы о школе</h2></div>{controls}</div>
     <div className="reviews-slider" aria-live="polite">
@@ -461,8 +479,8 @@ export default function App() {
     {audience === "student" && <>
       <StudentExperience items={studentAdvantages} />
       <StudentHub />
-      <Reviews items={studentReviews} audience="student" />
-      <StudentNextSteps content={content} />
+      <StudentStories items={studentReviews} content={content} />
+      <StudentNextSteps />
     </>}
 
     {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} /><Reviews /></section>}

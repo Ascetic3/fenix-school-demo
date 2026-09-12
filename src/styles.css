@@ -447,7 +447,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub.is-revealed .student-hub-decor .decor-spark { opacity: 1; }
 .student-hub > .student-shell { z-index: 1; }
 .student-hub-heading { position: relative; display: grid; grid-template-columns: .58fr 1.75fr .55fr; gap: 2rem; align-items: center; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
-.student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
+.student-hub-heading > span, .student-panel-heading > span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-hub-heading h2 { grid-column: 2 / 4; max-width: 980px; margin: 0; font: 500 clamp(4rem, 6.2vw, 7rem)/.82 Georgia, serif; letter-spacing: -.07em; text-align: center; }
 .student-hub-underline { position: absolute; z-index: 0; left: 59%; bottom: -1rem; width: min(20vw, 260px); height: auto; overflow: visible; pointer-events: none; }
 .student-hub-underline path { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset 1.3s cubic-bezier(.2,.7,.2,1) .9s, opacity .35s ease-out .9s; }
@@ -573,12 +573,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-media-socials i { color: var(--wine); font-style: normal; }
 
 .student-next { position: relative; overflow: hidden; padding: clamp(4rem, 6vw, 6rem) 4vw; background: #fff8ee; }
-.student-next-cta { position: relative; overflow: hidden; isolation: isolate; padding: clamp(2rem, 4vw, 4rem); border-radius: 1.5rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; color: white; background: var(--wine); }
-.student-next-cta > div, .student-next-cta > a { position: relative; z-index: 1; }
-.student-next-cta span { color: var(--apricot); }
-.student-next-cta h2 { max-width: 1050px; margin: .7rem 0 1rem; font: 500 clamp(3rem, 5vw, 5.8rem)/.9 Georgia, serif; letter-spacing: -.06em; }
-.student-next-cta p { max-width: 65ch; margin: 0; color: rgba(255,255,255,.72); }
-.student-next-cta .button { min-width: 235px; color: var(--ink); background: var(--apricot); }
 .student-practical { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(380px, .85fr); gap: 1rem; margin-top: 1rem; }
 .student-practical > article { position: relative; min-width: 0; overflow: hidden; padding: clamp(1.45rem, 2.2vw, 2.25rem); border: 1px solid var(--line); border-radius: 1rem; background: var(--paper); }
 .student-practical > article > span { display: block; }
@@ -702,26 +696,34 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .review-author div { display: grid; }
 .review-author strong { font-size: .95rem; }
 .review-author small { margin-top: .1rem; color: var(--wine); font-size: .8rem; }
-.student-reviews { position: relative; margin-top: 0; padding: clamp(3rem, 4vw, 4.5rem) 4vw clamp(3.5rem, 5vw, 5rem); overflow: hidden; color: var(--ink); background: var(--cream); }
-.student-reviews-intro, .student-review-stage { width: min(100%, 1500px); margin-inline: auto; }
-.student-reviews-intro, .student-review-stage { position: relative; z-index: 1; }
-.student-reviews-intro { margin-bottom: clamp(1.4rem, 2vw, 2rem); }
-.student-reviews-intro > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
-.student-reviews-intro h2 { max-width: 900px; margin: .7rem 0 .8rem; font: 500 clamp(2.8rem, 4.4vw, 4.8rem)/.94 Georgia, serif; letter-spacing: -.05em; }
-.student-reviews-intro p { max-width: 65ch; margin: 0; color: var(--muted); }
-.student-review-stage { position: relative; overflow: hidden; border-radius: 1.7rem; color: white; background: #17121c; }
-.student-reviews .reviews-controls > span { color: rgba(255,255,255,.55); }
-.student-reviews .reviews-controls button { border-color: rgba(255,255,255,.28); color: white; }
-.student-reviews .reviews-controls { position: absolute; z-index: 2; right: clamp(1.5rem, 4vw, 4rem); bottom: clamp(1.5rem, 3vw, 3rem); }
-.student-reviews .reviews-slider { grid-template-columns: 1fr; }
-.student-reviews .review-card { min-height: 350px; padding: clamp(2.5rem, 4vw, 4rem) clamp(11rem, 15vw, 16rem) clamp(2.5rem, 4vw, 4rem) clamp(5rem, 10vw, 10rem); border: 0; border-radius: 0; color: white; background: transparent; }
-.student-reviews .review-card.secondary { display: none; }
-.student-reviews .review-card h3 { max-width: 980px; margin-bottom: 1.2rem; font: 500 clamp(2rem, 3.2vw, 3.7rem)/1.02 Georgia, serif; letter-spacing: -.045em; }
-.student-reviews .review-card > p { max-width: 760px; color: rgba(255,255,255,.7); font-size: clamp(1rem, 1.35vw, 1.22rem); }
-.student-reviews .review-quote { top: clamp(1.4rem, 3vw, 3rem); right: auto; left: 0; color: var(--apricot); font-size: clamp(8rem, 13vw, 14rem); line-height: .72; }
-.student-reviews .review-author { margin-top: clamp(2rem, 3vw, 3rem); }
-.student-reviews .review-author > span { width: 54px; height: 54px; flex-basis: 54px; color: var(--ink); background: var(--apricot); }
-.student-reviews .review-author small { color: var(--apricot); }
+.student-stories { padding: clamp(4rem, 6vw, 7rem) 4vw; overflow: hidden; background: var(--cream); }
+.student-stories-heading { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(250px, .5fr); gap: clamp(2rem, 5vw, 6rem); align-items: end; margin-bottom: clamp(1.8rem, 3vw, 3rem); }
+.student-stories-heading > div > span, .student-story-cta > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
+.student-stories-heading h2 { max-width: 950px; margin: .7rem 0 0; font: 500 clamp(3.4rem, 5.2vw, 6rem)/.86 Georgia, serif; letter-spacing: -.06em; }
+.student-stories-heading > p { max-width: 42ch; margin: 0 0 .4rem; color: var(--muted); line-height: 1.5; }
+.student-stories-grid { display: grid; grid-template-columns: minmax(0, 48fr) minmax(240px, 21fr) minmax(340px, 31fr); min-height: 520px; overflow: hidden; border: 1px solid var(--line); border-radius: 1.5rem; background: var(--paper); }
+.student-stories-photo { position: relative; min-width: 0; min-height: 520px; margin: 0; overflow: hidden; background: #d8c4b6; }
+.student-stories-photo img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.student-stories-photo figcaption { position: absolute; right: 1rem; bottom: 1rem; padding: .35rem .55rem; border-radius: 999px; color: white; background: rgba(23,18,28,.65); font-size: .68rem; }
+.student-story-review { min-width: 0; padding: clamp(1.4rem, 2.2vw, 2.5rem); display: flex; flex-direction: column; background: #fffaf4; animation: review-in .32s ease both; }
+.student-story-quote { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; color: var(--wine); background: rgba(217,54,32,.09); font: 500 2.8rem/1 Georgia, serif; }
+.student-story-review h3 { margin: 1rem 0 .9rem; font: 500 clamp(1.75rem, 2.25vw, 2.75rem)/.98 Georgia, serif; letter-spacing: -.045em; }
+.student-story-review > p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+.student-story-footer { display: grid; gap: 1rem; margin-top: auto; padding-top: 1.5rem; }
+.student-story-author { min-width: 0; display: flex; gap: .7rem; align-items: center; }
+.student-story-author > span { flex: 0 0 44px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--wine); }
+.student-story-author > div { min-width: 0; display: grid; }
+.student-story-author strong { font-size: .82rem; line-height: 1.25; }
+.student-story-author small { margin-top: .2rem; color: var(--wine); font-size: .72rem; }
+.student-story-footer .reviews-controls { justify-content: flex-end; }
+.student-story-footer .reviews-controls button { width: 40px; height: 40px; }
+.student-story-cta { min-width: 0; padding: clamp(1.8rem, 3vw, 3.2rem); display: flex; flex-direction: column; color: white; background: linear-gradient(145deg, #d93620, #ef4b24); }
+.student-story-cta > span { color: var(--apricot); }
+.student-story-cta h3 { margin: .8rem 0 1rem; font: 500 clamp(3rem, 4.2vw, 5.2rem)/.86 Georgia, serif; letter-spacing: -.06em; }
+.student-story-cta > p { max-width: 34ch; margin: 0; color: rgba(255,255,255,.78); line-height: 1.5; }
+.student-story-cta ul { display: grid; gap: .8rem; margin: clamp(1.5rem, 2.3vw, 2.5rem) 0; padding: 0; list-style: none; }
+.student-story-cta li { padding: .7rem .8rem; border-radius: .75rem; background: rgba(255,255,255,.1); font-size: .88rem; line-height: 1.35; }
+.student-story-cta .button { width: 100%; margin-top: auto; justify-content: center; color: var(--ink); background: var(--apricot); }
 .review-card.placeholder { min-height: 360px; }
 @keyframes review-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
 
@@ -772,6 +774,14 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-practical { grid-template-columns: 1fr; }
   .student-price-card { min-height: 270px; }
   .audience-student .hybrid-hero { grid-template-columns: 1fr .75fr; }
+}
+
+@media (max-width: 1199px) and (min-width: 821px) {
+  .student-stories-heading { grid-template-columns: minmax(0, 1.25fr) minmax(240px, .75fr); }
+  .student-stories-grid { grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); }
+  .student-stories-photo { grid-column: 1; grid-row: 1; min-height: 340px; }
+  .student-story-review { grid-column: 1; grid-row: 2; min-height: 300px; }
+  .student-story-cta { grid-column: 2; grid-row: 1 / span 2; }
 }
 
 @media (max-width: 820px) {
@@ -831,11 +841,14 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-study-points > div { padding: .8rem; border: 1px solid var(--line); border-radius: .8rem; background: var(--paper); }
   .student-media-video { min-height: 320px; }
   .student-next { padding-inline: 5vw; }
-  .student-next-cta { grid-template-columns: 1fr; align-items: start; }
-  .student-next-cta .button { width: fit-content; }
   .student-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .student-reviews { padding-inline: 5vw; }
-  .student-reviews-intro h2 { font-size: clamp(3rem, 9vw, 5rem); }
+  .student-stories { padding-inline: 5vw; }
+  .student-stories-heading { grid-template-columns: 1fr; gap: 1rem; }
+  .student-stories-heading h2 { font-size: clamp(3rem, 10vw, 4.8rem); }
+  .student-stories-grid { grid-template-columns: 1fr; min-height: 0; overflow: visible; border: 0; border-radius: 0; gap: .8rem; background: transparent; }
+  .student-stories-photo { min-height: 360px; border-radius: 1.15rem; }
+  .student-story-review, .student-story-cta { border-radius: 1.15rem; }
+  .student-story-review { min-height: 360px; }
 }
 
 @keyframes student-experience-card-in-mobile {
@@ -941,9 +954,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-media-video { min-height: 270px; }
   .student-media-previews figure { min-height: 110px; }
   .student-media-socials { grid-template-columns: 1fr; }
-  .student-next-cta { padding: 1.5rem; }
-  .student-next-cta h2 { font-size: clamp(2.5rem, 11vw, 3.5rem); }
-  .student-next-cta .button { width: 100%; min-width: 0; }
   .student-practical { grid-template-columns: 1fr; }
   .student-practical > article { padding: 1.2rem; }
   .student-practical h3 { font-size: clamp(2.25rem, 11vw, 3.15rem); }
@@ -954,15 +964,13 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-admission-icon { width: 44px; height: 44px; }
   .student-admission-actions { grid-template-columns: 1fr; }
   .student-admission-actions > a:last-child { text-align: center; }
-  .student-reviews { padding-top: 3rem; }
-  .student-reviews-intro h2 { font-size: clamp(2.25rem, 11vw, 3.1rem); }
-  .student-review-stage { border-radius: 1.15rem; }
-  .student-reviews .review-card { min-height: 0; padding: 5rem 1.2rem 1rem; }
-  .student-reviews .review-card h3 { max-width: none; font-size: clamp(1.75rem, 8vw, 2.35rem); }
-  .student-reviews .review-quote { top: .3rem; left: 1.2rem; font-size: 8rem; }
-  .student-reviews .review-author { margin-top: 2rem; }
-  .student-reviews .reviews-controls { position: static; justify-content: flex-end; padding: 0 1.2rem 1.2rem; }
-  .student-reviews .reviews-controls > span { display: inline; }
+  .student-stories { padding-top: 3rem; }
+  .student-stories-heading h2 { font-size: clamp(2.6rem, 12vw, 3.6rem); }
+  .student-stories-photo { min-height: 280px; }
+  .student-story-review, .student-story-cta { min-height: 0; padding: 1.35rem; }
+  .student-story-review h3 { font-size: clamp(1.9rem, 9vw, 2.6rem); }
+  .student-story-cta h3 { font-size: clamp(3rem, 14vw, 4.2rem); }
+  .student-story-footer .reviews-controls > span { display: inline; }
 }
 
 @media (min-width: 541px) and (max-width: 640px) {
