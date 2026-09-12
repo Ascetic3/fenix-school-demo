@@ -396,14 +396,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hero-badge { position: absolute; z-index: 3; top: 1.2rem; left: 1.2rem; padding: .65rem .9rem; border: 1px solid rgba(255,255,255,.72); border-radius: 999px; color: var(--ink); background: rgba(255,249,241,.92); backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; font-weight: 900; transform: rotate(-2deg); }
 .student-hero-badge span { color: var(--wine); }
 
-.student-viewport-decor { position: fixed; z-index: 12; inset: 94px 0 0; overflow: hidden; pointer-events: none; }
-.student-viewport-layer { position: absolute; display: block; max-width: none; pointer-events: none; will-change: transform; }
-.viewport-left-lines { top: -5%; left: clamp(-170px, -8vw, -115px); width: clamp(230px, 15vw, 300px); transform: translate3d(var(--viewport-far-x, 0px), var(--viewport-far-y, 0px), 0); }
-.viewport-right-lines { top: 1%; right: clamp(-190px, -9vw, -130px); width: clamp(270px, 17vw, 340px); transform: translate3d(var(--viewport-mid-x, 0px), var(--viewport-mid-y, 0px), 0); }
-.viewport-left-spark { left: clamp(-42px, -2vw, -24px); bottom: 17%; width: clamp(145px, 9vw, 190px); opacity: .72; transform: translate3d(var(--viewport-near-x, 0px), var(--viewport-near-y, 0px), 0); }
-.viewport-right-spark { top: 31%; right: clamp(-65px, -3vw, -34px); width: clamp(165px, 10vw, 220px); opacity: .64; transform: translate3d(var(--viewport-near-x, 0px), var(--viewport-near-y, 0px), 0); }
-.student-viewport-decor.is-returning .student-viewport-layer { transition: transform .72s ease-out; }
-
 .student-experience { position: relative; overflow: hidden; padding: clamp(4.5rem, 7vw, 7.2rem) 4vw; background: #fff8ee; animation: audience-in .35s ease both; }
 .student-experience::before { content: "01"; position: absolute; z-index: 1; top: clamp(1.4rem, 3vw, 3rem); right: 5vw; color: rgba(217,54,32,.075); font: italic clamp(7rem, 12vw, 12.5rem)/1 Georgia, serif; pointer-events: none; }
 .student-experience > .student-shell, .student-hub > .student-shell, .student-next > .student-shell { position: relative; z-index: 1; }
@@ -437,10 +429,14 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-advantage-photo { width: 100%; height: 82px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
 
 .student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw clamp(5.5rem, 8vw, 8.5rem); background: var(--paper); }
+.student-hub-decor { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none; transform: translate3d(0, 18px, 0); transition: opacity .95s ease, transform .95s ease; }
+.student-hub.is-revealed .student-hub-decor { opacity: 1; transform: translate3d(0, 0, 0); }
 .student-hub > .student-shell { z-index: 1; }
-.student-hub-heading { display: grid; grid-template-columns: .58fr 1.75fr .55fr; gap: 2rem; align-items: center; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
+.student-hub-heading { position: relative; display: grid; grid-template-columns: .58fr 1.75fr .55fr; gap: 2rem; align-items: center; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
 .student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-hub-heading h2 { grid-column: 2 / 4; max-width: 980px; margin: 0; font: 500 clamp(4rem, 6.2vw, 7rem)/.82 Georgia, serif; letter-spacing: -.07em; text-align: center; }
+.student-hub-underline { position: absolute; z-index: 0; left: 60%; bottom: -1.45rem; width: min(23vw, 310px); height: auto; opacity: 0; clip-path: inset(0 100% 0 0); pointer-events: none; transition: clip-path 1.1s ease .18s, opacity .35s ease .18s; }
+.student-hub.is-revealed .student-hub-underline { opacity: .9; clip-path: inset(0 0 0 0); }
 .student-hub-tabs { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
 .student-hub-tabs::after { content: ""; position: absolute; right: auto; bottom: -1px; left: 0; width: 25%; height: 3px; background: var(--wine); transform: translateX(calc(var(--hub-index) * 100%)); transition: transform .2s cubic-bezier(.22,.75,.24,1); }
 .student-hub-tabs button { position: relative; z-index: 1; min-height: 56px; padding: .9rem clamp(1rem, 2.5vw, 2.3rem); border: 0; color: var(--muted); background: transparent; font: inherit; font-weight: 850; cursor: pointer; white-space: nowrap; transition: color .18s ease; }
@@ -720,7 +716,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 }
 
 @media (max-width: 820px) {
-  .student-viewport-decor { display: none; }
   .site-header { grid-template-columns: 130px 1fr auto; padding: 0 5vw; }
   .brand-logo { width: 120px; }
   .brand-logo img { width: 88px; }
@@ -761,8 +756,11 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-experience.is-revealed .student-advantage-card:nth-child(2) { animation-delay: 30ms; }
   .student-experience.is-revealed .student-advantage-card:nth-child(3) { animation-delay: 60ms; }
   .student-hub { padding-inline: 5vw; }
+  .student-hub-decor { inset: 0 auto auto -150px; width: 720px; height: auto; object-fit: contain; opacity: 0; transform: translate3d(0, 10px, 0); transition-duration: .7s; }
+  .student-hub.is-revealed .student-hub-decor { opacity: .68; transform: translate3d(0, 0, 0); }
   .student-hub-heading, .student-panel-heading { grid-template-columns: 1fr; gap: .7rem; }
   .student-hub-heading h2 { grid-column: auto; text-align: left; }
+  .student-hub-underline { left: 1rem; bottom: -1.25rem; width: 180px; transition-duration: .8s, .3s; }
   .student-hub-tabs { display: flex; }
   .student-hub-tabs::after { display: none; }
   .student-hub-tabs button { flex: 0 0 auto; }
@@ -793,7 +791,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
     transform: none !important;
     animation: none !important;
   }
-  .student-viewport-layer { transform: none !important; transition: none !important; will-change: auto; }
+  .student-hub-decor { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .student-hub-underline { opacity: .9 !important; clip-path: none !important; transition: none !important; }
 }
 
 @keyframes panel-in-mobile { from { opacity: .35; } to { opacity: 1; } }
