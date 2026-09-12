@@ -325,7 +325,7 @@ function StudentHub() {
       if (!entry.isIntersecting) return;
       setIsRevealed(true);
       observer.disconnect();
-    }, { threshold: 0.18, rootMargin: "0px 0px -8%" });
+    }, { threshold: 0.4, rootMargin: "0px 0px -8%" });
     observer.observe(section);
     return () => observer.disconnect();
   }, []);
