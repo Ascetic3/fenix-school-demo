@@ -454,6 +454,15 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub-underline-main { stroke-width: 4; }
 .student-hub-underline-detail { stroke-width: 2; }
 .student-hub.is-revealed .student-hub-underline path { stroke-dashoffset: 0; opacity: .9; }
+@media (min-width: 821px) {
+  .student-hub-decor-piece { transition-duration: 1.8s, 1.8s; }
+  .student-hub-decor-piece.decor-left { transform: translate3d(-60px, 20px, 0); }
+  .student-hub-decor-piece.decor-right { transform: translate3d(70px, 25px, 0); transition-duration: 1.9s, 1.9s; transition-delay: 0s, 0s; }
+  .student-hub-decor .decor-stroke { transition-duration: 1.8s; transition-delay: 0s; }
+  .student-hub-decor .decor-right .decor-stroke { transition-duration: 1.9s; transition-delay: 0s; }
+  .student-hub-decor .decor-spark { transform: scale(.88); transition-duration: .8s, .8s; transition-delay: .75s, .75s; }
+  .student-hub-underline path { transition: stroke-dashoffset 1.25s cubic-bezier(.2,.7,.2,1) .8s, opacity .4s ease-out .8s; }
+}
 .student-hub-tabs { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
 .student-hub-tabs::after { content: ""; position: absolute; right: auto; bottom: -1px; left: 0; width: 25%; height: 3px; background: var(--wine); transform: translateX(calc(var(--hub-index) * 100%)); transition: transform .2s cubic-bezier(.22,.75,.24,1); }
 .student-hub-tabs button { position: relative; z-index: 1; min-height: 56px; padding: .9rem clamp(1rem, 2.5vw, 2.3rem); border: 0; color: var(--muted); background: transparent; font: inherit; font-weight: 850; cursor: pointer; white-space: nowrap; transition: color .18s ease; }
