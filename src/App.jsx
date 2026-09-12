@@ -356,24 +356,29 @@ function StudentHub() {
 }
 
 function StudentStories({ items, content }) {
+  const carouselItems = items.filter(({ title }) => title !== "Самое полезное — сначала попробовать");
   const [index, setIndex] = useState(0);
-  const safeIndex = index % items.length;
-  const review = items[safeIndex];
-  const photo = studentGallery[(safeIndex + 3) % studentGallery.length];
-  const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
-  const next = () => setIndex((value) => (value + 1) % items.length);
+  const safeIndex = index % carouselItems.length;
+  const review = carouselItems[safeIndex];
+  const photo = studentGallery.find(({ src }) => src.endsWith("student-demo-project.jpg")) || studentGallery[0];
+  const previous = () => setIndex((value) => (value - 1 + carouselItems.length) % carouselItems.length);
+  const next = () => setIndex((value) => (value + 1) % carouselItems.length);
 
   useEffect(() => setIndex(0), [items]);
 
   return <section className="student-stories" id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
-    <div className="student-stories-heading"><div><span>Демо-тексты · заменить реальными</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>Пока это демонстрационные тексты — позже здесь будут реальные отзывы учеников.</p></div>
+    <div className="student-stories-heading"><div><span>Истории учеников</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>В Фениксе учатся такие же ребята, как ты. Они рассказывают, что на самом деле значит быть здесь.</p></div>
     <div className="student-stories-grid">
-      <figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /><figcaption>Демонстрационное изображение</figcaption></figure>
+      <figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure>
       <article className="student-story-review" aria-live="polite" key={review.title}>
         <div className="student-story-quote" aria-hidden="true">“</div><h3>{review.title}</h3><p>{review.text}</p>
-        <div className="student-story-footer"><div className="student-story-author"><span>✦</span><div><strong>{review.role}</strong><small>Текст для демонстрации</small></div></div><div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
+        <div className="student-story-footer"><div className="student-story-author"><span><StudentIcon name="group" /></span><div><strong>{review.role}</strong><small>Текст для демонстрации</small></div></div><div className="reviews-controls"><span>{safeIndex + 1} / {carouselItems.length}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
       </article>
-      <article className="student-story-cta" id="demo-week"><span>Попробовать школу</span><h3>5 дней<br />в Фениксе</h3><p>{content.demoDescription}</p><ul>{content.trust.map((benefit) => <li key={benefit}>{benefit}</li>)}</ul><a className="button" href="tel:+79122795067">Попробовать 5 дней →</a></article>
+      <article className="student-story-cta" id="demo-week"><span>Попробовать школу</span><h3>5 дней<br />в Фениксе</h3><p>{content.demoDescription}</p><ul>
+        <li><span><StudentIcon name="dialog" /></span>Посетишь настоящие уроки</li>
+        <li><span><StudentIcon name="group" /></span>Познакомишься с учителями и ребятами</li>
+        <li><span><StudentIcon name="target" /></span>Поймёшь, подходит ли тебе формат</li>
+      </ul><a className="button" href="tel:+79122795067">Попробовать 5 дней →</a></article>
     </div>
   </div></section>;
 }
