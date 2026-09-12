@@ -22,11 +22,6 @@ function readStoredAudience() {
   }
 }
 
-function readActiveNavHref() {
-  const { hash } = window.location;
-  return navigation.some(([, href]) => href === hash) ? hash : "#top";
-}
-
 function AudienceSwitch({ audience, onChange, compact = false }) {
   return <div className={`audience-switch is-${audience}${compact ? " compact" : ""}`} aria-label="Выбор аудитории">
     {audienceIds.map((id) => <button key={id} type="button" aria-pressed={audience === id} className={audience === id ? "active" : ""} onClick={() => onChange(id)}>{compact ? audienceContent[id].switchLabel : audienceContent[id].choiceLabel}</button>)}
@@ -403,7 +398,6 @@ function Reviews({ items = reviews, audience = "parent" }) {
 export default function App() {
   const [audience, setAudience] = useState(() => readAudienceFromQuery() || readStoredAudience() || "parent");
   const [hasChosenAudience, setHasChosenAudience] = useState(() => Boolean(readAudienceFromQuery() || readStoredAudience()));
-  const [activeNavHref, setActiveNavHref] = useState(readActiveNavHref);
   const content = audienceContent[audience];
 
   const changeAudience = (nextAudience) => {
@@ -433,16 +427,10 @@ export default function App() {
     return () => window.removeEventListener("popstate", syncFromHistory);
   }, []);
 
-  useEffect(() => {
-    const syncActiveNav = () => setActiveNavHref(readActiveNavHref());
-    window.addEventListener("hashchange", syncActiveNav);
-    return () => window.removeEventListener("hashchange", syncActiveNav);
-  }, []);
-
   return <main className={`audience-${audience}`}>
     <header className="site-header">
       <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></a>
-      <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href]) => <a key={href} href={href} className={href === activeNavHref ? "active" : undefined} aria-current={href === activeNavHref ? "location" : undefined}>{label}<svg className="desktop-nav-underline" viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 7 C28 2.5 53 3.2 76 5.8 C94 7.6 107 6.9 118 4.5" /></svg></a>)}</nav>
+      <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href]) => <a key={href} href={href}>{label}<svg className="desktop-nav-underline" viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 7 C28 2.5 53 3.2 76 5.8 C94 7.6 107 6.9 118 4.5" /></svg></a>)}</nav>
       <div className="header-actions">{hasChosenAudience && <AudienceSwitch audience={audience} onChange={changeAudience} compact />}<Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
       <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Documents /><a href="tel:+79122795067">Позвонить в школу</a></div></details>
     </header>
