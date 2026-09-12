@@ -472,8 +472,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub-tab-underline path + path { stroke-width: 1.1; }
 .student-hub-tabs button.active .student-hub-tab-underline path { stroke-dashoffset: 0; opacity: .9; }
 @media (min-width: 821px) {
-  .student-hub-tab-underline { width: calc(100% + 2.75rem); height: 12px; }
-  .student-hub-tab-underline path { transition: stroke-dashoffset 1s ease-out, opacity .12s ease-out; }
+  .student-hub-tab-underline { width: calc(100% + 4.5rem); height: 12px; }
+  .student-hub-tab-underline path { transition: stroke-dashoffset 1.15s ease-out, opacity .12s ease-out; }
 }
 .student-hub-stage { position: relative; min-height: 590px; overflow: hidden; padding: clamp(1.7rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
 .student-hub-stage.direction-backward { animation-name: student-panel-backward-in; }
