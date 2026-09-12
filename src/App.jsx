@@ -145,6 +145,82 @@ function StudentAccent({ variant }) {
   </span>;
 }
 
+function StudentViewportDecor() {
+  const decorRef = useRef(null);
+
+  useEffect(() => {
+    const decor = decorRef.current;
+    if (!decor) return undefined;
+    const desktopPointer = window.matchMedia("(min-width: 821px) and (hover: hover) and (pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let animationFrame = 0;
+    let returnTimer = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+
+    const updateDecor = () => {
+      animationFrame = 0;
+      const canMove = desktopPointer.matches && !reducedMotion.matches;
+      const x = canMove ? pointerX : 0;
+      const y = canMove ? pointerY : 0;
+      decor.style.setProperty("--viewport-far-x", `${(x * 14).toFixed(2)}px`);
+      decor.style.setProperty("--viewport-far-y", `${(y * 12).toFixed(2)}px`);
+      decor.style.setProperty("--viewport-mid-x", `${(x * 18).toFixed(2)}px`);
+      decor.style.setProperty("--viewport-mid-y", `${(y * 15).toFixed(2)}px`);
+      decor.style.setProperty("--viewport-near-x", `${(x * 24).toFixed(2)}px`);
+      decor.style.setProperty("--viewport-near-y", `${(y * 20).toFixed(2)}px`);
+    };
+
+    const scheduleUpdate = () => {
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateDecor);
+    };
+
+    const resetDecor = () => {
+      pointerX = 0;
+      pointerY = 0;
+      decor.classList.add("is-returning");
+      scheduleUpdate();
+    };
+
+    const handlePointerMove = (event) => {
+      if (!desktopPointer.matches || reducedMotion.matches) return;
+      pointerX = Math.max(-1, Math.min(1, (event.clientX / window.innerWidth - 0.5) * 2));
+      pointerY = Math.max(-1, Math.min(1, (event.clientY / window.innerHeight - 0.5) * 2));
+      decor.classList.remove("is-returning");
+      window.clearTimeout(returnTimer);
+      returnTimer = window.setTimeout(resetDecor, 900);
+      scheduleUpdate();
+    };
+
+    const handleWindowLeave = (event) => {
+      if (!event.relatedTarget) resetDecor();
+    };
+
+    updateDecor();
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("mouseout", handleWindowLeave);
+    window.addEventListener("blur", resetDecor);
+    desktopPointer.addEventListener?.("change", resetDecor);
+    reducedMotion.addEventListener?.("change", resetDecor);
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.clearTimeout(returnTimer);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("mouseout", handleWindowLeave);
+      window.removeEventListener("blur", resetDecor);
+      desktopPointer.removeEventListener?.("change", resetDecor);
+      reducedMotion.removeEventListener?.("change", resetDecor);
+    };
+  }, []);
+
+  return <div ref={decorRef} className="student-viewport-decor" aria-hidden="true">
+    <img className="student-viewport-layer viewport-left-lines" src="./images/student-demo/student-viewport-left.webp" alt="" />
+    <img className="student-viewport-layer viewport-right-lines" src="./images/student-demo/student-viewport-right.webp" alt="" />
+    <img className="student-viewport-layer viewport-left-spark" src="./images/student-demo/student-practical-decor.webp" alt="" />
+    <img className="student-viewport-layer viewport-right-spark" src="./images/student-demo/student-practical-decor.webp" alt="" />
+  </div>;
+}
+
 function StudentExperience({ items }) {
   const sectionRef = useRef(null);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -168,7 +244,6 @@ function StudentExperience({ items }) {
   }, []);
 
   return <section ref={sectionRef} className={`student-experience${isRevealed ? " is-revealed" : ""}`} aria-labelledby="student-experience-title">
-    <img className="student-experience-decor" src="./images/student-demo/student-experience-decor.webp" alt="" aria-hidden="true" />
     <div className="student-shell">
       <div className="student-experience-heading"><span>Коротко о главном</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
       <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
@@ -284,79 +359,22 @@ const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life"
 function StudentHub() {
   const [active, setActive] = useState("people");
   const [direction, setDirection] = useState("forward");
-  const sectionRef = useRef(null);
   const activeIndex = studentHubTabs.findIndex(([id]) => id === active);
   const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentStudy />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
-
-  useEffect(() => {
-    const desktopPointer = window.matchMedia("(min-width: 821px) and (hover: hover) and (pointer: fine)");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let animationFrame = 0;
-    let pointerX = 0;
-    let pointerY = 0;
-
-    const updateAccents = () => {
-      animationFrame = 0;
-      const section = sectionRef.current;
-      if (!section) return;
-      const canMove = desktopPointer.matches && !reducedMotion.matches;
-      const x = canMove ? pointerX : 0;
-      const y = canMove ? pointerY : 0;
-      section.style.setProperty("--hub-decor-x", `${(x * 6).toFixed(2)}px`);
-      section.style.setProperty("--hub-decor-y", `${(y * 5).toFixed(2)}px`);
-    };
-
-    const scheduleUpdate = () => {
-      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateAccents);
-    };
-
-    const handleMouseMove = (event) => {
-      const section = sectionRef.current;
-      if (!section || !desktopPointer.matches || reducedMotion.matches) return;
-      const bounds = section.getBoundingClientRect();
-      pointerX = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width - 0.5) * 2));
-      pointerY = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height - 0.5) * 2));
-      section.classList.remove("is-cursor-resetting");
-      scheduleUpdate();
-    };
-
-    const resetAccents = () => {
-      const section = sectionRef.current;
-      if (!section) return;
-      pointerX = 0;
-      pointerY = 0;
-      section.classList.add("is-cursor-resetting");
-      scheduleUpdate();
-    };
-
-    const section = sectionRef.current;
-    updateAccents();
-    section?.addEventListener("mousemove", handleMouseMove);
-    section?.addEventListener("mouseleave", resetAccents);
-    desktopPointer.addEventListener?.("change", resetAccents);
-    reducedMotion.addEventListener?.("change", resetAccents);
-    return () => {
-      window.cancelAnimationFrame(animationFrame);
-      section?.removeEventListener("mousemove", handleMouseMove);
-      section?.removeEventListener("mouseleave", resetAccents);
-      desktopPointer.removeEventListener?.("change", resetAccents);
-      reducedMotion.removeEventListener?.("change", resetAccents);
-    };
-  }, []);
 
   const selectTab = (id, nextIndex) => {
     if (id === active) return;
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section ref={sectionRef} className="student-hub" id="explore" aria-labelledby="student-hub-title"><img className="student-hub-decor" src="./images/student-demo/student-hub-decor.webp" alt="" aria-hidden="true" /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  return <section className="student-hub" id="explore" aria-labelledby="student-hub-title"><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
   const priceIcons = ["spark", "dialog", "target"];
   const stepIcons = ["dialog", "group", "target", "spark"];
   return <section className="student-next" id="demo-week"><div className="student-shell"><div className="student-next-cta"><div><span>Попробовать школу</span><h2>Лучше один день здесь,<br />чем десять страниц описания</h2><p>{content.demoDescription}</p></div><a className="button" href="tel:+79122795067">Попробовать школу 5 дней</a><StudentAccent variant="cta" /></div><div className="student-practical">
-    <article className="student-pricing-card"><span>Стоимость</span><h3>Инвестиция<br />в большое будущее</h3><div className="student-price-grid">{prices.map(([title, price, period, details], index) => <section className="student-price-card" key={title}><span className="student-price-icon"><StudentIcon name={priceIcons[index]} /></span><h4>{title}</h4><p>{details[0]}</p><strong>{price}</strong><small>{period}</small></section>)}</div><small className="student-entry-fee">Вступительный взнос при поступлении — 75 000 ₽.</small><img className="student-practical-decor" src="./images/student-demo/student-practical-decor.webp" alt="" aria-hidden="true" /></article>
+    <article className="student-pricing-card"><span>Стоимость</span><h3>Инвестиция<br />в большое будущее</h3><div className="student-price-grid">{prices.map(([title, price, period, details], index) => <section className="student-price-card" key={title}><span className="student-price-icon"><StudentIcon name={priceIcons[index]} /></span><h4>{title}</h4><p>{details[0]}</p><strong>{price}</strong><small>{period}</small></section>)}</div><small className="student-entry-fee">Вступительный взнос при поступлении — 75 000 ₽.</small></article>
     <article className="student-admission-card"><span>Как поступить</span><h3>Простой путь<br />к большим возможностям</h3><div className="student-admission-path">{admissionSteps.map(([number, title, text], index) => <section key={number}><b>{number}</b><span className="student-admission-icon"><StudentIcon name={stepIcons[index]} /></span><div><h4>{title}</h4><p>{text}</p></div></section>)}</div><div className="student-admission-actions"><a className="button" href="tel:+79122795067">Записаться на встречу →</a><a href="tel:+79122795067">Уточнить условия →</a></div></article>
   </div></div></section>;
 }
@@ -425,6 +443,7 @@ export default function App() {
   }, []);
 
   return <main className={`audience-${audience}`}>
+    {audience === "student" && <StudentViewportDecor />}
     <header className="site-header">
       <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></a>
       <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav>

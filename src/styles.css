@@ -396,9 +396,16 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hero-badge { position: absolute; z-index: 3; top: 1.2rem; left: 1.2rem; padding: .65rem .9rem; border: 1px solid rgba(255,255,255,.72); border-radius: 999px; color: var(--ink); background: rgba(255,249,241,.92); backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; font-weight: 900; transform: rotate(-2deg); }
 .student-hero-badge span { color: var(--wine); }
 
+.student-viewport-decor { position: fixed; z-index: 12; inset: 94px 0 0; overflow: hidden; pointer-events: none; }
+.student-viewport-layer { position: absolute; display: block; max-width: none; pointer-events: none; will-change: transform; }
+.viewport-left-lines { top: -5%; left: clamp(-170px, -8vw, -115px); width: clamp(230px, 15vw, 300px); transform: translate3d(var(--viewport-far-x, 0px), var(--viewport-far-y, 0px), 0); }
+.viewport-right-lines { top: 1%; right: clamp(-190px, -9vw, -130px); width: clamp(270px, 17vw, 340px); transform: translate3d(var(--viewport-mid-x, 0px), var(--viewport-mid-y, 0px), 0); }
+.viewport-left-spark { left: clamp(-42px, -2vw, -24px); bottom: 17%; width: clamp(145px, 9vw, 190px); opacity: .72; transform: translate3d(var(--viewport-near-x, 0px), var(--viewport-near-y, 0px), 0); }
+.viewport-right-spark { top: 31%; right: clamp(-65px, -3vw, -34px); width: clamp(165px, 10vw, 220px); opacity: .64; transform: translate3d(var(--viewport-near-x, 0px), var(--viewport-near-y, 0px), 0); }
+.student-viewport-decor.is-returning .student-viewport-layer { transition: transform .72s ease-out; }
+
 .student-experience { position: relative; overflow: hidden; padding: clamp(4.5rem, 7vw, 7.2rem) 4vw; background: #fff8ee; animation: audience-in .35s ease both; }
 .student-experience::before { content: "01"; position: absolute; z-index: 1; top: clamp(1.4rem, 3vw, 3rem); right: 5vw; color: rgba(217,54,32,.075); font: italic clamp(7rem, 12vw, 12.5rem)/1 Georgia, serif; pointer-events: none; }
-.student-experience-decor { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .student-experience > .student-shell, .student-hub > .student-shell, .student-next > .student-shell { position: relative; z-index: 1; }
 .student-experience-heading { position: relative; z-index: 2; display: grid; grid-template-columns: .6fr 1.35fr .85fr; gap: 2rem; align-items: end; margin-bottom: clamp(2rem, 3vw, 3rem); }
 .student-experience-heading > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
@@ -430,8 +437,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-advantage-photo { width: 100%; height: 82px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
 
 .student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw clamp(5.5rem, 8vw, 8.5rem); background: var(--paper); }
-.student-hub-decor { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; will-change: transform; transform: translate3d(var(--hub-decor-x, 0px), var(--hub-decor-y, 0px), 0); }
-.student-hub.is-cursor-resetting .student-hub-decor { transition: transform .34s ease-out; }
 .student-hub > .student-shell { z-index: 1; }
 .student-hub-heading { display: grid; grid-template-columns: .58fr 1.75fr .55fr; gap: 2rem; align-items: center; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
 .student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
@@ -532,7 +537,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-price-card strong { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--wine); font: 500 clamp(2rem, 2.5vw, 2.75rem)/1 Georgia, serif; }
 .student-price-card small { margin-top: .25rem; color: var(--muted); text-transform: lowercase; }
 .student-entry-fee { position: relative; z-index: 1; display: block; margin-top: 1.4rem; color: var(--muted); }
-.student-practical-decor { position: absolute; right: 1.4rem; bottom: .55rem; width: min(35%, 300px); height: auto; opacity: .9; pointer-events: none; }
 .student-admission-card h3 { font-size: clamp(2.2rem, 3.25vw, 3.75rem); }
 .student-admission-path { display: grid; gap: .65rem; margin-top: 1.35rem; }
 .student-admission-path > section { min-width: 0; display: grid; grid-template-columns: 42px 50px minmax(0, 1fr); gap: .75rem; align-items: center; padding: .7rem; border-radius: .75rem; background: #fff8f0; }
@@ -716,6 +720,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 }
 
 @media (max-width: 820px) {
+  .student-viewport-decor { display: none; }
   .site-header { grid-template-columns: 130px 1fr auto; padding: 0 5vw; }
   .brand-logo { width: 120px; }
   .brand-logo img { width: 88px; }
@@ -747,7 +752,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card.secondary { display: none; }
   .review-card { min-height: 0; }
   .student-experience-heading { grid-template-columns: 1fr; gap: .8rem; }
-  .student-experience-decor { opacity: .72; transform: none; }
   .student-accent-cta { right: 1rem; bottom: 4.8rem; width: min(48vw, 310px); height: 100px; opacity: .34; }
   .student-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .student-advantage-card:first-child { grid-column: 1 / -1; min-height: 220px; }
@@ -759,7 +763,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-hub { padding-inline: 5vw; }
   .student-hub-heading, .student-panel-heading { grid-template-columns: 1fr; gap: .7rem; }
   .student-hub-heading h2 { grid-column: auto; text-align: left; }
-  .student-hub-decor { display: none; transform: none; will-change: auto; }
   .student-hub-tabs { display: flex; }
   .student-hub-tabs::after { display: none; }
   .student-hub-tabs button { flex: 0 0 auto; }
@@ -790,7 +793,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
     transform: none !important;
     animation: none !important;
   }
-  .student-hub-decor { transform: none !important; transition: none !important; will-change: auto; }
+  .student-viewport-layer { transform: none !important; transition: none !important; will-change: auto; }
 }
 
 @keyframes panel-in-mobile { from { opacity: .35; } to { opacity: 1; } }
@@ -839,7 +842,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card h3 { max-width: 88%; }
   .student-experience { padding-inline: 5vw; }
   .student-experience::before { top: 1rem; right: 2vw; font-size: 7rem; }
-  .student-experience-decor { display: none; }
   .student-accent-cta { right: -1rem; bottom: 4.8rem; width: 190px; height: 72px; opacity: .3; }
   .student-experience-grid { grid-template-columns: 1fr; }
   .student-advantage-card, .student-advantage-card:first-child { grid-column: auto; min-height: 195px; }
@@ -876,7 +878,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-practical h3 { font-size: clamp(2.25rem, 11vw, 3.15rem); }
   .student-price-grid { grid-template-columns: 1fr; }
   .student-price-card { min-height: 245px; }
-  .student-practical-decor { display: none; }
   .student-admission-path > section { grid-template-columns: 38px 44px minmax(0, 1fr); gap: .6rem; padding: .65rem .55rem; }
   .student-admission-path > section > b { width: 38px; height: 38px; }
   .student-admission-icon { width: 44px; height: 44px; }
