@@ -1090,14 +1090,14 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hero-bands {
   position: absolute;
   z-index: 2;
-  inset: 0 auto 0 0;
-  width: clamp(240px, 28%, 360px);
+  inset: 0;
+  width: 100%;
   height: 100%;
   pointer-events: none;
   animation: student-hero-band-in 1.2s cubic-bezier(.22,.75,.24,1) both;
 }
-.student-hero-band-shape-primary { fill: #e93620; }
-.student-hero-band-shape-secondary { fill: #ff6a22; }
+.student-hero-bands path { fill: url(#student-hero-ribbon-gradient); }
+.student-hero-ribbons-tablet { display: none; }
 @keyframes student-hero-copy-in {
   from { opacity: .25; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
@@ -1127,7 +1127,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 }
 
 @media (max-width: 1399px) and (min-width: 821px) {
-  .student-hero-bands { width: 22%; }
+  .student-hero-ribbons-desktop { display: none; }
+  .student-hero-ribbons-tablet { display: inline; }
 }
 
 @media (max-width: 820px) {
@@ -1145,7 +1146,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-hero-visual { min-height: 0; height: clamp(320px, 92vw, 520px); margin: 1.7rem -5vw 0; }
   .student-hero-photo { clip-path: polygon(0 13%, 100% 0, 100% 100%, 0 100%); }
   .student-hero-photo img { object-position: 49% center; }
-  .student-hero-bands { width: 14%; }
+  .student-hero-bands { display: none; }
   @keyframes student-hero-photo-reveal {
     from { clip-path: polygon(0 100%, 100% 87%, 100% 100%, 0 100%); }
     to { clip-path: polygon(0 13%, 100% 0, 100% 100%, 0 100%); }
@@ -1153,8 +1154,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 }
 
 @media (max-width: 540px) {
-  .student-hero-bands { width: 11%; }
-  .student-hero-band-shape-secondary { display: none; }
   .audience-student .hybrid-hero.student-hero-dynamic { padding-top: 2rem; }
   .student-hero-copy h1 { font-size: clamp(3.05rem, 14.2vw, 4.15rem); }
   .student-hero-copy > p { font-size: .94rem; line-height: 1.45; }

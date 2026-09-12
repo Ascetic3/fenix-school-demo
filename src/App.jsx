@@ -146,9 +146,21 @@ function StudentAccent({ variant }) {
 }
 
 function StudentHeroBands() {
-  return <svg className="student-hero-bands" viewBox="0 0 240 720" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-    <path className="student-hero-band-shape-primary" d="M -36 -40 H 48 L 250 238 V 350 L -36 44 Z" />
-    <path className="student-hero-band-shape-secondary" d="M -28 110 L 246 430 V 505 L -28 186 Z" />
+  return <svg className="student-hero-bands" viewBox="0 0 1000 720" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="student-hero-ribbon-gradient" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#e92f20" />
+        <stop offset="1" stopColor="#ff6a22" />
+      </linearGradient>
+    </defs>
+    <g className="student-hero-ribbons-desktop">
+      <path d="M 180 0 H 275 L 95 720 H 0 Z" />
+      <path d="M 1060 0 H 1155 L 970 720 H 875 Z" />
+    </g>
+    <g className="student-hero-ribbons-tablet">
+      <path d="M 180 0 H 240 L 60 720 H 0 Z" />
+      <path d="M 1040 0 H 1100 L 960 720 H 900 Z" />
+    </g>
   </svg>;
 }
 
