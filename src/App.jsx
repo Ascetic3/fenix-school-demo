@@ -145,6 +145,32 @@ function StudentAccent({ variant }) {
   </span>;
 }
 
+function StudentHubDecor() {
+  return <div className="student-hub-decor" aria-hidden="true">
+    <svg className="student-hub-decor-piece decor-left" viewBox="0 0 360 360" focusable="false">
+      <path className="decor-stroke decor-stroke-heavy" pathLength="1" d="M-20 322C20 236 58 154 154 82C218 34 280 12 375-8" />
+      <path className="decor-stroke decor-stroke-mid" pathLength="1" d="M-25 351C42 254 105 184 198 124C264 82 316 59 384 42" />
+      <path className="decor-stroke decor-stroke-fine" pathLength="1" d="M-14 286C46 209 104 150 182 104C249 64 306 41 370 26" />
+      <path className="decor-stroke decor-stroke-feather" pathLength="1" d="M35 277C73 245 113 226 155 218M49 247C88 219 124 204 169 198M72 216C108 194 141 183 182 180" />
+      <path className="decor-spark decor-spark-red" d="m211 137 7 19 19 7-19 7-7 19-7-19-19-7 19-7z" />
+    </svg>
+    <svg className="student-hub-decor-piece decor-right" viewBox="0 0 400 400" focusable="false">
+      <path className="decor-stroke decor-stroke-heavy" pathLength="1" d="M432 30C369 108 342 199 276 274C213 345 126 389-26 430" />
+      <path className="decor-stroke decor-stroke-mid" pathLength="1" d="M425 84C370 150 345 225 286 290C230 352 159 383 20 419" />
+      <path className="decor-stroke decor-stroke-fine" pathLength="1" d="M410 120C365 174 343 234 296 286C246 342 183 371 73 399" />
+      <path className="decor-stroke decor-stroke-feather" pathLength="1" d="M355 100C338 134 326 168 323 204M378 115C360 153 350 187 348 224M398 139C382 173 375 204 374 238" />
+      <path className="decor-spark decor-spark-orange" d="m249 235 8 22 22 8-22 8-8 22-8-22-22-8 22-8z" />
+    </svg>
+  </div>;
+}
+
+function StudentHubUnderline() {
+  return <svg className="student-hub-underline" viewBox="0 0 320 56" aria-hidden="true" focusable="false">
+    <path className="student-hub-underline-main" pathLength="1" d="M8 37C73 15 144 18 206 28C246 34 278 34 312 24" />
+    <path className="student-hub-underline-detail" pathLength="1" d="M198 36C237 42 275 39 307 30" />
+  </svg>;
+}
+
 function StudentExperience({ items }) {
   const sectionRef = useRef(null);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -309,7 +335,7 @@ function StudentHub() {
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title"><img className="student-hub-decor" src="./images/student-demo/student-hub-decor.webp" alt="" aria-hidden="true" /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2><img className="student-hub-underline" src="./images/student-demo/student-practical-decor.webp" alt="" aria-hidden="true" /></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title"><StudentHubDecor /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2><StudentHubUnderline /></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
