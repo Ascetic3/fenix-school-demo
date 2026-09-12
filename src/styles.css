@@ -466,7 +466,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub-tabs button.active { color: var(--wine); }
 .student-hub-tab-label { position: relative; display: inline-block; }
 .student-hub-tab-spark { position: absolute; top: 50%; right: calc(100% + .6rem); width: 15px; height: 15px; fill: #f05a24; opacity: 0; transform: translateY(-50%); pointer-events: none; transition: opacity .4s ease-out; }
-.student-hub-tab-underline { position: absolute; left: 50%; bottom: -.5rem; width: calc(100% + .85rem); height: 10px; overflow: visible; transform: translateX(-50%); pointer-events: none; }
+.student-hub-tab-underline { position: absolute; left: 50%; bottom: -.5rem; width: calc(100% + 1.5rem); height: 12px; overflow: visible; transform: translateX(-50%); pointer-events: none; }
 .student-hub-tab-underline path { fill: none; stroke: #f05a24; stroke-width: 1.7; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset 1s ease-out, opacity .12s ease-out; }
 .student-hub-tabs button.active .student-hub-tab-underline path { stroke-dashoffset: 0; opacity: .9; }
 @media (min-width: 821px) {
@@ -491,8 +491,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   }
 
   .student-hub-tab-underline {
-    width: calc(100% + 6.5rem);
-    height: 15px;
+    width: calc(100% + 4rem);
+    height: 12px;
   }
 
   .student-hub-tab-underline path {
