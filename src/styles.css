@@ -432,14 +432,14 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub-decor { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
 .student-hub-decor-piece { position: absolute; display: block; overflow: visible; opacity: 0; transition: opacity 1.8s ease-out, transform 1.8s cubic-bezier(.2,.7,.2,1); }
 .student-hub-decor-piece.decor-left { top: 0; left: 0; width: clamp(300px, 23vw, 400px); transform: translate3d(-50px, 0, 0); }
-.student-hub-decor-piece.decor-right { top: 0; right: 0; width: clamp(350px, 27vw, 470px); transform: translate3d(30px, 10px, 0); transition-duration: 2s, 2s; }
+.student-hub-decor-piece.decor-right { top: 0; right: 0; width: clamp(350px, 27vw, 470px); transform: translate3d(25px, 10px, 0); transition-duration: 1.8s, 2s; }
 .student-hub-decor-piece.decor-right > svg { display: block; width: 100%; height: auto; }
 .student-hub.is-revealed .student-hub-decor-piece { opacity: 1; transform: translate3d(0, 0, 0); }
 .student-hub-decor .decor-stroke { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.85s cubic-bezier(.2,.7,.2,1) .25s; }
-.student-hub-decor .decor-right path { --wing-delay: .25s; fill-opacity: 0; stroke: #000; stroke-width: 6; stroke-dasharray: 60000; stroke-dashoffset: 60000; transition: stroke-dashoffset 2.05s cubic-bezier(.2,.7,.2,1) var(--wing-delay), fill-opacity .8s ease-out calc(var(--wing-delay) + 1s), stroke-opacity .35s ease-out calc(var(--wing-delay) + 1.7s); }
-.student-hub-decor .decor-right path:nth-of-type(2) { --wing-delay: .3s; }
-.student-hub-decor .decor-right path:nth-of-type(3) { --wing-delay: .35s; }
-.student-hub-decor .decor-right path:nth-of-type(n+4) { --wing-delay: .4s; }
+.student-hub-decor .decor-right path { --wing-delay: .25s; fill: #f05a24; fill-opacity: 0; stroke: #f05a24; stroke-width: 6; stroke-dasharray: 60000; stroke-dashoffset: 60000; transition: stroke-dashoffset 2.8s cubic-bezier(.2,.7,.2,1) var(--wing-delay), fill-opacity .8s ease-out calc(var(--wing-delay) + 1.5s), stroke-opacity .35s ease-out calc(var(--wing-delay) + 2.45s); }
+.student-hub-decor .decor-right path:nth-of-type(2) { --wing-delay: .32s; }
+.student-hub-decor .decor-right path:nth-of-type(3) { --wing-delay: .39s; }
+.student-hub-decor .decor-right path:nth-of-type(n+4) { --wing-delay: .46s; }
 .student-hub.is-revealed .student-hub-decor .decor-right path { fill-opacity: 1; stroke-opacity: 0; stroke-dashoffset: 0; }
 .student-hub.is-revealed .student-hub-decor .decor-stroke { stroke-dashoffset: 0; }
 .student-hub-decor .decor-spark { opacity: 0; transition: opacity .8s ease-out .8s; }
