@@ -396,15 +396,16 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hero-badge { position: absolute; z-index: 3; top: 1.2rem; left: 1.2rem; padding: .65rem .9rem; border: 1px solid rgba(255,255,255,.72); border-radius: 999px; color: var(--ink); background: rgba(255,249,241,.92); backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; font-weight: 900; transform: rotate(-2deg); }
 .student-hero-badge span { color: var(--wine); }
 
-.student-experience { position: relative; overflow: hidden; padding: clamp(3.5rem, 5vw, 5.5rem) 4vw; background: #fff3e3; animation: audience-in .35s ease both; }
-.student-experience::before { content: "01"; position: absolute; top: .5rem; right: 4vw; color: rgba(217,54,32,.08); font: italic clamp(6rem, 11vw, 11rem)/1 Georgia, serif; pointer-events: none; }
+.student-experience { position: relative; overflow: hidden; padding: clamp(4.5rem, 7vw, 7.2rem) 4vw; background: #fff8ee; animation: audience-in .35s ease both; }
+.student-experience::before { content: "01"; position: absolute; z-index: 1; top: clamp(1.4rem, 3vw, 3rem); right: 5vw; color: rgba(217,54,32,.075); font: italic clamp(7rem, 12vw, 12.5rem)/1 Georgia, serif; pointer-events: none; }
+.student-experience-decor { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .student-experience > .student-shell, .student-hub > .student-shell, .student-next > .student-shell { position: relative; z-index: 1; }
-.student-experience-heading { position: relative; z-index: 1; display: grid; grid-template-columns: .55fr 1fr .75fr; gap: 2rem; align-items: end; margin-bottom: 2rem; }
+.student-experience-heading { position: relative; z-index: 2; display: grid; grid-template-columns: .6fr 1.35fr .85fr; gap: 2rem; align-items: end; margin-bottom: clamp(2rem, 3vw, 3rem); }
 .student-experience-heading > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
-.student-experience-heading h2 { margin: 0; font: 500 clamp(2.7rem, 4.5vw, 4.8rem)/.94 Georgia, serif; letter-spacing: -.055em; }
+.student-experience-heading h2 { margin: 0; font: 500 clamp(3.2rem, 5vw, 5.4rem)/.92 Georgia, serif; letter-spacing: -.06em; }
 .student-experience-heading p { max-width: 46ch; margin: 0; color: var(--muted); }
-.student-experience-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: .9rem; }
-.student-advantage-card { position: relative; min-width: 0; min-height: 285px; overflow: hidden; padding: clamp(1.25rem, 2vw, 1.8rem); border: 1px solid var(--line); border-radius: 1.2rem; display: flex; flex-direction: column; background: var(--paper); transition: transform .2s ease, box-shadow .2s ease; }
+.student-experience-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.18fr 1fr 1fr; gap: .9rem; }
+.student-advantage-card { position: relative; min-width: 0; min-height: 260px; overflow: hidden; padding: clamp(1.25rem, 2vw, 1.8rem); border: 1px solid var(--line); border-radius: 1.2rem; display: flex; flex-direction: column; background: var(--paper); transition: transform .2s ease, box-shadow .2s ease; }
 .student-advantage-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(36,33,36,.09); }
 .student-experience:not(.is-revealed) .student-advantage-card { opacity: 0; transform: translateY(12px); }
 .student-experience.is-revealed .student-advantage-card { animation: student-experience-card-in 600ms ease-out backwards; }
@@ -426,24 +427,21 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-experience-grid p { margin: 0; color: var(--muted); }
 .card-2 p { color: rgba(36,33,36,.7); }
 .card-3 p { color: rgba(255,255,255,.7); }
-.student-advantage-photo { width: 100%; height: 88px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
+.student-advantage-photo { width: 100%; height: 82px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
 
-.student-hub { position: relative; overflow: hidden; padding: clamp(4.5rem, 7vw, 7rem) 4vw; background: var(--paper); }
-.student-hub-accents { position: absolute; z-index: 2; inset: 0; overflow: hidden; pointer-events: none; }
-.student-hub-accent { position: absolute; display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; will-change: transform; }
-.student-hub-accent-line { top: 31%; left: -.9rem; width: 82px; height: 42px; color: var(--wine); opacity: .34; transform: translate3d(var(--hub-accent-1-x, 0px), var(--hub-accent-1-y, 0px), 0); }
-.student-hub-accent-sparks { top: 13%; right: 1rem; width: 42px; height: 48px; color: var(--apricot); opacity: .44; fill: currentColor; stroke: none; transform: translate3d(var(--hub-accent-2-x, 0px), var(--hub-accent-2-y, 0px), 0); }
-.student-hub-accent-strokes { right: -.5rem; bottom: 15%; width: 66px; height: 34px; color: var(--coral); opacity: .3; transform: translate3d(var(--hub-accent-3-x, 0px), var(--hub-accent-3-y, 0px), 0); }
-.student-hub.is-cursor-resetting .student-hub-accent { transition: transform .34s ease-out; }
-.student-hub-heading { display: grid; grid-template-columns: .55fr 1.75fr; gap: 2rem; align-items: end; margin-bottom: 2rem; }
+.student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw clamp(5.5rem, 8vw, 8.5rem); background: var(--paper); }
+.student-hub-decor { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; will-change: transform; transform: translate3d(var(--hub-decor-x, 0px), var(--hub-decor-y, 0px), 0); }
+.student-hub.is-cursor-resetting .student-hub-decor { transition: transform .34s ease-out; }
+.student-hub > .student-shell { z-index: 1; }
+.student-hub-heading { display: grid; grid-template-columns: .58fr 1.75fr .55fr; gap: 2rem; align-items: center; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
 .student-hub-heading > span, .student-panel-heading > span, .student-next-cta span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
-.student-hub-heading h2 { max-width: 1000px; margin: 0; font: 500 clamp(3.2rem, 5.5vw, 6.2rem)/.92 Georgia, serif; letter-spacing: -.06em; }
+.student-hub-heading h2 { grid-column: 2 / 4; max-width: 980px; margin: 0; font: 500 clamp(4rem, 6.2vw, 7rem)/.82 Georgia, serif; letter-spacing: -.07em; text-align: center; }
 .student-hub-tabs { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
 .student-hub-tabs::after { content: ""; position: absolute; right: auto; bottom: -1px; left: 0; width: 25%; height: 3px; background: var(--wine); transform: translateX(calc(var(--hub-index) * 100%)); transition: transform .2s cubic-bezier(.22,.75,.24,1); }
 .student-hub-tabs button { position: relative; z-index: 1; min-height: 56px; padding: .9rem clamp(1rem, 2.5vw, 2.3rem); border: 0; color: var(--muted); background: transparent; font: inherit; font-weight: 850; cursor: pointer; white-space: nowrap; transition: color .18s ease; }
 .student-hub-tabs button::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 3px; background: transparent; }
 .student-hub-tabs button.active { color: var(--wine); }
-.student-hub-stage { position: relative; min-height: 620px; overflow: hidden; padding: clamp(1.5rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
+.student-hub-stage { position: relative; min-height: 590px; overflow: hidden; padding: clamp(1.7rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
 .student-hub-stage.direction-backward { animation-name: student-panel-backward-in; }
 @keyframes student-panel-forward-in { from { opacity: .4; transform: translateX(10px); } to { opacity: 1; transform: none; } }
 @keyframes student-panel-backward-in { from { opacity: .4; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
@@ -514,23 +512,36 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-media-socials small { color: var(--muted); font-size: .62rem; font-weight: 400; }
 .student-media-socials i { color: var(--wine); font-style: normal; }
 
-.student-next { position: relative; overflow: hidden; padding: clamp(4rem, 6vw, 6rem) 4vw; background: #fff3e3; }
+.student-next { position: relative; overflow: hidden; padding: clamp(4rem, 6vw, 6rem) 4vw; background: #fff8ee; }
 .student-next-cta { position: relative; overflow: hidden; isolation: isolate; padding: clamp(2rem, 4vw, 4rem); border-radius: 1.5rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; color: white; background: var(--wine); }
 .student-next-cta > div, .student-next-cta > a { position: relative; z-index: 1; }
 .student-next-cta span { color: var(--apricot); }
 .student-next-cta h2 { max-width: 1050px; margin: .7rem 0 1rem; font: 500 clamp(3rem, 5vw, 5.8rem)/.9 Georgia, serif; letter-spacing: -.06em; }
 .student-next-cta p { max-width: 65ch; margin: 0; color: rgba(255,255,255,.72); }
 .student-next-cta .button { min-width: 235px; color: var(--ink); background: var(--apricot); }
-.student-practical { display: grid; grid-template-columns: 1.25fr .75fr; gap: 1rem; margin-top: 1rem; }
-.student-practical article { padding: 1.3rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--paper); }
-.student-practical article > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin-top: 1rem; }
-.student-practical article p { min-width: 0; margin: 0; padding: .8rem; border-radius: .7rem; display: grid; background: var(--cream); }
-.student-practical article p b { font-size: .78rem; }
-.student-practical article p strong { margin-top: .4rem; color: var(--wine); font: 500 1.35rem Georgia, serif; }
-.student-practical article > small { display: block; margin-top: .8rem; color: var(--muted); }
-.student-practical ol { margin: 1rem 0; padding-left: 1.3rem; columns: 2; color: var(--muted); }
-.student-practical li { margin-bottom: .5rem; break-inside: avoid; }
-.student-practical a { color: var(--wine); font-weight: 900; }
+.student-practical { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(380px, .85fr); gap: 1rem; margin-top: 1rem; }
+.student-practical > article { position: relative; min-width: 0; overflow: hidden; padding: clamp(1.45rem, 2.2vw, 2.25rem); border: 1px solid var(--line); border-radius: 1rem; background: var(--paper); }
+.student-practical > article > span { display: block; }
+.student-practical h3 { margin: .7rem 0 1rem; font: 500 clamp(2.5rem, 3.8vw, 4.5rem)/.9 Georgia, serif; letter-spacing: -.055em; }
+.student-price-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-top: clamp(1.5rem, 2.3vw, 2.4rem); }
+.student-price-card { min-width: 0; min-height: 300px; padding: 1.15rem; border: 1px solid rgba(36,33,36,.1); border-radius: .9rem; display: flex; flex-direction: column; background: #fffaf4; }
+.student-price-icon, .student-admission-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; color: var(--wine); background: rgba(217,54,32,.08); }
+.student-price-icon svg, .student-admission-icon svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.student-price-card h4 { margin: 1.15rem 0 .55rem; font: 500 clamp(1.1rem, 1.45vw, 1.35rem)/1.1 Georgia, serif; }
+.student-price-card p { min-height: 3.8em; margin: 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
+.student-price-card strong { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--wine); font: 500 clamp(2rem, 2.5vw, 2.75rem)/1 Georgia, serif; }
+.student-price-card small { margin-top: .25rem; color: var(--muted); text-transform: lowercase; }
+.student-entry-fee { position: relative; z-index: 1; display: block; margin-top: 1.4rem; color: var(--muted); }
+.student-practical-decor { position: absolute; right: 1.4rem; bottom: .55rem; width: min(35%, 300px); height: auto; opacity: .9; pointer-events: none; }
+.student-admission-card h3 { font-size: clamp(2.2rem, 3.25vw, 3.75rem); }
+.student-admission-path { display: grid; gap: .65rem; margin-top: 1.35rem; }
+.student-admission-path > section { min-width: 0; display: grid; grid-template-columns: 42px 50px minmax(0, 1fr); gap: .75rem; align-items: center; padding: .7rem; border-radius: .75rem; background: #fff8f0; }
+.student-admission-path > section > b { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; color: var(--wine); background: rgba(217,54,32,.08); font-size: .82rem; }
+.student-admission-path h4 { margin: 0 0 .18rem; font-size: .95rem; }
+.student-admission-path p { margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.35; }
+.student-admission-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .8rem; align-items: center; margin-top: 1rem; }
+.student-admission-actions .button { min-height: 48px; justify-content: center; color: white; background: var(--wine); }
+.student-admission-actions > a:last-child { color: var(--wine); font-size: .82rem; font-weight: 900; white-space: nowrap; }
 .explore-intro { display: grid; grid-template-columns: 1fr 1.2fr .8fr; gap: 2rem; align-items: end; margin-bottom: 3rem; }
 .explore-intro > span { color: var(--wine); text-transform: uppercase; letter-spacing: .15em; font-size: .75rem; font-weight: 900; }
 .explore-intro h2 { margin: 0; font: 500 clamp(2.6rem, 4.7vw, 5.2rem)/.96 Georgia, serif; letter-spacing: -.05em; }
@@ -699,6 +710,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-hub-stage { min-height: 650px; }
   .student-teacher-grid article > img { height: 165px; }
   .student-media-layout { grid-template-columns: minmax(0, 1.1fr) minmax(330px, .9fr); }
+  .student-practical { grid-template-columns: 1fr; }
+  .student-price-card { min-height: 270px; }
   .audience-student .hybrid-hero { grid-template-columns: 1fr .75fr; }
 }
 
@@ -734,6 +747,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card.secondary { display: none; }
   .review-card { min-height: 0; }
   .student-experience-heading { grid-template-columns: 1fr; gap: .8rem; }
+  .student-experience-decor { opacity: .72; transform: none; }
   .student-accent-cta { right: 1rem; bottom: 4.8rem; width: min(48vw, 310px); height: 100px; opacity: .34; }
   .student-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .student-advantage-card:first-child { grid-column: 1 / -1; min-height: 220px; }
@@ -744,15 +758,13 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-experience.is-revealed .student-advantage-card:nth-child(3) { animation-delay: 60ms; }
   .student-hub { padding-inline: 5vw; }
   .student-hub-heading, .student-panel-heading { grid-template-columns: 1fr; gap: .7rem; }
+  .student-hub-heading h2 { grid-column: auto; text-align: left; }
+  .student-hub-decor { display: none; transform: none; will-change: auto; }
   .student-hub-tabs { display: flex; }
   .student-hub-tabs::after { display: none; }
   .student-hub-tabs button { flex: 0 0 auto; }
   .student-hub-tabs button.active::after { background: var(--wine); }
   .student-hub-stage { min-height: 0; }
-  .student-hub-accent { transform: none; will-change: auto; }
-  .student-hub-accent-line { top: 29%; left: -.8rem; width: 58px; opacity: .28; }
-  .student-hub-accent-sparks { top: 16%; right: .7rem; width: 28px; height: 34px; opacity: .35; }
-  .student-hub-accent-strokes { display: none; }
   .student-hub-stage, .student-hub-stage.direction-backward { animation: panel-in-mobile .14s ease both; }
   .student-teacher-grid article > img { height: 145px; }
   .student-study-layout, .student-media-layout { grid-template-columns: 1fr; }
@@ -762,6 +774,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-next { padding-inline: 5vw; }
   .student-next-cta { grid-template-columns: 1fr; align-items: start; }
   .student-next-cta .button { width: fit-content; }
+  .student-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .student-reviews { padding-inline: 5vw; }
   .student-reviews-intro h2 { font-size: clamp(3rem, 9vw, 5rem); }
 }
@@ -777,7 +790,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
     transform: none !important;
     animation: none !important;
   }
-  .student-hub-accent { transform: none !important; transition: none !important; will-change: auto; }
+  .student-hub-decor { transform: none !important; transition: none !important; will-change: auto; }
 }
 
 @keyframes panel-in-mobile { from { opacity: .35; } to { opacity: 1; } }
@@ -825,6 +838,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .review-card { padding: 1.25rem; }
   .review-card h3 { max-width: 88%; }
   .student-experience { padding-inline: 5vw; }
+  .student-experience::before { top: 1rem; right: 2vw; font-size: 7rem; }
+  .student-experience-decor { display: none; }
   .student-accent-cta { right: -1rem; bottom: 4.8rem; width: 190px; height: 72px; opacity: .3; }
   .student-experience-grid { grid-template-columns: 1fr; }
   .student-advantage-card, .student-advantage-card:first-child { grid-column: auto; min-height: 195px; }
@@ -857,8 +872,16 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-next-cta h2 { font-size: clamp(2.5rem, 11vw, 3.5rem); }
   .student-next-cta .button { width: 100%; min-width: 0; }
   .student-practical { grid-template-columns: 1fr; }
-  .student-practical article > div { grid-template-columns: 1fr; }
-  .student-practical ol { columns: 1; }
+  .student-practical > article { padding: 1.2rem; }
+  .student-practical h3 { font-size: clamp(2.25rem, 11vw, 3.15rem); }
+  .student-price-grid { grid-template-columns: 1fr; }
+  .student-price-card { min-height: 245px; }
+  .student-practical-decor { display: none; }
+  .student-admission-path > section { grid-template-columns: 38px 44px minmax(0, 1fr); gap: .6rem; padding: .65rem .55rem; }
+  .student-admission-path > section > b { width: 38px; height: 38px; }
+  .student-admission-icon { width: 44px; height: 44px; }
+  .student-admission-actions { grid-template-columns: 1fr; }
+  .student-admission-actions > a:last-child { text-align: center; }
   .student-reviews { padding-top: 3rem; }
   .student-reviews-intro h2 { font-size: clamp(2.25rem, 11vw, 3.1rem); }
   .student-review-stage { border-radius: 1.15rem; }

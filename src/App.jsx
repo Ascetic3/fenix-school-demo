@@ -168,6 +168,7 @@ function StudentExperience({ items }) {
   }, []);
 
   return <section ref={sectionRef} className={`student-experience${isRevealed ? " is-revealed" : ""}`} aria-labelledby="student-experience-title">
+    <img className="student-experience-decor" src="./images/student-demo/student-experience-decor.webp" alt="" aria-hidden="true" />
     <div className="student-shell">
       <div className="student-experience-heading"><span>Коротко о главном</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
       <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
@@ -280,14 +281,6 @@ function StudentMedia({ items }) {
 
 const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life", "Школьная жизнь"], ["media", "Фото и видео"]];
 
-function StudentHubAccents() {
-  return <div className="student-hub-accents" aria-hidden="true">
-    <svg className="student-hub-accent student-hub-accent-line" viewBox="0 0 84 42" focusable="false"><path d="M2 31C24 7 49 8 82 17" /><path d="M10 38C27 24 45 20 61 22" /></svg>
-    <svg className="student-hub-accent student-hub-accent-sparks" viewBox="0 0 52 58" focusable="false"><path d="m17 2 3.4 10.6L31 16l-10.6 3.4L17 30l-3.4-10.6L3 16l10.6-3.4z" /><path d="m40 31 2 6 6 2-6 2-2 6-2-6-6-2 6-2z" /></svg>
-    <svg className="student-hub-accent student-hub-accent-strokes" viewBox="0 0 66 34" focusable="false"><path d="M3 24C21 8 39 8 63 14" /><path d="M20 31C33 22 46 20 58 22" /></svg>
-  </div>;
-}
-
 function StudentHub() {
   const [active, setActive] = useState("people");
   const [direction, setDirection] = useState("forward");
@@ -309,12 +302,8 @@ function StudentHub() {
       const canMove = desktopPointer.matches && !reducedMotion.matches;
       const x = canMove ? pointerX : 0;
       const y = canMove ? pointerY : 0;
-      section.style.setProperty("--hub-accent-1-x", `${(x * 4).toFixed(2)}px`);
-      section.style.setProperty("--hub-accent-1-y", `${(y * 3).toFixed(2)}px`);
-      section.style.setProperty("--hub-accent-2-x", `${(x * 7).toFixed(2)}px`);
-      section.style.setProperty("--hub-accent-2-y", `${(y * 6).toFixed(2)}px`);
-      section.style.setProperty("--hub-accent-3-x", `${(x * 5).toFixed(2)}px`);
-      section.style.setProperty("--hub-accent-3-y", `${(y * 4).toFixed(2)}px`);
+      section.style.setProperty("--hub-decor-x", `${(x * 6).toFixed(2)}px`);
+      section.style.setProperty("--hub-decor-y", `${(y * 5).toFixed(2)}px`);
     };
 
     const scheduleUpdate = () => {
@@ -360,11 +349,16 @@ function StudentHub() {
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section ref={sectionRef} className="student-hub" id="explore" aria-labelledby="student-hub-title"><StudentHubAccents /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
+  return <section ref={sectionRef} className="student-hub" id="explore" aria-labelledby="student-hub-title"><img className="student-hub-decor" src="./images/student-demo/student-hub-decor.webp" alt="" aria-hidden="true" /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}>{label}</button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
 function StudentNextSteps({ content }) {
-  return <section className="student-next" id="demo-week"><div className="student-shell"><div className="student-next-cta"><div><span>Попробовать школу</span><h2>Лучше один день здесь,<br />чем десять страниц описания</h2><p>{content.demoDescription}</p></div><a className="button" href="tel:+79122795067">Попробовать школу 5 дней</a><StudentAccent variant="cta" /></div><div className="student-practical"><article><span>Стоимость</span><div>{prices.map(([title, price]) => <p key={title}><b>{title}</b><strong>{price}</strong></p>)}</div><small>Вступительный взнос при поступлении — 75 000 ₽.</small></article><article><span>Как поступить</span><ol>{admissionSteps.map(([, title]) => <li key={title}>{title}</li>)}</ol><a href="tel:+79122795067">Уточнить условия →</a></article></div></div></section>;
+  const priceIcons = ["spark", "dialog", "target"];
+  const stepIcons = ["dialog", "group", "target", "spark"];
+  return <section className="student-next" id="demo-week"><div className="student-shell"><div className="student-next-cta"><div><span>Попробовать школу</span><h2>Лучше один день здесь,<br />чем десять страниц описания</h2><p>{content.demoDescription}</p></div><a className="button" href="tel:+79122795067">Попробовать школу 5 дней</a><StudentAccent variant="cta" /></div><div className="student-practical">
+    <article className="student-pricing-card"><span>Стоимость</span><h3>Инвестиция<br />в большое будущее</h3><div className="student-price-grid">{prices.map(([title, price, period, details], index) => <section className="student-price-card" key={title}><span className="student-price-icon"><StudentIcon name={priceIcons[index]} /></span><h4>{title}</h4><p>{details[0]}</p><strong>{price}</strong><small>{period}</small></section>)}</div><small className="student-entry-fee">Вступительный взнос при поступлении — 75 000 ₽.</small><img className="student-practical-decor" src="./images/student-demo/student-practical-decor.webp" alt="" aria-hidden="true" /></article>
+    <article className="student-admission-card"><span>Как поступить</span><h3>Простой путь<br />к большим возможностям</h3><div className="student-admission-path">{admissionSteps.map(([number, title, text], index) => <section key={number}><b>{number}</b><span className="student-admission-icon"><StudentIcon name={stepIcons[index]} /></span><div><h4>{title}</h4><p>{text}</p></div></section>)}</div><div className="student-admission-actions"><a className="button" href="tel:+79122795067">Записаться на встречу →</a><a href="tel:+79122795067">Уточнить условия →</a></div></article>
+  </div></div></section>;
 }
 
 function ReviewCard({ review, secondary = false }) {
