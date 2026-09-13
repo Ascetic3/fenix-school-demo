@@ -510,25 +510,28 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-panel-heading { display: grid; grid-template-columns: .45fr 1fr .8fr; gap: 1.5rem; align-items: end; margin-bottom: 1.7rem; }
 .student-panel-heading h3 { margin: 0; font: 500 clamp(2.3rem, 3.5vw, 4rem)/.96 Georgia, serif; letter-spacing: -.045em; }
 .student-panel-heading p { max-width: 55ch; margin: 0; color: var(--muted); }
-.student-people-heading { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 2rem; align-items: end; margin-bottom: 2rem; }
+.student-people-heading { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 2rem; align-items: end; margin-bottom: 1.8rem; }
 .student-people-heading > div > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
-.student-people-heading h3 { margin: .55rem 0 0; font: 500 clamp(2.3rem, 3.5vw, 4rem)/.96 Georgia, serif; letter-spacing: -.045em; }
-.student-people-heading > p { max-width: 50ch; margin: 0; color: var(--muted); }
+.student-people-heading h3 { margin: .4rem 0 0; font: 500 clamp(3rem, 4.8vw, 4.9rem)/.9 Georgia, serif; letter-spacing: -.05em; }
+.student-people-heading > p { max-width: 43ch; margin: 0 0 .35rem; color: var(--muted); font-size: .92rem; line-height: 1.5; }
 .student-teacher-carousel { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: .65rem; align-items: center; }
 .student-teacher-arrow { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: var(--paper); font: 700 1.25rem Arial, sans-serif; cursor: pointer; }
 .student-teacher-arrow:disabled { opacity: .35; cursor: default; }
 .student-teacher-viewport { min-width: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; }
 .student-teacher-viewport::-webkit-scrollbar { display: none; }
 .student-teacher-track { display: flex; gap: .85rem; }
-.student-teacher-card { flex: 0 0 calc(var(--teacher-card-percent) - var(--teacher-gap-shrink)); min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 1rem; background: var(--paper); scroll-snap-align: start; }
-.student-teacher-card > img { display: block; width: 100%; max-width: 100%; height: 185px; object-fit: cover; }
-.student-teacher-card > div { padding: 1rem; }
-.student-teacher-card span { color: var(--wine); text-transform: uppercase; letter-spacing: .1em; font-size: .62rem; font-weight: 900; }
-.student-teacher-card h4 { margin: .55rem 0 .2rem; font: 500 1.35rem Georgia, serif; }
-.student-teacher-card p { margin: .8rem 0 0; color: var(--muted); font-size: .86rem; }
-.student-teacher-progress { display: flex; gap: .8rem; align-items: center; justify-content: center; margin-top: 1rem; color: var(--muted); font-size: .8rem; }
-.student-teacher-progress > div { width: min(140px, 28vw); height: 3px; overflow: hidden; border-radius: 999px; background: var(--line); }
-.student-teacher-progress > div > span { display: block; height: 100%; background: var(--wine); transition: width .2s ease; }
+.student-teacher-card { flex: 0 0 calc(var(--teacher-card-percent) - var(--teacher-gap-shrink)); height: 310px; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: .7rem; display: flex; flex-direction: column; background: var(--paper); scroll-snap-align: start; }
+.student-teacher-photo { position: relative; flex: 0 0 57%; min-height: 0; overflow: hidden; background: #e9e1d8; }
+.student-teacher-photo img { display: block; width: 100%; max-width: 100%; height: 100%; object-fit: cover; }
+.student-teacher-subject { position: absolute; top: .6rem; left: .6rem; max-width: calc(100% - 1.2rem); padding: .35rem .65rem; overflow: hidden; border-radius: 999px; color: var(--ink); background: var(--paper); font-size: .68rem; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
+.student-teacher-copy { min-width: 0; padding: .7rem .8rem .8rem; }
+.student-teacher-copy h4 { margin: 0; font: 500 1.08rem/1.1 Georgia, serif; }
+.student-teacher-copy > span { display: block; margin-top: .35rem; color: var(--wine); font-size: .65rem; font-weight: 800; }
+.student-teacher-copy p { display: -webkit-box; margin: .5rem 0 0; overflow: hidden; color: var(--muted); font-size: .75rem; line-height: 1.3; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.student-teacher-progress { display: flex; gap: .75rem; align-items: center; justify-content: center; margin-top: .9rem; color: var(--muted); font-size: .8rem; }
+.student-teacher-dots { display: flex; gap: .42rem; align-items: center; }
+.student-teacher-dots > span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.student-teacher-dots > span.active { background: var(--wine); }
 .student-life-grid { height: 410px; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(240px, .7fr); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: .75rem; }
 .student-life-grid button { position: relative; min-width: 0; overflow: hidden; padding: 0; border: 0; border-radius: 1rem; color: white; background: #d8c4b6; cursor: zoom-in; }
 .student-life-grid button.featured { grid-row: 1 / -1; }
@@ -784,7 +787,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .founder-mini { min-height: 390px; }
   .demo-field-grid { grid-template-columns: repeat(3, 1fr); }
   .student-hub-stage { min-height: 650px; }
-  .student-teacher-card > img { height: 165px; }
+  .student-hub-stage:has(.student-people) { min-height: 0; }
   .student-media-layout { grid-template-columns: minmax(0, 1.1fr) minmax(330px, .9fr); }
   .student-practical { grid-template-columns: 1fr; }
   .student-price-card { min-height: 270px; }
@@ -853,7 +856,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-hub-tabs button { flex: 0 0 auto; }
   .student-hub-stage { min-height: 0; }
   .student-hub-stage, .student-hub-stage.direction-backward { animation: panel-in-mobile .14s ease both; }
-  .student-teacher-card > img { height: 145px; }
   .student-media-layout { grid-template-columns: 1fr; }
   .student-media-video { min-height: 320px; }
   .student-next { padding-inline: 5vw; }
@@ -957,7 +959,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-teacher-arrow { grid-row: 2; width: 48px; height: 48px; }
   .student-teacher-arrow:first-child { grid-column: 1; justify-self: start; }
   .student-teacher-arrow:last-child { grid-column: 1; justify-self: end; }
-  .student-teacher-card > img { height: 220px; }
   .student-life-grid { height: 390px; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 240px 140px; }
   .student-life-grid button.featured { grid-column: 1 / -1; grid-row: auto; }
   .student-lightbox { padding: 4.5rem 1rem; }

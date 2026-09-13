@@ -198,18 +198,20 @@ function StudentExperience({ items }) {
 }
 
 function StudentPeople({ teachers }) {
+  const getCardsPerView = () => {
+    const width = window.innerWidth;
+    return width >= 1400 ? 5 : width >= 1200 ? 4 : width >= 900 ? 3 : width >= 821 ? 2 : 1;
+  };
   const viewportRef = useRef(null);
   const [index, setIndex] = useState(0);
-  const [cardsPerView, setCardsPerView] = useState(5);
+  const [cardsPerView, setCardsPerView] = useState(getCardsPerView);
   const visibleCount = Math.min(teachers.length, cardsPerView);
   const maxIndex = Math.max(0, teachers.length - visibleCount);
+  const dotCount = Math.min(teachers.length ? maxIndex + 1 : 0, 5);
+  const activeDot = maxIndex ? Math.round(index / maxIndex * (dotCount - 1)) : 0;
 
   useEffect(() => {
-    const updateCardsPerView = () => {
-      const width = window.innerWidth;
-      setCardsPerView(width >= 1400 ? 5 : width >= 1024 ? 4 : width >= 641 ? 2 : 1);
-    };
-    updateCardsPerView();
+    const updateCardsPerView = () => setCardsPerView(getCardsPerView());
     window.addEventListener("resize", updateCardsPerView);
     return () => window.removeEventListener("resize", updateCardsPerView);
   }, []);
@@ -245,15 +247,15 @@ function StudentPeople({ teachers }) {
   return <div className="student-hub-panel student-people">
     <div className="student-people-heading"><div><span>Люди</span><h3>С кем ты будешь<br />учиться</h3></div><p>В нашей школе тебя будут сопровождать опытные и внимательные педагоги. Они не только хорошо знают свой предмет, но и умеют вдохновлять, поддерживать и помогать расти.</p></div>
     <div className="student-teacher-carousel"><button type="button" className="student-teacher-arrow" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Предыдущие преподаватели">←</button>
-      <div className="student-teacher-viewport" ref={viewportRef} onScroll={syncPosition} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className="student-teacher-track" style={{ "--teacher-card-percent": `${100 / (visibleCount || 1)}%`, "--teacher-gap-shrink": `${.85 * Math.max(visibleCount - 1, 0) / (visibleCount || 1)}rem` }}>
+      <div className="student-teacher-viewport" ref={viewportRef} onScroll={syncPosition} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className="student-teacher-track" style={{ "--teacher-card-percent": `${100 / cardsPerView}%`, "--teacher-gap-shrink": `${.85 * (cardsPerView - 1) / cardsPerView}rem` }}>
         {teachers.map((teacher, teacherIndex) => <article className="student-teacher-card" key={`${teacher.subject}-${teacherIndex}`}>
-          {teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационная фотография, не портрет преподавателя" : teacher.name} />}
-          <div><span>{teacher.placeholder ? `Demo · ${teacher.subject}` : teacher.subject}</span><h4>{teacher.name}</h4><p>{teacher.shortDescription}</p></div>
+          <div className="student-teacher-photo">{teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационная фотография, не портрет преподавателя" : teacher.name} />}<span className="student-teacher-subject">{teacher.subject}</span></div>
+          <div className="student-teacher-copy"><h4>{teacher.name}</h4><span>{teacher.placeholder ? "Demo · данные уточняются" : teacher.subject}</span><p>{teacher.shortDescription}</p></div>
         </article>)}
       </div></div>
       <button type="button" className="student-teacher-arrow" onClick={() => goTo(index + 1)} disabled={index === maxIndex} aria-label="Следующие преподаватели">→</button>
     </div>
-    <div className="student-teacher-progress"><span>{teachers.length ? `${index + 1}–${Math.min(index + visibleCount, teachers.length)} / ${teachers.length}` : "0 / 0"}</span><div role="progressbar" aria-label="Просмотр преподавателей" aria-valuemin="0" aria-valuemax={maxIndex} aria-valuenow={index}><span style={{ width: `${teachers.length ? (index + visibleCount) / teachers.length * 100 : 0}%` }} /></div></div>
+    <div className="student-teacher-progress"><div className="student-teacher-dots" aria-hidden="true">{Array.from({ length: dotCount }, (_, dotIndex) => <span className={dotIndex === activeDot ? "active" : ""} key={dotIndex} />)}</div><span aria-live="polite">{teachers.length ? `${index + 1} / ${maxIndex + 1}` : "0 / 0"}</span></div>
   </div>;
 }
 
