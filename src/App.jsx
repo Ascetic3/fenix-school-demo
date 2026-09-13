@@ -228,20 +228,12 @@ function StudentPeople({ teachers }) {
   const goTo = (nextIndex) => {
     const target = Math.min(Math.max(nextIndex, 0), maxIndex);
     const viewport = viewportRef.current;
-    const track = viewport?.firstElementChild;
-    const firstCard = track?.firstElementChild;
-    const card = track?.children[target];
-    if (viewport && track && firstCard && card) {
-      track.getAnimations().forEach((animation) => animation.cancel());
-      const previousScroll = viewport.scrollLeft;
-      viewport.scrollLeft = card.offsetLeft - firstCard.offsetLeft;
-      const distance = viewport.scrollLeft - previousScroll;
-      if (distance && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        track.animate(
-          [{ transform: `translate3d(${distance}px, 0, 0)` }, { transform: "translate3d(0, 0, 0)" }],
-          { duration: 500, easing: "cubic-bezier(.2,.7,.2,1)" },
-        );
-      }
+    const firstCard = viewport?.firstElementChild?.firstElementChild;
+    const card = viewport?.firstElementChild?.children[target];
+    if (viewport && firstCard && card) {
+      const targetLeft = card.offsetLeft - firstCard.offsetLeft;
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      viewport.scrollTo({ left: targetLeft, behavior: prefersReducedMotion ? "auto" : "smooth" });
     }
     setIndex(target);
   };
@@ -398,11 +390,11 @@ function StudentHub() {
 
 function StudentSectionTransition() {
   const [isRevealed, setIsRevealed] = useState(false);
-  const artRef = useRef(null);
+  const triggerRef = useRef(null);
 
   useEffect(() => {
-    const art = artRef.current;
-    if (!art) return undefined;
+    const trigger = triggerRef.current;
+    if (!trigger) return undefined;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
       setIsRevealed(true);
       return undefined;
@@ -411,13 +403,13 @@ function StudentSectionTransition() {
       if (!entry.isIntersecting) return;
       setIsRevealed(true);
       observer.disconnect();
-    }, { threshold: 0.3 });
-    observer.observe(art);
+    }, { threshold: 0, rootMargin: "0px 0px 20% 0px" });
+    observer.observe(trigger);
     return () => observer.disconnect();
   }, []);
 
-  return <div className={`student-section-transition${isRevealed ? " is-revealed" : ""}`} aria-hidden="true">
-    <img ref={artRef} src="./images/student-demo/student-people-stories-transition.svg" alt="" draggable="false" />
+  return <div ref={triggerRef} className={`student-section-transition${isRevealed ? " is-revealed" : ""}`} aria-hidden="true">
+    <img src="./images/student-demo/student-people-stories-transition.svg" alt="" draggable="false" />
   </div>;
 }
 

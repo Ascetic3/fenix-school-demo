@@ -434,8 +434,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw clamp(5.5rem, 8vw, 8.5rem); background: var(--paper); }
 .student-flow { position: relative; isolation: isolate; overflow: hidden; }
 .student-flow .student-hub > .student-shell, .student-flow .student-stories > .student-shell { z-index: 2; }
-.student-section-transition { position: relative; z-index: 1; height: 0; pointer-events: none; }
-.student-section-transition img { position: absolute; top: clamp(-360px, -22vw, -220px); left: -6vw; display: block; width: 112vw; max-width: none; height: auto; opacity: 0; transform: translate3d(-36px, 0, 0); clip-path: inset(0 100% 0 0); transition: clip-path 5s cubic-bezier(.2,.7,.2,1), opacity 1.8s ease-out, transform 1.8s cubic-bezier(.2,.7,.2,1); }
+.student-section-transition { position: relative; z-index: 1; height: 1px; pointer-events: none; }
+.student-section-transition img { position: absolute; top: clamp(-360px, -22vw, -220px); left: -6vw; display: block; width: 112vw; max-width: none; height: auto; opacity: 0; transform: translate3d(-36px, 0, 0); clip-path: inset(0 100% 0 0); transition: clip-path 5s cubic-bezier(.2,.7,.2,1), opacity 1.8s ease-out, transform 5s cubic-bezier(.2,.7,.2,1); }
 .student-section-transition.is-revealed img { opacity: 1; transform: translate3d(0, 0, 0); clip-path: inset(0 0 0 0); }
 .student-hub-decor { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
 .student-hub-decor-piece { position: absolute; display: block; overflow: visible; opacity: 0; transition: opacity 1.8s ease-out, transform 1.8s cubic-bezier(.2,.7,.2,1); }
