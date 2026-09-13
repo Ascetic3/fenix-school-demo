@@ -249,8 +249,8 @@ function StudentPeople({ teachers }) {
     <div className="student-teacher-carousel"><button type="button" className="student-teacher-arrow" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Предыдущие преподаватели">←</button>
       <div className="student-teacher-viewport" ref={viewportRef} onScroll={syncPosition} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className="student-teacher-track" style={{ "--teacher-card-percent": `${100 / cardsPerView}%`, "--teacher-gap-shrink": `${.85 * (cardsPerView - 1) / cardsPerView}rem` }}>
         {teachers.map((teacher, teacherIndex) => <article className="student-teacher-card" key={`${teacher.subject}-${teacherIndex}`}>
-          <div className="student-teacher-photo">{teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационная фотография, не портрет преподавателя" : teacher.name} />}<span className="student-teacher-subject">{teacher.subject}</span></div>
-          <div className="student-teacher-copy"><h4>{teacher.name}</h4><span>{teacher.placeholder ? "Demo · данные уточняются" : teacher.subject}</span><p>{teacher.shortDescription}</p></div>
+          <div className="student-teacher-photo">{teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационное фото, не сотрудник школы Феникс" : teacher.name} />}<span className="student-teacher-subject">{teacher.subject}</span></div>
+          <div className="student-teacher-copy"><h4>{teacher.name}</h4><span>{teacher.placeholder ? "DEMO · ДАННЫЕ УТОЧНЯЮТСЯ" : teacher.subject}</span><p>{teacher.shortDescription}</p></div>
         </article>)}
       </div></div>
       <button type="button" className="student-teacher-arrow" onClick={() => goTo(index + 1)} disabled={index === maxIndex} aria-label="Следующие преподаватели">→</button>

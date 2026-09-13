@@ -102,27 +102,62 @@ export const studentAdvantages = [
   },
 ];
 
-// DEMO/TODO: replace every field with confirmed teacher information and real portraits.
+// DEMO/TODO: these eight supplied images and descriptions are illustrative, not Fenix staff records.
 export const teachers = [
   {
-    name: "Имя уточняется",
-    subject: "Учитель математики",
-    photo: "./images/student-demo/student-demo-study.jpg",
-    shortDescription: "Короткая информация о преподавателе и его подходе появится после подтверждения школой.",
+    name: "Имя преподавателя уточняется",
+    subject: "Математика",
+    photo: "./images/student-demo/teachers/teacher-math-demo.png",
+    shortDescription: "Помогает разобраться в логике задачи и не бояться сложных тем.",
     placeholder: true,
   },
   {
-    name: "Имя уточняется",
-    subject: "Учитель русского языка",
-    photo: "./images/student-demo/student-demo-class.jpg",
-    shortDescription: "Короткая информация о преподавателе и его подходе появится после подтверждения школой.",
+    name: "Имя преподавателя уточняется",
+    subject: "Русский язык и литература",
+    photo: "./images/student-demo/teachers/teacher-russian-demo.png",
+    shortDescription: "Помогает видеть в текстах больше и учит формулировать свои мысли.",
+    placeholder: true,
+  },
+  {
+    name: "Имя преподавателя уточняется",
+    subject: "Английский язык",
+    photo: "./images/student-demo/teachers/teacher-english-demo.png",
+    shortDescription: "Создаёт среду, где можно спокойно говорить, ошибаться и пробовать снова.",
+    placeholder: true,
+  },
+  {
+    name: "Имя преподавателя уточняется",
+    subject: "Физика",
+    photo: "./images/student-demo/teachers/teacher-physics-demo.png",
+    shortDescription: "Показывает, как формулы связаны с реальными явлениями и экспериментами.",
+    placeholder: true,
+  },
+  {
+    name: "Имя преподавателя уточняется",
+    subject: "История",
+    photo: "./images/student-demo/teachers/teacher-history-demo.png",
+    shortDescription: "Помогает понимать причины событий, а не просто запоминать даты.",
+    placeholder: true,
+  },
+  {
+    name: "Имя преподавателя уточняется",
+    subject: "Химия",
+    photo: "./images/student-demo/teachers/teacher-chemistry-demo.png",
+    shortDescription: "Объясняет сложные процессы через понятные примеры и практику.",
+    placeholder: true,
+  },
+  {
+    name: "Имя преподавателя уточняется",
+    subject: "Биология",
+    photo: "./images/student-demo/teachers/teacher-biology-demo.png",
+    shortDescription: "Показывает, как устроен живой мир и почему детали имеют значение.",
     placeholder: true,
   },
   {
     name: "Имя уточняется",
     subject: "Классный руководитель",
-    photo: "./images/student-demo/student-demo-discussion.jpg",
-    shortDescription: "Короткая информация о преподавателе и его подходе появится после подтверждения школой.",
+    photo: "./images/student-demo/teachers/teacher-class-demo.png",
+    shortDescription: "Человек, к которому можно обратиться не только по поводу уроков.",
     placeholder: true,
   },
 ];
