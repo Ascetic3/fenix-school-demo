@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import studentHubRightWingSvg from "./assets/studenthub-right-wing.svg?raw";
 import {
@@ -197,67 +197,75 @@ function StudentExperience({ items }) {
   </section>;
 }
 
+function buildTeacherPageStarts(count, perView) {
+  if (!count) return [];
+  const maxStart = Math.max(0, count - perView);
+  const starts = [0];
+  for (let start = perView; start < maxStart; start += perView) starts.push(start);
+  if (starts.at(-1) !== maxStart) starts.push(maxStart);
+  return starts;
+}
+
 function StudentPeople({ teachers }) {
   const getCardsPerView = () => {
     const width = window.innerWidth;
     return width >= 1400 ? 4 : width >= 1200 ? 3 : width >= 821 ? 2 : 1;
   };
-  const viewportRef = useRef(null);
-  const [index, setIndex] = useState(0);
+  const trackRef = useRef(null);
+  const touchStartX = useRef(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(getCardsPerView);
+  const [trackOffset, setTrackOffset] = useState(0);
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeTick, setResizeTick] = useState(0);
   const visibleCount = Math.min(teachers.length, cardsPerView);
-  const maxIndex = Math.max(0, teachers.length - visibleCount);
-  const dotCount = teachers.length ? maxIndex + 1 : 0;
-  const activeDot = index;
+  const pageStarts = buildTeacherPageStarts(teachers.length, cardsPerView);
+  const pageCount = pageStarts.length;
+  const safePage = Math.min(currentPage, Math.max(0, pageCount - 1));
+  const startIndex = pageStarts[safePage] ?? 0;
 
   useEffect(() => {
-    const updateCardsPerView = () => setCardsPerView(getCardsPerView());
+    const updateCardsPerView = () => {
+      setIsResizing(true);
+      setCardsPerView(getCardsPerView());
+      setResizeTick((value) => value + 1);
+    };
     window.addEventListener("resize", updateCardsPerView);
     return () => window.removeEventListener("resize", updateCardsPerView);
   }, []);
 
-  useEffect(() => {
-    const nextIndex = Math.min(index, maxIndex);
-    const viewport = viewportRef.current;
-    const firstCard = viewport?.firstElementChild?.firstElementChild;
-    const card = viewport?.firstElementChild?.children[nextIndex];
-    if (viewport && firstCard && card) viewport.scrollLeft = card.offsetLeft - firstCard.offsetLeft;
-    if (nextIndex !== index) setIndex(nextIndex);
-  }, [cardsPerView, teachers.length]);
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    const firstCard = track?.firstElementChild;
+    const card = track?.children[startIndex];
+    if (firstCard && card) setTrackOffset(card.offsetLeft - firstCard.offsetLeft);
+    if (currentPage !== safePage) setCurrentPage(safePage);
+    if (!isResizing) return undefined;
+    const frame = window.requestAnimationFrame(() => setIsResizing(false));
+    return () => window.cancelAnimationFrame(frame);
+  }, [startIndex, cardsPerView, resizeTick, teachers.length, currentPage, safePage, isResizing]);
 
-  const goTo = (nextIndex) => {
-    const target = Math.min(Math.max(nextIndex, 0), maxIndex);
-    const viewport = viewportRef.current;
-    const firstCard = viewport?.firstElementChild?.firstElementChild;
-    const card = viewport?.firstElementChild?.children[target];
-    if (viewport && firstCard && card) {
-      const targetLeft = card.offsetLeft - firstCard.offsetLeft;
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      viewport.scrollTo({ left: targetLeft, behavior: prefersReducedMotion ? "auto" : "smooth" });
-    }
-    setIndex(target);
-  };
-
-  const syncPosition = () => {
-    const viewport = viewportRef.current;
-    const firstCard = viewport?.firstElementChild?.firstElementChild;
-    if (!viewport || !firstCard) return;
-    const step = firstCard.getBoundingClientRect().width + parseFloat(getComputedStyle(viewport.firstElementChild).columnGap || 0);
-    if (step > 0) setIndex(Math.min(maxIndex, Math.round(viewport.scrollLeft / step)));
+  const goToPage = (step) => setCurrentPage((page) => Math.min(Math.max(page + step, 0), Math.max(0, pageCount - 1)));
+  const onTouchStart = (event) => { touchStartX.current = event.changedTouches[0]?.clientX ?? null; };
+  const onTouchEnd = (event) => {
+    if (touchStartX.current === null) return;
+    const deltaX = event.changedTouches[0]?.clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(deltaX) >= 50) goToPage(deltaX < 0 ? 1 : -1);
   };
 
   return <div className="student-hub-panel student-people">
     <div className="student-people-heading"><div><span>Люди</span><h3>С кем ты будешь<br />учиться</h3></div><p>В нашей школе тебя будут сопровождать опытные и внимательные педагоги. Они не только хорошо знают свой предмет, но и умеют вдохновлять, поддерживать и помогать расти.</p></div>
-    <div className="student-teacher-carousel"><button type="button" className="student-teacher-arrow" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Предыдущие преподаватели">←</button>
-      <div className="student-teacher-viewport" ref={viewportRef} onScroll={syncPosition} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className="student-teacher-track" style={{ "--teacher-card-percent": `${100 / cardsPerView}%`, "--teacher-gap-shrink": `${.85 * (cardsPerView - 1) / cardsPerView}rem` }}>
+    <div className="student-teacher-carousel"><button type="button" className="student-teacher-arrow" onClick={() => goToPage(-1)} disabled={safePage === 0} aria-label="Предыдущие преподаватели">←</button>
+      <div className="student-teacher-viewport" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onTouchCancel={() => { touchStartX.current = null; }} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className={`student-teacher-track${isResizing ? " is-resizing" : ""}`} ref={trackRef} style={{ "--teacher-card-percent": `${100 / cardsPerView}%`, "--teacher-gap-shrink": `${.95 * (cardsPerView - 1) / cardsPerView}rem`, transform: `translate3d(-${trackOffset}px, 0, 0)` }}>
         {teachers.map((teacher, teacherIndex) => <article className="student-teacher-card" key={`${teacher.subject}-${teacherIndex}`} style={{ "--teacher-reveal-order": Math.min(teacherIndex, visibleCount - 1) }}>
           <div className="student-teacher-photo">{teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационное фото, не сотрудник школы Феникс" : teacher.name} />}<span className="student-teacher-subject">{teacher.subject}</span></div>
           <div className="student-teacher-copy"><h4>{teacher.name}</h4><span>{teacher.placeholder ? "DEMO · ДАННЫЕ УТОЧНЯЮТСЯ" : teacher.subject}</span><p>{teacher.shortDescription}</p></div>
         </article>)}
       </div></div>
-      <button type="button" className="student-teacher-arrow" onClick={() => goTo(index + 1)} disabled={index === maxIndex} aria-label="Следующие преподаватели">→</button>
+      <button type="button" className="student-teacher-arrow" onClick={() => goToPage(1)} disabled={pageCount === 0 || safePage === pageCount - 1} aria-label="Следующие преподаватели">→</button>
     </div>
-    <div className="student-teacher-progress"><div className="student-teacher-dots" aria-hidden="true">{Array.from({ length: dotCount }, (_, dotIndex) => <span className={dotIndex === activeDot ? "active" : ""} key={dotIndex} />)}</div><span aria-live="polite">{teachers.length ? `${index + 1} / ${maxIndex + 1}` : "0 / 0"}</span></div>
+    <div className="student-teacher-progress"><div className="student-teacher-dots" aria-hidden="true">{Array.from({ length: pageCount }, (_, dotIndex) => <span className={dotIndex === safePage ? "active" : ""} key={dotIndex} />)}</div><span aria-live="polite">{pageCount ? `${safePage + 1} / ${pageCount}` : "0 / 0"}</span></div>
   </div>;
 }
 
