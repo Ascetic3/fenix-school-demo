@@ -431,12 +431,10 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .card-3 p { color: rgba(255,255,255,.7); }
 .student-advantage-photo { width: 100%; height: 82px; margin-top: auto; padding-top: .9rem; object-fit: cover; border-radius: 1.6rem; }
 
-.student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw clamp(5.5rem, 8vw, 8.5rem); background: var(--paper); }
-.student-flow { position: relative; isolation: isolate; overflow: hidden; }
-.student-flow .student-hub > .student-shell, .student-flow .student-stories > .student-shell { z-index: 2; }
-.student-section-transition { position: relative; z-index: 1; height: 1px; pointer-events: none; }
-.student-section-transition img { position: absolute; top: clamp(-440px, -27vw, -270px); left: -6vw; display: block; width: 112vw; max-width: none; height: auto; opacity: 0; transform: translate3d(-36px, 0, 0); clip-path: inset(0 100% 0 0); transition: clip-path 5s cubic-bezier(.2,.7,.2,1), opacity 1.8s ease-out, transform 5s cubic-bezier(.2,.7,.2,1); }
-.student-section-transition.is-revealed img { opacity: 1; transform: translate3d(0, 0, 0); clip-path: inset(0 0 0 0); }
+.student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw 0; background: var(--paper); }
+.student-hub-bottom-decor { position: relative; z-index: 1; height: 280px; overflow: visible; pointer-events: none; }
+.student-hub-bottom-decor img { position: absolute; top: clamp(-180px, -9vw, -110px); left: -5vw; display: block; width: min(112vw, 1800px); max-width: none; height: auto; opacity: 0; transform: translate3d(-36px, 0, 0); clip-path: inset(0 100% 0 0); transition: clip-path 5s cubic-bezier(.2,.7,.2,1), opacity 1.8s ease-out, transform 5s cubic-bezier(.2,.7,.2,1); }
+.student-hub-bottom-decor.is-revealed img { opacity: 1; transform: translate3d(0, 0, 0); clip-path: inset(0 0 0 0); }
 .student-hub-decor { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; }
 .student-hub-decor-piece { position: absolute; display: block; overflow: visible; opacity: 0; transition: opacity 1.8s ease-out, transform 1.8s cubic-bezier(.2,.7,.2,1); }
 .student-hub-decor-piece.decor-left { top: 0; left: 0; width: clamp(300px, 23vw, 400px); transform: translate3d(-50px, 0, 0); }
@@ -452,7 +450,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-hub.is-revealed .student-hub-decor .decor-stroke { stroke-dashoffset: 0; }
 .student-hub-decor .decor-spark { opacity: 0; transition: opacity .8s ease-out .8s; }
 .student-hub.is-revealed .student-hub-decor .decor-spark { opacity: 1; }
-.student-hub > .student-shell { z-index: 1; }
+.student-hub > .student-shell { z-index: 2; }
 .student-hub-heading { position: relative; display: grid; grid-template-columns: .58fr 1.75fr .55fr; gap: 2rem; align-items: center; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
 .student-hub-heading > span, .student-panel-heading > span, .student-practical article > span { color: var(--wine); text-transform: uppercase; letter-spacing: .14em; font-size: .72rem; font-weight: 900; }
 .student-hub-heading h2 { grid-column: 2 / 4; max-width: 980px; margin: 0; font: 500 clamp(4rem, 6.2vw, 7rem)/.82 Georgia, serif; letter-spacing: -.07em; text-align: center; }
@@ -709,6 +707,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .review-author strong { font-size: .95rem; }
 .review-author small { margin-top: .1rem; color: var(--wine); font-size: .8rem; }
 .student-stories { position: relative; width: 100%; padding: clamp(4rem, 6vw, 7rem) 4vw; overflow: hidden; background: var(--cream); }
+@media (min-width: 821px) { .student-hub + .student-stories { padding-top: clamp(40px, 4vw, 70px); } }
 .student-stories > .student-shell { position: relative; z-index: 1; width: min(100%, 1500px); max-width: 100%; }
 .student-stories-heading { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(250px, .5fr) minmax(150px, .3fr); gap: clamp(1.5rem, 3vw, 3rem); align-items: start; margin-bottom: clamp(1.8rem, 3vw, 3rem); }
 .student-stories-heading > p { grid-column: 2; }
@@ -795,7 +794,8 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 }
 
 @media (max-width: 1199px) and (min-width: 821px) {
-  .student-section-transition img { top: clamp(-310px, -23vw, -185px); left: -2vw; width: 94vw; }
+  .student-hub-bottom-decor { height: 200px; }
+  .student-hub-bottom-decor img { top: clamp(-105px, -9vw, -80px); left: -2vw; width: 94vw; }
   .student-stories-heading { grid-template-columns: minmax(0, 1.1fr) minmax(240px, .75fr) minmax(110px, .35fr); }
   .student-stories-grid { grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); }
   .student-stories-photo { grid-column: 1; grid-row: 1; }
@@ -804,7 +804,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 }
 
 @media (max-width: 820px) {
-  .student-section-transition { display: none; }
+  .student-hub-bottom-decor { display: none; }
   .site-header { grid-template-columns: 130px 1fr auto; padding: 0 5vw; }
   .brand-logo { width: 120px; }
   .brand-logo img { width: 88px; }
@@ -844,7 +844,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-experience.is-revealed .student-advantage-card { animation-name: student-experience-card-in-mobile; animation-duration: 520ms; }
   .student-experience.is-revealed .student-advantage-card:nth-child(2) { animation-delay: 30ms; }
   .student-experience.is-revealed .student-advantage-card:nth-child(3) { animation-delay: 60ms; }
-  .student-hub { padding-inline: 5vw; }
+  .student-hub { padding-inline: 5vw; padding-bottom: clamp(3rem, 6vw, 4rem); }
   .student-hub-decor-piece { display: none; }
   .student-hub-heading, .student-panel-heading { grid-template-columns: 1fr; gap: .7rem; }
   .student-people-heading { grid-template-columns: 1fr; gap: .8rem; }
@@ -878,7 +878,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 @media (prefers-reduced-motion: reduce) {
   .student-teacher-card { opacity: 1 !important; transform: none !important; animation: none !important; }
   .student-teacher-track { transition: none !important; }
-  .student-section-transition img { opacity: 1 !important; transform: none !important; clip-path: inset(0 0 0 0) !important; transition: none !important; }
+  .student-hub-bottom-decor img { opacity: 1 !important; transform: none !important; clip-path: inset(0 0 0 0) !important; transition: none !important; }
   .student-experience .student-advantage-card {
     opacity: 1 !important;
     transform: none !important;
