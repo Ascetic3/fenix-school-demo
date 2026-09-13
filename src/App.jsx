@@ -411,7 +411,7 @@ function StudentSectionTransition() {
       if (!entry.isIntersecting) return;
       setIsRevealed(true);
       observer.disconnect();
-    }, { threshold: 0, rootMargin: "0px 0px 20% 0px" });
+    }, { threshold: 0, rootMargin: "0px 0px 30% 0px" });
     observer.observe(trigger);
     return () => observer.disconnect();
   }, []);
