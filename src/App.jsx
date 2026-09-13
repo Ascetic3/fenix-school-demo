@@ -198,7 +198,63 @@ function StudentExperience({ items }) {
 }
 
 function StudentPeople({ teachers }) {
-  return <div className="student-hub-panel student-people"><div className="student-panel-heading"><span>Люди</span><h3>С кем ты будешь учиться</h3><p>В школе важны не только предметы. Важно, кто объясняет их каждый день.</p></div><div className="student-teacher-grid">{teachers.map((teacher, index) => <article key={`${teacher.subject}-${index}`}><img src={teacher.photo} alt="Временное демонстрационное изображение для карточки преподавателя" /><div><span>{teacher.placeholder ? "Demo · данные уточняются" : teacher.subject}</span><h4>{teacher.subject}</h4><strong>{teacher.name}</strong><p>{teacher.shortDescription}</p></div></article>)}</div></div>;
+  const viewportRef = useRef(null);
+  const [index, setIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(5);
+  const visibleCount = Math.min(teachers.length, cardsPerView);
+  const maxIndex = Math.max(0, teachers.length - visibleCount);
+
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      const width = window.innerWidth;
+      setCardsPerView(width >= 1400 ? 5 : width >= 1024 ? 4 : width >= 641 ? 2 : 1);
+    };
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
+
+  useEffect(() => {
+    const nextIndex = Math.min(index, maxIndex);
+    const viewport = viewportRef.current;
+    const firstCard = viewport?.firstElementChild?.firstElementChild;
+    const card = viewport?.firstElementChild?.children[nextIndex];
+    if (viewport && firstCard && card) viewport.scrollLeft = card.offsetLeft - firstCard.offsetLeft;
+    if (nextIndex !== index) setIndex(nextIndex);
+  }, [cardsPerView, teachers.length]);
+
+  const goTo = (nextIndex) => {
+    const target = Math.min(Math.max(nextIndex, 0), maxIndex);
+    const viewport = viewportRef.current;
+    const firstCard = viewport?.firstElementChild?.firstElementChild;
+    const card = viewport?.firstElementChild?.children[target];
+    if (viewport && firstCard && card) {
+      viewport.scrollTo({ left: card.offsetLeft - firstCard.offsetLeft, behavior: "auto" });
+    }
+    setIndex(target);
+  };
+
+  const syncPosition = () => {
+    const viewport = viewportRef.current;
+    const firstCard = viewport?.firstElementChild?.firstElementChild;
+    if (!viewport || !firstCard) return;
+    const step = firstCard.getBoundingClientRect().width + parseFloat(getComputedStyle(viewport.firstElementChild).columnGap || 0);
+    if (step > 0) setIndex(Math.min(maxIndex, Math.round(viewport.scrollLeft / step)));
+  };
+
+  return <div className="student-hub-panel student-people">
+    <div className="student-people-heading"><div><span>Люди</span><h3>С кем ты будешь<br />учиться</h3></div><p>В нашей школе тебя будут сопровождать опытные и внимательные педагоги. Они не только хорошо знают свой предмет, но и умеют вдохновлять, поддерживать и помогать расти.</p></div>
+    <div className="student-teacher-carousel"><button type="button" className="student-teacher-arrow" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Предыдущие преподаватели">←</button>
+      <div className="student-teacher-viewport" ref={viewportRef} onScroll={syncPosition} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className="student-teacher-track" style={{ "--teacher-card-percent": `${100 / (visibleCount || 1)}%`, "--teacher-gap-shrink": `${.85 * Math.max(visibleCount - 1, 0) / (visibleCount || 1)}rem` }}>
+        {teachers.map((teacher, teacherIndex) => <article className="student-teacher-card" key={`${teacher.subject}-${teacherIndex}`}>
+          {teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационная фотография, не портрет преподавателя" : teacher.name} />}
+          <div><span>{teacher.placeholder ? `Demo · ${teacher.subject}` : teacher.subject}</span><h4>{teacher.name}</h4><p>{teacher.shortDescription}</p></div>
+        </article>)}
+      </div></div>
+      <button type="button" className="student-teacher-arrow" onClick={() => goTo(index + 1)} disabled={index === maxIndex} aria-label="Следующие преподаватели">→</button>
+    </div>
+    <div className="student-teacher-progress"><span>{teachers.length ? `${index + 1}–${Math.min(index + visibleCount, teachers.length)} / ${teachers.length}` : "0 / 0"}</span><div role="progressbar" aria-label="Просмотр преподавателей" aria-valuemin="0" aria-valuemax={maxIndex} aria-valuenow={index}><span style={{ width: `${teachers.length ? (index + visibleCount) / teachers.length * 100 : 0}%` }} /></div></div>
+  </div>;
 }
 
 function StudentLife({ items }) {
