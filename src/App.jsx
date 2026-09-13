@@ -200,15 +200,15 @@ function StudentExperience({ items }) {
 function StudentPeople({ teachers }) {
   const getCardsPerView = () => {
     const width = window.innerWidth;
-    return width >= 1400 ? 5 : width >= 1200 ? 4 : width >= 900 ? 3 : width >= 821 ? 2 : 1;
+    return width >= 1400 ? 4 : width >= 1200 ? 3 : width >= 821 ? 2 : 1;
   };
   const viewportRef = useRef(null);
   const [index, setIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(getCardsPerView);
   const visibleCount = Math.min(teachers.length, cardsPerView);
   const maxIndex = Math.max(0, teachers.length - visibleCount);
-  const dotCount = Math.min(teachers.length ? maxIndex + 1 : 0, 5);
-  const activeDot = maxIndex ? Math.round(index / maxIndex * (dotCount - 1)) : 0;
+  const dotCount = teachers.length ? maxIndex + 1 : 0;
+  const activeDot = index;
 
   useEffect(() => {
     const updateCardsPerView = () => setCardsPerView(getCardsPerView());
@@ -228,10 +228,20 @@ function StudentPeople({ teachers }) {
   const goTo = (nextIndex) => {
     const target = Math.min(Math.max(nextIndex, 0), maxIndex);
     const viewport = viewportRef.current;
-    const firstCard = viewport?.firstElementChild?.firstElementChild;
-    const card = viewport?.firstElementChild?.children[target];
-    if (viewport && firstCard && card) {
-      viewport.scrollTo({ left: card.offsetLeft - firstCard.offsetLeft, behavior: "auto" });
+    const track = viewport?.firstElementChild;
+    const firstCard = track?.firstElementChild;
+    const card = track?.children[target];
+    if (viewport && track && firstCard && card) {
+      track.getAnimations().forEach((animation) => animation.cancel());
+      const previousScroll = viewport.scrollLeft;
+      viewport.scrollLeft = card.offsetLeft - firstCard.offsetLeft;
+      const distance = viewport.scrollLeft - previousScroll;
+      if (distance && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        track.animate(
+          [{ transform: `translate3d(${distance}px, 0, 0)` }, { transform: "translate3d(0, 0, 0)" }],
+          { duration: 500, easing: "cubic-bezier(.2,.7,.2,1)" },
+        );
+      }
     }
     setIndex(target);
   };
@@ -248,7 +258,7 @@ function StudentPeople({ teachers }) {
     <div className="student-people-heading"><div><span>Люди</span><h3>С кем ты будешь<br />учиться</h3></div><p>В нашей школе тебя будут сопровождать опытные и внимательные педагоги. Они не только хорошо знают свой предмет, но и умеют вдохновлять, поддерживать и помогать расти.</p></div>
     <div className="student-teacher-carousel"><button type="button" className="student-teacher-arrow" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Предыдущие преподаватели">←</button>
       <div className="student-teacher-viewport" ref={viewportRef} onScroll={syncPosition} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className="student-teacher-track" style={{ "--teacher-card-percent": `${100 / cardsPerView}%`, "--teacher-gap-shrink": `${.85 * (cardsPerView - 1) / cardsPerView}rem` }}>
-        {teachers.map((teacher, teacherIndex) => <article className="student-teacher-card" key={`${teacher.subject}-${teacherIndex}`}>
+        {teachers.map((teacher, teacherIndex) => <article className="student-teacher-card" key={`${teacher.subject}-${teacherIndex}`} style={{ "--teacher-reveal-order": Math.min(teacherIndex, visibleCount - 1) }}>
           <div className="student-teacher-photo">{teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационное фото, не сотрудник школы Феникс" : teacher.name} />}<span className="student-teacher-subject">{teacher.subject}</span></div>
           <div className="student-teacher-copy"><h4>{teacher.name}</h4><span>{teacher.placeholder ? "DEMO · ДАННЫЕ УТОЧНЯЮТСЯ" : teacher.subject}</span><p>{teacher.shortDescription}</p></div>
         </article>)}
@@ -386,11 +396,34 @@ function StudentHub() {
   return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title"><StudentHubDecor /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2><StudentHubUnderline /></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}><span className="student-hub-tab-label"><svg className="student-hub-tab-spark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 2 C27.5 14.5 30 17 42 24 C30 31 27.5 33.5 24 46 C20.5 33.5 18 31 6 24 C18 17 20.5 14.5 24 2 Z" /></svg>{label}<svg className="student-hub-tab-underline" viewBox="0 0 160 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 8 C30 3 57 4 82 7 C108 10 134 9 158 5" /></svg></span></button>)}</div><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></section>;
 }
 
+function StudentSectionTransition() {
+  const [isRevealed, setIsRevealed] = useState(false);
+  const artRef = useRef(null);
+
+  useEffect(() => {
+    const art = artRef.current;
+    if (!art) return undefined;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      setIsRevealed(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setIsRevealed(true);
+      observer.disconnect();
+    }, { threshold: 0.3 });
+    observer.observe(art);
+    return () => observer.disconnect();
+  }, []);
+
+  return <div className={`student-section-transition${isRevealed ? " is-revealed" : ""}`} aria-hidden="true">
+    <img ref={artRef} src="./images/student-demo/student-people-stories-transition.svg" alt="" draggable="false" />
+  </div>;
+}
+
 function StudentStories({ items, content }) {
   const carouselItems = items.filter(({ title }) => title !== "Самое полезное — сначала попробовать");
   const [index, setIndex] = useState(0);
-  const [isDecorRevealed, setIsDecorRevealed] = useState(false);
-  const sectionRef = useRef(null);
   const safeIndex = index % carouselItems.length;
   const review = carouselItems[safeIndex];
   const photo = studentGallery.find(({ src }) => src.endsWith("student-demo-project.jpg")) || studentGallery[0];
@@ -399,23 +432,7 @@ function StudentStories({ items, content }) {
 
   useEffect(() => setIndex(0), [items]);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return undefined;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-      setIsDecorRevealed(true);
-      return undefined;
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setIsDecorRevealed(true);
-      observer.disconnect();
-    }, { threshold: 0.38, rootMargin: "0px 0px -5%" });
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  return <section ref={sectionRef} className={`student-stories${isDecorRevealed ? " is-revealed" : ""}`} id="reviews" aria-labelledby="student-stories-title"><StudentHubDecor className="student-stories-decor" /><div className="student-shell">
+  return <section className="student-stories" id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
     <div className="student-stories-heading"><div><span>Истории учеников</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>В Фениксе учатся такие же ребята, как ты. Они рассказывают, что на самом деле значит быть здесь.</p></div>
     <div className="student-stories-grid">
       <figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure>
@@ -531,8 +548,7 @@ export default function App() {
     </section>
 
     {audience === "student" && <>
-      <StudentHub />
-      <StudentStories items={studentReviews} content={content} />
+      <div className="student-flow"><StudentHub /><StudentSectionTransition /><StudentStories items={studentReviews} content={content} /></div>
       <StudentNextSteps />
     </>}
 
