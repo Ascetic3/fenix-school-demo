@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import studentHubRightWingSvg from "./assets/studenthub-right-wing.svg?raw";
 import {
@@ -197,75 +197,115 @@ function StudentExperience({ items }) {
   </section>;
 }
 
-function buildTeacherPageStarts(count, perView) {
-  if (!count) return [];
-  const maxStart = Math.max(0, count - perView);
-  const starts = [0];
-  for (let start = perView; start < maxStart; start += perView) starts.push(start);
-  if (starts.at(-1) !== maxStart) starts.push(maxStart);
-  return starts;
-}
-
 function StudentPeople({ teachers }) {
-  const getCardsPerView = () => {
-    const width = window.innerWidth;
-    return width >= 1400 ? 4 : width >= 1200 ? 3 : width >= 821 ? 2 : 1;
-  };
+  const viewportRef = useRef(null);
   const trackRef = useRef(null);
-  const touchStartX = useRef(null);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [cardsPerView, setCardsPerView] = useState(getCardsPerView);
-  const [trackOffset, setTrackOffset] = useState(0);
-  const [isResizing, setIsResizing] = useState(false);
-  const [resizeTick, setResizeTick] = useState(0);
-  const visibleCount = Math.min(teachers.length, cardsPerView);
-  const pageStarts = buildTeacherPageStarts(teachers.length, cardsPerView);
-  const pageCount = pageStarts.length;
-  const safePage = Math.min(currentPage, Math.max(0, pageCount - 1));
-  const startIndex = pageStarts[safePage] ?? 0;
+  const pausedRef = useRef(false);
+  const hoveredRef = useRef(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => { pausedRef.current = isPaused; }, [isPaused]);
 
   useEffect(() => {
-    const updateCardsPerView = () => {
-      setIsResizing(true);
-      setCardsPerView(getCardsPerView());
-      setResizeTick((value) => value + 1);
-    };
-    window.addEventListener("resize", updateCardsPerView);
-    return () => window.removeEventListener("resize", updateCardsPerView);
-  }, []);
-
-  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
     const track = trackRef.current;
-    const firstCard = track?.firstElementChild;
-    const card = track?.children[startIndex];
-    if (firstCard && card) setTrackOffset(card.offsetLeft - firstCard.offsetLeft);
-    if (currentPage !== safePage) setCurrentPage(safePage);
-    if (!isResizing) return undefined;
-    const frame = window.requestAnimationFrame(() => setIsResizing(false));
-    return () => window.cancelAnimationFrame(frame);
-  }, [startIndex, cardsPerView, resizeTick, teachers.length, currentPage, safePage, isResizing]);
+    if (!viewport || !track || !teachers.length) return undefined;
 
-  const goToPage = (step) => setCurrentPage((page) => Math.min(Math.max(page + step, 0), Math.max(0, pageCount - 1)));
-  const onTouchStart = (event) => { touchStartX.current = event.changedTouches[0]?.clientX ?? null; };
-  const onTouchEnd = (event) => {
-    if (touchStartX.current === null) return;
-    const deltaX = event.changedTouches[0]?.clientX - touchStartX.current;
-    touchStartX.current = null;
-    if (Math.abs(deltaX) >= 50) goToPage(deltaX < 0 ? 1 : -1);
-  };
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const compactLayout = window.matchMedia('(max-width: 820px)');
+    const sets = track.querySelectorAll('.student-teacher-set');
+    const cards = track.querySelectorAll('.student-teacher-card');
+    let cycleWidth = 0;
+    let offset = 0;
+    let frame = 0;
+    let previousTime = 0;
+    let inView = false;
+
+    const render = () => {
+      if (!cycleWidth) return;
+      const trackX = offset - cycleWidth;
+      track.style.transform = `translate3d(${trackX}px, 0, 0)`;
+      const center = viewport.clientWidth / 2;
+      const range = center + 100;
+      cards.forEach((card) => {
+        const cardCenter = card.offsetLeft + trackX + card.offsetWidth / 2;
+        const focus = Math.max(0, 1 - Math.abs(cardCenter - center) / range);
+        card.style.setProperty('--teacher-focus', focus.toFixed(3));
+      });
+    };
+
+    const measure = () => {
+      cycleWidth = sets[1].offsetLeft - sets[0].offsetLeft;
+      if (cycleWidth) offset %= cycleWidth;
+      render();
+    };
+
+    const tick = (time) => {
+      if (previousTime && !pausedRef.current && !hoveredRef.current && cycleWidth) {
+        offset = (offset + Math.min(time - previousTime, 64) * 0.018) % cycleWidth;
+      }
+      previousTime = time;
+      render();
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    const stop = () => {
+      window.cancelAnimationFrame(frame);
+      frame = 0;
+      previousTime = 0;
+    };
+
+    const sync = () => {
+      if (reducedMotion.matches || compactLayout.matches) {
+        stop();
+        track.style.removeProperty('transform');
+        cards.forEach((card) => card.style.removeProperty('--teacher-focus'));
+        return;
+      }
+      measure();
+      if (inView && !frame) frame = window.requestAnimationFrame(tick);
+      if (!inView) stop();
+    };
+
+    const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    }, { threshold: 0.1 }) : null;
+    if (observer) observer.observe(viewport);
+    else inView = true;
+
+    const resizeObserver = 'ResizeObserver' in window ? new ResizeObserver(sync) : null;
+    if (resizeObserver) resizeObserver.observe(viewport);
+    window.addEventListener('resize', sync);
+    reducedMotion.addEventListener('change', sync);
+    compactLayout.addEventListener('change', sync);
+    sync();
+
+    return () => {
+      stop();
+      observer?.disconnect();
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', sync);
+      reducedMotion.removeEventListener('change', sync);
+      compactLayout.removeEventListener('change', sync);
+    };
+  }, [teachers.length]);
 
   return <div className="student-hub-panel student-people">
-    <div className="student-people-heading"><div><span>Люди</span><h3>С кем ты будешь<br />учиться</h3></div><p>В нашей школе тебя будут сопровождать опытные и внимательные педагоги. Они не только хорошо знают свой предмет, но и умеют вдохновлять, поддерживать и помогать расти.</p></div>
-    <div className="student-teacher-carousel"><button type="button" className="student-teacher-arrow" onClick={() => goToPage(-1)} disabled={safePage === 0} aria-label="Предыдущие преподаватели">←</button>
-      <div className="student-teacher-viewport" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onTouchCancel={() => { touchStartX.current = null; }} role="region" aria-roledescription="карусель" aria-label="Преподаватели школы"><div className={`student-teacher-track${isResizing ? " is-resizing" : ""}`} ref={trackRef} style={{ "--teacher-card-percent": `${100 / cardsPerView}%`, "--teacher-gap-shrink": `${.95 * (cardsPerView - 1) / cardsPerView}rem`, transform: `translate3d(-${trackOffset}px, 0, 0)` }}>
-        {teachers.map((teacher, teacherIndex) => <article className="student-teacher-card" key={`${teacher.subject}-${teacherIndex}`} style={{ "--teacher-reveal-order": Math.min(teacherIndex, visibleCount - 1) }}>
-          <div className="student-teacher-photo">{teacher.photo && <img src={teacher.photo} alt={teacher.placeholder ? "Демонстрационное фото, не сотрудник школы Феникс" : teacher.name} />}<span className="student-teacher-subject">{teacher.subject}</span></div>
-          <div className="student-teacher-copy"><h4>{teacher.name}</h4><span>{teacher.placeholder ? "DEMO · ДАННЫЕ УТОЧНЯЮТСЯ" : teacher.subject}</span><p>{teacher.shortDescription}</p></div>
-        </article>)}
-      </div></div>
-      <button type="button" className="student-teacher-arrow" onClick={() => goToPage(1)} disabled={pageCount === 0 || safePage === pageCount - 1} aria-label="Следующие преподаватели">→</button>
+    <div className="student-people-heading"><span>Люди</span><h3>С кем ты<br />будешь<br />учиться</h3><p>В нашей школе рядом опытные и внимательные преподаватели. Они знают свой предмет и помогают каждому ученику расти.</p></div>
+    <div className="student-teacher-showcase">
+      <div className="student-teacher-viewport" ref={viewportRef} role="region" aria-label="Преподаватели школы, демонстрационные материалы" onPointerEnter={() => { hoveredRef.current = true; }} onPointerLeave={() => { hoveredRef.current = false; }}>
+        <div className="student-teacher-track" ref={trackRef}>
+          {[0, 1, 2].map((copy) => <div className="student-teacher-set" key={copy} aria-hidden={copy !== 1 ? 'true' : undefined}>
+            {teachers.map((teacher, index) => <article className="student-teacher-card" key={`${copy}-${teacher.subject}-${index}`}>
+              <div className="student-teacher-photo"><img src={teacher.photo} alt={teacher.placeholder ? 'Демонстрационное фото преподавателя' : teacher.name} style={{ objectPosition: teacher.portraitPosition || '50% 38%' }} /><span aria-hidden="true">{teacher.placeholder ? 'ДЕМО' : ''}</span></div>
+              <div className="student-teacher-caption"><strong>{teacher.placeholder ? 'Имя уточняется' : teacher.name}</strong><span>{teacher.subject}</span></div>
+            </article>)}
+          </div>)}
+        </div>
+      </div>
+      <div className="student-teacher-meta"><span>Люди, с которыми можно учиться и говорить</span><button type="button" onClick={() => setIsPaused((value) => !value)} aria-label={isPaused ? 'Продолжить движение ленты преподавателей' : 'Остановить движение ленты преподавателей'}>{isPaused ? 'Продолжить' : 'Пауза'}</button></div>
     </div>
-    <div className="student-teacher-progress"><div className="student-teacher-dots" aria-hidden="true">{Array.from({ length: pageCount }, (_, dotIndex) => <span className={dotIndex === safePage ? "active" : ""} key={dotIndex} />)}</div><span aria-live="polite">{pageCount ? `${safePage + 1} / ${pageCount}` : "0 / 0"}</span></div>
   </div>;
 }
 
