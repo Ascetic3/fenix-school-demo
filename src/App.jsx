@@ -299,7 +299,7 @@ function StudentPeople({ teachers }) {
           {[0, 1, 2].map((copy) => <div className="student-teacher-set" key={copy} aria-hidden={copy !== 1 ? 'true' : undefined}>
             {teachers.map((teacher, index) => <article className="student-teacher-card" key={`${copy}-${teacher.subject}-${index}`}>
               <div className="student-teacher-photo"><img src={teacher.photo} alt={teacher.placeholder ? 'Демонстрационное фото преподавателя' : teacher.name} style={{ objectPosition: teacher.portraitPosition || '50% 38%' }} /><span aria-hidden="true">{teacher.placeholder ? 'ДЕМО' : ''}</span></div>
-              <div className="student-teacher-caption"><strong>{teacher.placeholder ? 'Имя уточняется' : teacher.name}</strong><span>{teacher.subject}</span></div>
+              <div className="student-teacher-caption"><strong>{teacher.name}</strong><span>{teacher.subject}</span></div>
             </article>)}
           </div>)}
         </div>

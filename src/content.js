@@ -105,7 +105,7 @@ export const studentAdvantages = [
 // DEMO/TODO: these eight supplied images and descriptions are illustrative, not Fenix staff records.
 export const teachers = [
   {
-    name: "Имя преподавателя уточняется",
+    name: "Екатерина Львовна",
     subject: "Математика",
     photo: "./images/student-demo/teachers/teacher-math-demo.png",
     portraitPosition: "52% 34%",
@@ -113,7 +113,7 @@ export const teachers = [
     placeholder: true,
   },
   {
-    name: "Имя преподавателя уточняется",
+    name: "Дмитрий Алексеевич",
     subject: "Русский язык и литература",
     photo: "./images/student-demo/teachers/teacher-russian-demo.png",
     portraitPosition: "57% 32%",
@@ -121,7 +121,7 @@ export const teachers = [
     placeholder: true,
   },
   {
-    name: "Имя преподавателя уточняется",
+    name: "Анна Сергеевна",
     subject: "Английский язык",
     photo: "./images/student-demo/teachers/teacher-english-demo.png",
     portraitPosition: "42% 32%",
@@ -129,7 +129,7 @@ export const teachers = [
     placeholder: true,
   },
   {
-    name: "Имя преподавателя уточняется",
+    name: "Илья Александрович",
     subject: "Физика",
     photo: "./images/student-demo/teachers/teacher-physics-demo.png",
     portraitPosition: "41% 33%",
@@ -137,7 +137,7 @@ export const teachers = [
     placeholder: true,
   },
   {
-    name: "Имя преподавателя уточняется",
+    name: "Алексей Исаев",
     subject: "История",
     photo: "./images/student-demo/teachers/teacher-history-demo.png",
     portraitPosition: "44% 31%",
@@ -145,7 +145,7 @@ export const teachers = [
     placeholder: true,
   },
   {
-    name: "Имя преподавателя уточняется",
+    name: "Мария Ковалёва",
     subject: "Химия",
     photo: "./images/student-demo/teachers/teacher-chemistry-demo.png",
     portraitPosition: "50% 35%",
@@ -153,7 +153,7 @@ export const teachers = [
     placeholder: true,
   },
   {
-    name: "Имя преподавателя уточняется",
+    name: "Ольга Никитина",
     subject: "Биология",
     photo: "./images/student-demo/teachers/teacher-biology-demo.png",
     portraitPosition: "49% 35%",
@@ -161,7 +161,7 @@ export const teachers = [
     placeholder: true,
   },
   {
-    name: "Имя уточняется",
+    name: "Наталья Андреевна",
     subject: "Классный руководитель",
     photo: "./images/student-demo/teachers/teacher-class-demo.png",
     portraitPosition: "50% 35%",
