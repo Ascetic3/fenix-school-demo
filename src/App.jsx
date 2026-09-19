@@ -422,6 +422,8 @@ function StudentHubBottomDecor() {
 }
 
 function StudentStories({ items, content }) {
+  const [isRevealed, setIsRevealed] = useState(false);
+  const sectionRef = useRef(null);
   const carouselItems = items.filter(({ title }) => title !== "Самое полезное — сначала попробовать");
   const [index, setIndex] = useState(0);
   const safeIndex = index % carouselItems.length;
@@ -432,7 +434,23 @@ function StudentStories({ items, content }) {
 
   useEffect(() => setIndex(0), [items]);
 
-  return <section className="student-stories" id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return undefined;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      setIsRevealed(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setIsRevealed(true);
+      observer.disconnect();
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  return <section ref={sectionRef} className={`student-stories${isRevealed ? " is-revealed" : ""}`} id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
     <div className="student-stories-heading"><div><span>Истории учеников</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>В Фениксе учатся такие же ребята, как ты. Они рассказывают, что на самом деле значит быть здесь.</p></div>
     <div className="student-stories-grid">
       <figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure>
