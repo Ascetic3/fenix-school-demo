@@ -558,6 +558,10 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   }
 }
 .student-hub-stage { position: relative; min-height: 590px; overflow: hidden; padding: clamp(1.7rem, 3vw, 3rem); border-radius: 0 0 1.5rem 1.5rem; background: var(--cream); animation: student-panel-forward-in .2s cubic-bezier(.22,.75,.24,1) both; }
+@media (prefers-reduced-motion: no-preference) {
+  .student-hub-stage { background-color: transparent; transition: background-color .85s ease-out; }
+  .student-hub.is-revealed .student-hub-stage { background-color: var(--cream); }
+}
 .student-hub-stage.direction-backward { animation-name: student-panel-backward-in; }
 @keyframes student-panel-forward-in { from { opacity: .4; transform: translateX(10px); } to { opacity: 1; transform: none; } }
 @keyframes student-panel-backward-in { from { opacity: .4; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
