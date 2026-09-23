@@ -200,11 +200,7 @@ function StudentExperience({ items }) {
 function StudentPeople({ teachers }) {
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
-  const pausedRef = useRef(false);
   const hoveredRef = useRef(false);
-  const [isPaused, setIsPaused] = useState(false);
-
-  useEffect(() => { pausedRef.current = isPaused; }, [isPaused]);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -241,7 +237,7 @@ function StudentPeople({ teachers }) {
     };
 
     const tick = (time) => {
-      if (previousTime && !pausedRef.current && !hoveredRef.current && cycleWidth) {
+      if (previousTime && !hoveredRef.current && cycleWidth) {
         offset = (offset + Math.min(time - previousTime, 64) * 0.018) % cycleWidth;
       }
       previousTime = time;
@@ -304,7 +300,7 @@ function StudentPeople({ teachers }) {
           </div>)}
         </div>
       </div>
-      <div className="student-teacher-meta"><span>Люди, с которыми можно учиться и говорить</span><button type="button" onClick={() => setIsPaused((value) => !value)} aria-label={isPaused ? 'Продолжить движение ленты преподавателей' : 'Остановить движение ленты преподавателей'}>{isPaused ? 'Продолжить' : 'Пауза'}</button></div>
+      <div className="student-teacher-meta"><span>Люди, с которыми можно учиться и говорить</span></div>
     </div>
   </div>;
 }

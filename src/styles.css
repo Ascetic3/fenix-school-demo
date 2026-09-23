@@ -589,8 +589,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-teacher-card:hover { translate: 0 -5px; filter: saturate(1.06); }
 }
 .student-teacher-meta { display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin: 1.3rem 1.5rem 0; padding-top: .9rem; border-top: 1px solid rgba(240,90,36,.45); color: var(--muted); font-size: .75rem; }
-.student-teacher-meta button { flex: none; min-height: 36px; padding: .3rem .8rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: var(--paper); font: inherit; cursor: pointer; }
-.student-teacher-meta button:hover, .student-teacher-meta button:focus-visible { border-color: var(--wine); color: var(--wine); }
 @media (max-width: 1100px) and (min-width: 821px) {
   .student-people { grid-template-columns: minmax(230px, .36fr) minmax(0, .64fr); gap: 1rem; }
   .student-teacher-card { flex-basis: 210px; width: 210px; height: 340px; }
@@ -601,7 +599,6 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   .student-teacher-track { width: max-content; transform: none !important; will-change: auto; }
   .student-teacher-set[aria-hidden="true"] { display: none; }
   .student-teacher-card { --teacher-focus: 1; transform: none; opacity: 1; }
-  .student-teacher-meta button { display: none; }
 }
 @media (max-width: 820px) {
   .student-people { min-height: 0; grid-template-columns: 1fr; gap: 1.7rem; }
