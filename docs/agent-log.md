@@ -111,3 +111,20 @@ Validation: `git diff --check`: PASS; `npm.cmd run build`: PASS.
 Commit: `not committed`.
 
 Status: local only.
+
+
+## 2026-09-26 — Align Fenix agent tooling with Druzhim
+
+Branch: `chore/fenix-agent-tooling`.
+
+Goal: reuse the proven Druzhim agent workflow without changing the Fenix application stack or rendered UI.
+
+Changed: `AGENTS.md`; added focused project docs for tooling, state, architecture, design, motion, decisions, and content verification; refreshed `docs/agent-context.md`.
+
+Implementation: documented selective use of the user-level `$frontend-app-builder` skill, Figma-first implementation for approved frames, responsive QA targets, protected StudentHub/People invariants, and the existing React/Vite JavaScript stack.
+
+Preserved: application code, assets, dependencies, production `main`, GitHub Pages workflow, Parent/Student behavior, and all rendered design.
+
+Validation: documentation-only change; repository source and package files were not modified.
+
+Status: branch only; not merged to `main`.
