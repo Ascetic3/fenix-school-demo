@@ -128,3 +128,18 @@ Preserved: application code, assets, dependencies, production `main`, GitHub Pag
 Validation: documentation-only change; repository source and package files were not modified.
 
 Status: branch only; not merged to `main`.
+
+
+## 2026-09-26 — Add repository-local Fenix frontend skill
+
+Branch: `chore/fenix-agent-tooling`.
+
+Goal: make Fenix-specific frontend rules available as an actual Codex skill rather than documentation only.
+
+Changed: added `.agents/skills/fenix-frontend/SKILL.md`; registered it in `AGENTS.md` and `docs/TOOLING.md`.
+
+Implementation: the skill coordinates Figma-first work, the optional global `$frontend-app-builder`, Fenix architecture, Parent/Student scope, StudentHub/People invariants, SVG restrictions, responsive QA and validation.
+
+Preserved: application source, dependencies, assets and production `main`.
+
+Status: branch only; not merged to `main`.
