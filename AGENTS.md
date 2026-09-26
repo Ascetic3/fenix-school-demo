@@ -16,6 +16,7 @@ Do not scan or rewrite the whole repository by default. Keep diffs within the us
 
 ## Skills and integrations
 
+- The repository-local `$fenix-frontend` skill lives at `.agents/skills/fenix-frontend/SKILL.md`. Use it for Fenix-specific frontend design, implementation, responsive work, StudentHub, motion, and Figma-to-code tasks.
 - The user-level Codex skill `$frontend-app-builder` is the same Build Web Apps / `frontend-app-builder` skill used for Druzhim. Use it for a genuinely new visual direction, page concept, or substantial frontend composition.
 - Do **not** rerun broad design exploration when an approved Figma frame already exists. In that case use the Figma integration first and implement the approved design.
 - Figma is the visual source of truth for approved frames. This React/Vite repository is the implementation source of truth for structure, state, behavior, and deployment.
