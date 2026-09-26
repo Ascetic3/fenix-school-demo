@@ -14,6 +14,20 @@ Current repository package versions:
 
 The repository currently has no TypeScript, Sass, ESLint, Prettier, Tailwind, or runtime animation-library dependency. Do not assume commands for tools that are not configured.
 
+## Repository-local Fenix skill
+
+The repository contains:
+
+`.agents/skills/fenix-frontend/SKILL.md`
+
+Codex discovers repository skills from `.agents/skills`. The skill contains Fenix-specific routing, architecture, Figma, StudentHub, motion, SVG, responsive QA and content-integrity rules.
+
+Invoke it as:
+
+`$fenix-frontend`
+
+It complements rather than duplicates the generic frontend builder.
+
 ## frontend-app-builder / Build Web Apps
 
 The same user-level Codex skill used for Druzhim is intended for Fenix:
