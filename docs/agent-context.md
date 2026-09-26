@@ -1,6 +1,6 @@
 # Fenix School — Current Project Context
 
-Verified against the local `preview/ui-experiments` working tree on 2026-09-20. Recheck branch and files before future changes.
+Verified against production `main` commit `6b69d1a` on 2026-09-26 for repository state, with implementation invariants retained from the earlier preview work. Recheck the current branch and files before future changes.
 
 ## Project
 
@@ -22,9 +22,9 @@ Verified against the local `preview/ui-experiments` working tree on 2026-09-20. 
 
 ## Git / deployment
 
-- `main` is production; the current experimental branch is `preview/ui-experiments`. The preview branch tracks `origin/preview/ui-experiments`.
+- `main` is production. Use preview/chore branches for experiments or tooling changes.
 - `.github/workflows/deploy-pages.yml` builds with Node 22 (`npm ci`, `npm run build`) and deploys `dist` to GitHub Pages on a `main` push or manual workflow dispatch. Do not trigger publication without explicit authorization.
-- At this snapshot, `src/App.jsx` and `src/styles.css` have local, uncommitted People-tab changes removing the Pause/Play control. Untracked backup/helper files also exist; preserve them and keep them out of commits.
+- Production `main` already contains the StudentHub design published in commit `6b69d1a`, including the People gallery without a manual Pause/Play control.
 
 ## Main architecture
 
