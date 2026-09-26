@@ -1,53 +1,87 @@
 # Fenix School — Agent Rules
 
-## Before every task
+## Context loading
 
-1. Read this file, `docs/agent-context.md`, and the latest relevant entries in `docs/agent-log.md`.
-2. Check `git status --short --branch` and confirm the current branch before editing. Preserve existing changes and untracked files.
-3. Check the actual code and assets for the area being changed. Treat the context document as a guide, not a substitute for verification.
-4. Keep the diff within the user's requested scope. Do not change approved sections without a direct request.
+Before changing code:
+
+1. Read this file.
+2. Read `docs/PROJECT_STATE.md`.
+3. Read `docs/ARCHITECTURE.md`.
+4. Read `docs/agent-context.md` for StudentHub/People implementation invariants.
+5. Read only the task-relevant documents from `docs/` and the latest relevant entries in `docs/agent-log.md`.
+6. Search the repository first and open only the files needed for the task.
+7. Check the current branch and working tree before editing. Preserve unrelated changes and untracked files.
+
+Do not scan or rewrite the whole repository by default. Keep diffs within the user's requested scope.
+
+## Skills and integrations
+
+- The user-level Codex skill `$frontend-app-builder` is the same Build Web Apps / `frontend-app-builder` skill used for Druzhim. Use it for a genuinely new visual direction, page concept, or substantial frontend composition.
+- Do **not** rerun broad design exploration when an approved Figma frame already exists. In that case use the Figma integration first and implement the approved design.
+- Figma is the visual source of truth for approved frames. This React/Vite repository is the implementation source of truth for structure, state, behavior, and deployment.
+- Before implementing from Figma, inspect the exact supplied frame/selection and its structured design context: dimensions, layout, typography, colors, clipping, variables, and assets. Do not reconstruct an approved frame from memory or screenshots alone.
+- Reuse existing React and CSS conventions. Do not introduce TypeScript, Sass, Tailwind, CSS-in-JS, GSAP, or another dependency merely to mirror another project.
+
+See `docs/TOOLING.md` for the exact workflow.
 
 ## Git rules
 
-- `main` is the production branch for GitHub Pages. Make experiments in preview branches first.
-- Never merge or push to `main`, or deploy, without explicit user authorization. Push a preview branch only when requested.
-- Do not reset, stash, discard, or overwrite existing work without necessity and authorization.
-- Do not commit incidental backup files or helper scripts. Stage only intended files and keep diffs small.
-- Before finishing, run `git diff --check` and `npm.cmd run build`; report failures accurately.
+- `main` is production for GitHub Pages. Use preview/chore branches for experiments and infrastructure changes.
+- Never merge or push implementation experiments to `main`, or trigger deployment, without explicit user authorization.
+- Do not reset, stash, discard, or overwrite unrelated work.
+- Do not commit backup files or helper artifacts.
+- Before finishing a code change, run `git diff --check` and `npm run build`. Report failures accurately.
 
 ## Visual rules
 
-- Preserve the Fenix cream, red, and orange palette and its warm, human, editorial school character. Avoid generic SaaS or AI styling, unnecessary glassmorphism, and excessive blur, glow, or neon.
-- Reuse existing structure and assets first. Do not redesign approved sections without a request.
-- **Never invent or generate decorative SVG path geometry.** Decorative artwork must come from user-supplied SVG/PNG assets unless the user explicitly requests otherwise. Position, scale, mask, and animate supplied artwork as needed without changing its geometry.
+- Preserve the Fenix cream, red, orange, apricot palette and its warm editorial school character.
+- Avoid generic SaaS/AI styling, unnecessary glassmorphism, neon, heavy glow, and arbitrary decoration.
+- Reuse approved structure and assets before inventing replacements.
+- **Never invent or generate decorative SVG path geometry** unless the user explicitly asks for it. Decorative artwork must come from user-supplied or approved Figma-exported assets; positioning, masking, scaling, and reveal animation are allowed without changing the path geometry.
+- Desktop must not simply shrink onto mobile. Validate visual work at minimum around 1440, 1024, 768, and 390 px.
 
-## Figma workflow
+## Current stack
 
-- Figma is the visual source of truth; this React/Vite repository is the implementation source of truth.
-- Before visual changes, check for the corresponding Figma frame. If it exists, read its structured design context through the Figma integration: dimensions, layout, typography, colors, clipping, and assets. Do not recreate it from screenshots.
-- Map Figma elements to existing React components and CSS selectors; preserve the application architecture and use the smallest effective diff. Keep desktop faithful and adapt tablet/mobile without copying absolute coordinates throughout the page.
-- Use supplied or Figma-exported decorative artwork. Never invent decorative SVG paths.
+- React 19 + Vite 8.
+- JavaScript/JSX, not TypeScript.
+- One main stylesheet in `src/styles.css` with CSS custom properties.
+- Content/data in `src/content.js`.
+- Static assets in `public/images/` and selected source assets in `src/assets/`.
+- Keep this stack unless a separate refactor/migration is explicitly requested.
 
-## Animation rules
+## Accessibility and performance
 
-- Use subtle motion that supports the composition; no bounce unless requested and no heavy motion library without a clear need.
-- Respect `prefers-reduced-motion` and keep content functional when animation is disabled.
-- Preserve existing animations. If a node already has a transform animation, inspect the conflict before adding another; use an outer reveal wrapper when appropriate.
+- Preserve keyboard access, visible focus, semantic controls, meaningful image alternatives, and usable reduced-motion behavior.
+- Respect `prefers-reduced-motion`.
+- Prefer transform/opacity for motion and avoid layout-thrashing animation.
+- Do not add dependency bloat for effects that CSS or the existing code can handle.
 
 ## StudentHub protected areas
 
-- Preserve StudentHub's top structure and tabs unless the task names them.
-- Preserve the supplied bottom transition SVG and its path geometry. Do not reuse it as decoration inside the People panel.
-- A Student-mode task does not authorize Parent-mode changes. A People-only task does not authorize changes to other tabs or Stories.
+- Preserve StudentHub's top structure and tabs unless the task explicitly names them.
+- Preserve the supplied bottom transition SVG and its path geometry. Do not reuse it as People-panel decoration.
+- A Student-mode task does not authorize Parent-mode changes.
+- A People-only task does not authorize changes to other StudentHub tabs or Stories.
+- Keep scroll-reveal motion separate from keyed tab-switch animation.
 
 ## People tab
 
-- Keep the editorial layout: large typography on the left and large teacher cards showing portrait, name, and subject only.
-- Keep automatic teacher gallery motion and hover pause; do not add Pause/Play controls. Prefer fewer large cards in view over many small ones.
-- Keep the existing demo portraits until approved replacements are supplied. Decorative artwork for this panel comes from user-supplied assets.
+- Keep the editorial two-column composition with large teacher cards.
+- Cards show portrait, name, and subject only unless the user asks otherwise.
+- Keep automatic gallery motion with hover pause on desktop; do not reintroduce Pause/Play controls.
+- Keep current demo portraits until approved replacements are supplied.
+- Do not regenerate the rejected inline decorative line-art attempt.
 
-## After every task
+## Documentation maintenance
 
-- Append one concise, factual entry to `docs/agent-log.md` covering the decision, technical reason, result, validation, scope, and commit/status.
-- Update `docs/agent-context.md` when the current architecture or decisions change. Update this file only for a durable new rule or a mistake that must not recur.
-- Record important rejected approaches, but never internal chain-of-thought. Do not rewrite earlier log entries; correct them with a new entry.
+After meaningful work:
+
+- update `docs/PROJECT_STATE.md` when current state changes;
+- update `docs/ARCHITECTURE.md` after architecture changes;
+- update `docs/DESIGN_SYSTEM.md` after durable visual-system changes;
+- update `docs/MOTION.md` after motion-system changes;
+- record durable non-obvious choices in `docs/DECISIONS.md`;
+- append one concise factual entry to `docs/agent-log.md`;
+- keep `docs/agent-context.md` focused on implementation invariants and verified Figma context.
+
+Do not use documentation as a replacement for checking the actual code.
