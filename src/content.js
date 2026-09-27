@@ -171,6 +171,31 @@ export const teachers = [
 ];
 
 // PLACEHOLDER: Pexels demo assets are documented in public/images/student-demo/README.md.
+// Demo news, not verified school events. Article routing is a separate next stage.
+export const studentNews = [
+  {
+    id: "demo-project-day", date: "2024-10-12", dateLabel: "12 октября 2024", category: "События",
+    title: "День проектов в Фениксе",
+    excerpt: "Ученики представили свои исследования, творческие идеи и технологические решения. Рассказываем, как это было и какие проекты особенно удивили.",
+    image: "./images/student-demo/student-demo-project.jpg", imageAlt: "Демонстрационная фотография совместной работы учеников", imagePosition: "50% 45%",
+    slug: "den-proektov-v-fenikse",
+  },
+  {
+    id: "demo-school-conference", date: "2024-10-08", dateLabel: "8 октября 2024", category: "Учёба",
+    title: "Подготовка к школьной конференции",
+    excerpt: "Ученики и преподаватели активно готовятся к ежегодной научно-практической конференции Феникса.",
+    image: "./images/student-demo/student-demo-discussion.jpg", imageAlt: "Демонстрационная фотография обсуждения учебного задания", imagePosition: "48% 48%",
+    slug: "podgotovka-k-shkolnoy-konferentsii",
+  },
+  {
+    id: "demo-media-studio", date: "2024-09-27", dateLabel: "27 сентября 2024", category: "События",
+    title: "Открытие медиастудии",
+    excerpt: "В школе начала работу новая медиастудия — пространство для творчества, съёмок и школьных проектов. Показываем, как это было!",
+    image: "./images/student-demo/student-demo-talk.jpg", imageAlt: "Демонстрационная фотография школьного пространства", imagePosition: "50% 48%",
+    slug: "otkrytie-mediastudii",
+  },
+];
+
 export const studentGallery = [
   { src: "./images/student-demo/student-demo-class.jpg", title: "Обычный урок", position: "50% 50%" },
   { src: "./images/student-demo/student-demo-discussion.jpg", title: "Общение и вопросы", position: "48% 48%" },

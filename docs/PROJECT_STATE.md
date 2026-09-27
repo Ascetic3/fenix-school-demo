@@ -35,7 +35,7 @@ StudentHub includes:
 
 - People;
 - Study;
-- School Life;
+- News (replaces School Life, internal tab ID remains life);
 - Photo/Video.
 
 The People panel uses a large editorial teacher-gallery composition. Desktop motion is automatic and pauses on pointer hover; reduced-motion/mobile fall back to a simpler horizontally scrollable layout. There is no manual Pause/Play control.
@@ -59,6 +59,16 @@ Unless explicitly requested, preserve:
 - current teacher-card scale and marquee behavior.
 
 ## Known incomplete content
+
+- Final CTA uses the supplied src/assets/cta-shape.svg and cta-wing.svg unchanged. A geometry-free outer SVG viewport stretches the background to the full CTA bounds, avoiding intrinsic-aspect-ratio letterboxing. Wing opacity is .24 on desktop; the old CSS-generated shape and WebP are no longer rendered. Contact pills, excursion tel-link, footer and blocks above are preserved. Verified at 1600/1440px with no horizontal overflow through 390px; local only, not committed/published.
+
+- News replaces School Life within the unchanged StudentHub shell. Three demo articles render from studentNews in src/content.js, using existing photos and hash links with slugs. Article routing/pages remain a separate next stage. Desktop uses a 58/42 grid inside the same 590px stage; local-only, not committed/published.
+
+- Study desktop composition is locally updated from the supplied reference at >=1200px. People and other panels retain existing styles/behavior. Exact photo and stroke fidelity remains pending: current project demo photos and existing wing/underline artwork are reused; no spray was added. Not committed/published.
+
+- Local desktop pricing/admission refinement uses only Variant 1 (calm premium) from the supplied reference. Existing prices/texts and smaller-screen implementation are retained; CSS changes apply at >=1200px. Existing wing artwork is reused with restrained CSS background accents. This work is not committed or published.
+
+- Local Stage 1 Stories work on `preview/ui-experiments`: static desktop collage at >=1200px based on the supplied image reference, with overlapping photo/review/trial cards and four visual thumbnails. Smaller-screen layout retains its existing implementation. Thumbnail switching, new transitions and responsive adaptation are deferred to separately approved Stage 2; feather/SVG decoration is not included. This work is not committed or published.
 
 - Several Student-mode images and teacher portraits are demo/illustrative material rather than verified production staff/media.
 - Demo-week cards intentionally include fields awaiting confirmed school information.

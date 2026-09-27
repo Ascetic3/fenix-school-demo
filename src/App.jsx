@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import studentHubRightWingSvg from "./assets/studenthub-right-wing.svg?raw";
 import {
   admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
-  studentAdvantages, studentGallery, studentReviews, studentSocials, teachers,
+  studentAdvantages, studentGallery, studentNews, studentReviews, studentSocials, teachers,
 } from "./content";
 
 const audienceIds = ["parent", "student"];
+const ctaWingUrl = new URL("./assets/cta-wing.svg", import.meta.url).href;
+const ctaShapeUrl = new URL("./assets/cta-shape.svg", import.meta.url).href;
 
 function readAudienceFromQuery() {
   const value = new URLSearchParams(window.location.search).get("audience");
@@ -191,8 +192,16 @@ function StudentHubUnderline() {
 function StudentExperience({ items }) {
   return <section className="student-experience student-experience-embedded is-revealed" aria-labelledby="student-experience-title">
     <div className="student-shell">
-      <div className="student-experience-heading"><span>Коротко о главном</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
-      <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}><span className="student-card-number">0{index + 1}</span><span className="student-advantage-icon"><StudentIcon name={icon} /></span><h3>{title}</h3><p>{text}</p>{image && <img className="student-advantage-photo" src={image} alt="" />}</article>)}</div>
+      <div className="student-experience-heading"><span>Учёба</span><h2 id="student-experience-title">Как здесь учиться</h2><p>Три вещи, которые определяют обычный учебный день.</p></div>
+      <div className="student-experience-grid">{items.map(({ icon, image, title, text }, index) => <article className={`student-advantage-card card-${index + 1}`} key={title}>
+        <span className="student-card-number">0{index + 1}</span>
+        <span className="student-advantage-icon"><StudentIcon name={icon} /></span>
+        <h3>{index === 1 ? <><span className="student-study-title-line">{title.split(" ").slice(0, 2).join(" ")}</span>{" "}<span className="student-study-title-line">{title.split(" ")[2]}</span>{" "}<span className="student-study-title-line">{title.split(" ").slice(3).join(" ")}</span></> : title}</h3>
+        <p>{text}</p>
+        {(image || index === 1) && <img className={`student-advantage-photo${!image ? " student-study-added-photo" : ""}`} src={image || "./images/student-demo/teachers/teacher-russian-demo.png"} alt="" />}
+          <span className="student-study-arrow" aria-hidden="true">→</span>
+          {index === 0 && <svg className="student-study-spark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 2 C27.5 14.5 30 17 42 24 C30 31 27.5 33.5 24 46 C20.5 33.5 18 31 6 24 C18 17 20.5 14.5 24 2 Z" /></svg>}
+      </article>)}</div>
     </div>
   </section>;
 }
@@ -305,100 +314,27 @@ function StudentPeople({ teachers }) {
   </div>;
 }
 
-function StudentLife({ items }) {
-  const photos = items.slice(0, 3);
-  const [selected, setSelected] = useState(null);
-  const [closing, setClosing] = useState(false);
-  const [photoDirection, setPhotoDirection] = useState("forward");
-  const triggerRef = useRef(null);
-  const closeButtonRef = useRef(null);
-  const closeTimerRef = useRef(null);
-  const isOpen = selected !== null;
-
-  const finishClose = () => {
-    window.clearTimeout(closeTimerRef.current);
-    closeTimerRef.current = null;
-    setSelected(null);
-    setClosing(false);
-  };
-
-  const closeLightbox = () => {
-    if (closing) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      finishClose();
-      return;
-    }
-    setClosing(true);
-    closeTimerRef.current = window.setTimeout(finishClose, 210);
-  };
-
-  const openLightbox = (index, trigger) => {
-    triggerRef.current = trigger;
-    setPhotoDirection("forward");
-    setClosing(false);
-    setSelected(index);
-  };
-
-  const move = (step) => {
-    setPhotoDirection(step > 0 ? "forward" : "backward");
-    setSelected((value) => (value + step + photos.length) % photos.length);
-  };
-
-  useEffect(() => {
-    if (!isOpen) return undefined;
-    const previousOverflow = document.body.style.overflow;
-    const previousPaddingRight = document.body.style.paddingRight;
-    const scrollbarGap = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.overflow = "hidden";
-    if (scrollbarGap > 0) document.body.style.paddingRight = `${scrollbarGap}px`;
-
-    const focusFrame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") closeLightbox();
-      if (event.key === "ArrowLeft") move(-1);
-      if (event.key === "ArrowRight") move(1);
-      if (event.key !== "Tab") return;
-      const controls = [...document.querySelectorAll(".student-lightbox button")];
-      if (!controls.length) return;
-      const first = controls[0];
-      const last = controls[controls.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.cancelAnimationFrame(focusFrame);
-      window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-      document.body.style.paddingRight = previousPaddingRight;
-      window.clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-      triggerRef.current?.focus();
-    };
-  }, [isOpen]);
-
-  const lightbox = selected !== null && <div className={`student-lightbox${closing ? " is-closing" : ""}`} role="dialog" aria-modal="true" aria-label="Просмотр фотографии" onMouseDown={(event) => event.target === event.currentTarget && closeLightbox()}>
-    <div className="student-lightbox-dialog">
-      <button type="button" ref={closeButtonRef} className="student-lightbox-close" onClick={closeLightbox} aria-label="Закрыть просмотр фотографии">Закрыть ×</button>
-      <button type="button" className="student-lightbox-arrow previous" onClick={() => move(-1)} aria-label="Предыдущая фотография">←</button>
-      <figure key={selected} className={`photo-${photoDirection}`}><img src={photos[selected].src} alt={photos[selected].title} style={{ objectPosition: photos[selected].position }} /><figcaption>{photos[selected].title}</figcaption></figure>
-      <button type="button" className="student-lightbox-arrow next" onClick={() => move(1)} aria-label="Следующая фотография">→</button>
-    </div>
+function StudentNews({ items }) {
+  return <div className="student-hub-panel student-news">
+    <div className="student-panel-heading"><span>Новости школы</span><h3>Что происходит<br />в школе</h3><p>Здесь мы делимся новостями, событиями, анонсами и важными объявлениями из жизни Феникса.</p></div>
+    <div className="student-news-grid">{items.map((item, index) =>
+      <a className={`student-news-card${index === 0 ? " is-featured" : ""}`} href={`#news/${item.slug}`} data-news-id={item.id} key={item.id} aria-label={`Читать: ${item.title}`}>
+        <img src={item.image} alt={item.imageAlt} style={{ objectPosition: item.imagePosition }} />
+        <div className="student-news-copy">
+          <div className="student-news-meta"><time dateTime={item.date}>{item.dateLabel}</time><span>{item.category}</span></div>
+          <h4>{item.title}</h4><p>{item.excerpt}</p>
+          <span className="student-news-read"><i aria-hidden="true">→</i>Читать</span>
+        </div>
+      </a>
+    )}</div>
   </div>;
-
-  return <div className="student-hub-panel student-life"><div className="student-panel-heading"><span>Школьная жизнь</span><h3>Как выглядит обычный день</h3><p>Один главный кадр и несколько деталей — без бесконечной фотоленты.</p></div><div className="student-life-grid">{photos.map((photo, index) => <button type="button" key={photo.title} className={index === 0 ? "featured" : ""} onClick={(event) => openLightbox(index, event.currentTarget)}><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /><span>{photo.title}</span></button>)}</div><p className="student-placeholder-note">Демонстрационные фотографии. В финальной версии будут заменены реальными материалами школы.</p>{lightbox && createPortal(lightbox, document.body)}</div>;
 }
 
 function StudentMedia({ items }) {
   return <div className="student-hub-panel student-media"><div className="student-panel-heading"><span>Фото и видео</span><h3>Посмотри школу своими глазами</h3><p>Видео, несколько кадров и соцсети — как второй способ увидеть актуальную жизнь школы.</p></div><div className="student-media-layout"><article className="student-media-video"><img src="./images/student-demo/student-demo-talk.jpg" alt="Временная демонстрационная фотография для видеоблока" /><span aria-hidden="true">▶</span><div><small>Видео · placeholder</small><strong>Школа в движении</strong></div></article><div className="student-media-side"><div className="student-media-previews">{items.slice(1, 3).map((item) => <figure key={item.title}><img src={item.src} alt={item.title} style={{ objectPosition: item.position }} /><figcaption>{item.title}</figcaption></figure>)}</div><div className="student-media-socials">{studentSocials.map(({ icon, title, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span>{title}<small>Ссылка уточняется</small></span><i aria-hidden="true">↗</i></a>)}</div></div></div></div>;
 }
 
-const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life", "Школьная жизнь"], ["media", "Фото и видео"]];
+const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life", "Новости"], ["media", "Фото и видео"]];
 
 function StudentHub() {
   const [active, setActive] = useState("people");
@@ -406,7 +342,7 @@ function StudentHub() {
   const [isRevealed, setIsRevealed] = useState(false);
   const sectionRef = useRef(null);
   const activeIndex = studentHubTabs.findIndex(([id]) => id === active);
-  const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentExperience items={studentAdvantages} />, life: <StudentLife items={studentGallery} />, media: <StudentMedia items={studentGallery} /> };
+  const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentExperience items={studentAdvantages} />, life: <StudentNews items={studentNews} />, media: <StudentMedia items={studentGallery} /> };
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -487,19 +423,21 @@ function StudentStories({ items, content }) {
   }, []);
 
   return <section ref={sectionRef} className={`student-stories${isRevealed ? " is-revealed" : ""}`} id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
-    <div className="student-stories-heading"><div><span>Истории учеников</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>В Фениксе учатся такие же ребята, как ты. Они рассказывают, что на самом деле значит быть здесь.</p></div>
+    <div className="student-stories-heading"><div><span>Истории учеников</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>В Фениксе учатся такие же ребята, как ты. Они рассказывают, что на самом деле значит быть здесь — учиться, находить друзей, развиваться и верить в себя.</p></div>
     <div className="student-stories-grid">
-      <figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure>
+      <div className="student-stories-photo-layer"><div className="student-stories-photo-backing" aria-hidden="true"><div className="student-backing-spray student-backing-red" /><div className="student-backing-spray student-backing-peach" /></div><figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure></div>
       <article className="student-story-review" aria-live="polite" key={review.title}>
-        <div className="student-story-quote" aria-hidden="true">“</div><h3>{review.title}</h3><p>{review.text}</p>
+        <div className="student-story-quote" aria-hidden="true">“</div><h3>{review.title === "В маленьком классе тебя реально замечают" ? review.title.split(/(?<=маленьком) |(?<=реально) /).map((line, lineIndex) => <span className="student-story-title-line" key={line}>{lineIndex > 0 && " "}{line}</span>) : review.title}</h3><p>{review.text}</p>
         <div className="student-story-footer"><div className="student-story-author"><span><StudentIcon name="group" /></span><div><strong>{review.role}</strong><small>Текст для демонстрации</small></div></div><div className="reviews-controls"><span>{safeIndex + 1} / {carouselItems.length}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
+        <div className="student-story-static-controls" aria-label="Навигация отзывов — статичный макет"><button type="button" disabled aria-label="Предыдущий отзыв">←</button><span>1 / 4</span><button type="button" disabled aria-label="Следующий отзыв">→</button></div>
       </article>
-      <article className="student-story-cta" id="demo-week"><span>Попробовать школу</span><h3>5 дней<br />в Фениксе</h3><p>{content.demoDescription}</p><ul>
+      <article className="student-story-cta" id="demo-week"><div className="student-backing-spray student-backing-trial" aria-hidden="true" /><span>Попробовать школу</span><h3>5 дней<br />в Фениксе</h3><p>{content.demoDescription}</p><ul>
         <li><span><StudentIcon name="dialog" /></span>Посетишь настоящие уроки</li>
         <li><span><StudentIcon name="group" /></span>Познакомишься с учителями и ребятами</li>
         <li><span><StudentIcon name="target" /></span>Поймёшь, подходит ли тебе формат</li>
       </ul><a className="button" href="tel:+79122795067">Попробовать 5 дней →</a></article>
     </div>
+    <div className="student-stories-thumbnails" aria-label="Фотографии историй — статичный макет">{[photo, ...studentGallery.filter(({ src }) => src !== photo.src)].slice(0, 4).map((image, imageIndex) => <div className={`student-story-thumbnail${imageIndex === 0 ? " is-active" : ""}`} key={image.src}><img src={image.src} alt={image.title} style={{ objectPosition: image.position }} loading="lazy" /></div>)}<span className="student-stories-more">Больше<br />историй →</span></div>
   </div></section>;
 }
 
@@ -508,7 +446,7 @@ function StudentNextSteps() {
   const stepIcons = ["dialog", "group", "target", "spark"];
   return <section className="student-next"><div className="student-shell"><div className="student-practical">
     <article className="student-pricing-card"><span>Стоимость</span><h3>Инвестиция<br />в большое будущее</h3><div className="student-price-grid">{prices.map(([title, price, period, details], index) => <section className="student-price-card" key={title}><span className="student-price-icon"><StudentIcon name={priceIcons[index]} /></span><h4>{title}</h4><p>{details[0]}</p><strong>{price}</strong><small>{period}</small></section>)}</div><small className="student-entry-fee">Вступительный взнос при поступлении — 75 000 ₽.</small></article>
-    <article className="student-admission-card"><span>Как поступить</span><h3>Простой путь<br />к большим возможностям</h3><div className="student-admission-path">{admissionSteps.map(([number, title, text], index) => <section key={number}><b>{number}</b><span className="student-admission-icon"><StudentIcon name={stepIcons[index]} /></span><div><h4>{title}</h4><p>{text}</p></div></section>)}</div><div className="student-admission-actions"><a className="button" href="tel:+79122795067">Записаться на встречу →</a><a href="tel:+79122795067">Уточнить условия →</a></div></article>
+    <article className="student-admission-card"><span>Как поступить</span><h3>Простой путь<br />к большим возможностям</h3><div className="student-admission-path"><span className="student-admission-accent" aria-hidden="true"><StudentIcon name="spark" /></span>{admissionSteps.map(([number, title, text], index) => <section key={number}><b>{number}</b><span className="student-admission-icon"><StudentIcon name={stepIcons[index]} /></span><div><h4>{title}</h4><p>{text}</p></div></section>)}</div><div className="student-admission-actions"><a className="button" href="tel:+79122795067">Записаться на встречу →</a><a href="tel:+79122795067">Уточнить условия →</a></div></article>
   </div></div></section>;
 }
 
@@ -609,8 +547,20 @@ export default function App() {
 
     {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} /><Reviews /></section>}
 
-    <section className="hybrid-contact" id="contacts"><div><span>Знакомство со школой</span><h2>Начните с разговора или экскурсии</h2><p>Уточните условия демонедели, свободные места и подходящий формат обучения.</p></div><div className="contact-actions"><a href="tel:+79122795067">☎ +7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">✉ shkola_fenix@mail.ru</a></div></section>
+    <section className="hybrid-contact final-contact" id="contacts">
+      <svg className="final-contact-shape" viewBox="0 0 1600 520" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <image href={ctaShapeUrl} width="1600" height="520" />
+      </svg>
+      <div className="final-contact-copy"><span>Знакомство со школой</span><h2>Начните с разговора<br />или экскурсии</h2><p>Уточните условия демонедели, свободные места и подходящий формат обучения.</p></div>
+      <div className="final-contact-wing" aria-hidden="true">{ctaWingUrl && <img src={ctaWingUrl} alt="" />}</div>
+      <div className="contact-actions"><a href="tel:+79122795067"><span aria-hidden="true">☎</span>+7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru"><span aria-hidden="true">✉</span>shkola_fenix@mail.ru</a><a className="final-contact-cta" href="tel:+79122795067">Записаться на экскурсию <span aria-hidden="true">→</span></a></div>
+    </section>
 
-    <footer><div className="footer-brand footer-logo"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></div><div className="footer-contact"><a href="https://yandex.ru/maps/?text=Екатеринбург%20Большакова%20109" target="_blank" rel="noreferrer">Екатеринбург, Большакова, 109</a><a href="tel:+79122795067">+7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">shkola_fenix@mail.ru</a></div><div className="footer-legal"><span>ЧУ ДО «Школа Феникс» · ИНН 6671349954</span><span>Лицензия № Л035-01277-66/00961501 от 12.12.2023</span><div className="footer-links"><Documents /><a href="https://fenix-school.ru/policy" target="_blank" rel="noreferrer">Политика обработки данных</a></div></div></footer>
+    <footer className="final-footer">
+      <div className="final-footer-brand"><div className="footer-brand footer-logo"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></div><p>Сильные дети.<br />Осознанное будущее.</p></div>
+      <div className="footer-contact"><h3>Контакты</h3><a href="https://yandex.ru/maps/?text=Екатеринбург%20Большакова%20109" target="_blank" rel="noreferrer">Екатеринбург, Большакова, 109</a><a href="tel:+79122795067">+7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">shkola_fenix@mail.ru</a></div>
+      <div className="footer-legal"><h3>Документы</h3><span>Лицензия № Л035-01277-66/00961501<br />от 12.12.2023</span><a href="https://fenix-school.ru/policy" target="_blank" rel="noreferrer">Политика обработки данных</a><div className="footer-links"><Documents /></div></div>
+      <div className="final-footer-bottom"><span>ЧУ ДО «Школа Феникс» · ИНН 6671349954</span><span>© {new Date().getFullYear()} Школа Феникс. Все права защищены.</span></div>
+    </footer>
   </main>;
 }
