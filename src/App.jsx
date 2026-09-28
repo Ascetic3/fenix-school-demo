@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import studentHubRightWingSvg from "./assets/studenthub-right-wing.svg?raw";
+import PhoenixHeroV2 from "./components/PhoenixHeroV2";
+import StudentHeroV2 from "./components/StudentHeroV2";
+import TeachersSection from "./components/TeachersSection/TeachersSection";
 import {
   admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
-  studentAdvantages, studentGallery, studentNews, studentReviews, studentSocials, teachers,
+  studentAdvantages, studentGallery, studentNews, studentReviews, studentSocials,
 } from "./content";
 
 const audienceIds = ["parent", "student"];
@@ -82,12 +84,47 @@ function Documents({ compact = false }) {
   </div>;
 }
 
-const tabs = [["programs", "Обучение"], ["why", "Почему Феникс"], ["pricing", "Стоимость"], ["admission", "Поступление"]];
+const tabs = [["programs", "Обучение"], ["why", "Почему Феникс"], ["teachers", "Педагоги"], ["pricing", "Стоимость"], ["admission", "Поступление"]];
+
+const programVisuals = [
+  { src: "./images/school-event.jpg", alt: "Ученики начальных классов на занятии", position: "50% 48%" },
+  { src: "./images/student-demo/student-demo-class.jpg", alt: "Ученики работают в классе", position: "52% 58%" },
+  { src: "./images/student-demo/student-demo-discussion.jpg", alt: "Ученики обсуждают учебное задание", position: "50% 48%" },
+  { src: "./images/student-demo/student-demo-talk.jpg", alt: "Старшеклассники общаются в школьном пространстве", position: "50% 48%" },
+];
 
 function Programs() {
-  return <section className="tab-panel">
-    <div className="panel-heading"><span>Образовательный маршрут</span><h2>От первых букв<br />до выбора профессии</h2><p>Выберите возрастной этап. Здесь собрана программа без переходов на отдельные страницы.</p></div>
-    <div className="program-tiles">{programs.map(([number, ages, title, text]) => <article key={number}><div className="tile-number">{number}</div><span>{ages}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+  const [activeStage, setActiveStage] = useState(0);
+  const [number, ages, title, text] = programs[activeStage];
+  const visual = programVisuals[activeStage];
+  const selectStage = (index) => setActiveStage((index + programs.length) % programs.length);
+
+  return <section className="tab-panel programs-panel">
+    <div className="programs-overview"><span>Образовательный маршрут</span><h2>От первых букв<br />до выбора профессии</h2><p>Выберите возрастной этап. Здесь собрана программа без переходов на отдельные страницы.</p></div>
+    <div className="program-stage-selector" role="tablist" aria-label="Этапы образовательного маршрута">
+      {programs.map(([stageNumber, stageAges, stageTitle], index) => <button
+        key={stageNumber}
+        type="button"
+        role="tab"
+        aria-selected={activeStage === index}
+        aria-controls="active-program-stage"
+        className={activeStage === index ? "active" : ""}
+        onClick={() => selectStage(index)}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowRight") selectStage(index + 1);
+          if (event.key === "ArrowLeft") selectStage(index - 1);
+        }}
+      ><span>{stageNumber}</span><strong>{stageTitle}</strong><small>{stageAges}</small></button>)}
+    </div>
+    <article className="program-feature-card" id="active-program-stage" key={number} role="tabpanel">
+      <div className="program-feature-card__image"><img src={visual.src} alt={visual.alt} style={{ objectPosition: visual.position }} /></div>
+      <div className="program-feature-card__content">
+        <div className="program-feature-card__meta"><span>{number}</span><small>{ages}</small></div>
+        <h3>{title}</h3>
+        <p>{text}</p>
+        <button type="button" className="program-feature-card__arrow" aria-label="Показать следующий образовательный этап" onClick={() => selectStage(activeStage + 1)}><span aria-hidden="true">→</span></button>
+      </div>
+    </article>
   </section>;
 }
 
@@ -117,9 +154,9 @@ function Admission() {
   </section>;
 }
 
-function SchoolTabs({ content }) {
+function SchoolTabs({ content, audience }) {
   const [active, setActive] = useState("programs");
-  const panels = { programs: <Programs />, why: <Why content={content} />, pricing: <Pricing />, admission: <Admission /> };
+  const panels = { programs: <Programs />, why: <Why content={content} />, teachers: <TeachersSection audience={audience} />, pricing: <Pricing />, admission: <Admission /> };
   return <div className="school-tabs">
     <div className="school-tabs-list" role="tablist" aria-label="Информация о школе">{tabs.map(([id, label]) => <button key={id} role="tab" aria-selected={active === id} className={active === id ? "active" : ""} onClick={() => setActive(id)}>{label}</button>)}</div>
     <div className="school-tabs-stage">{panels[active]}</div>
@@ -147,47 +184,6 @@ function StudentAccent({ variant }) {
   </span>;
 }
 
-function StudentHeroBands() {
-  return <svg className="student-hero-bands" viewBox="0 0 1000 720" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-    <defs>
-      <linearGradient id="student-hero-ribbon-gradient" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#e92f20" />
-        <stop offset="1" stopColor="#ff6a22" />
-      </linearGradient>
-    </defs>
-    <g className="student-hero-ribbons-desktop">
-      <path d="M 180 0 H 275 L 95 720 H 0 Z" />
-      <path d="M 1060 0 H 1155 L 970 720 H 875 Z" />
-    </g>
-    <g className="student-hero-ribbons-tablet">
-      <path d="M 180 0 H 240 L 60 720 H 0 Z" />
-      <path d="M 1040 0 H 1100 L 960 720 H 900 Z" />
-    </g>
-  </svg>;
-}
-
-function StudentHubDecor({ className = "" }) {
-  return <div className={`student-hub-decor${className ? ` ${className}` : ""}`} aria-hidden="true">
-    <svg className="student-hub-decor-piece decor-left" viewBox="0 0 360 270" focusable="false">
-      <defs><linearGradient id="fenixRibbon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#d92f20" /><stop offset="1" stopColor="#ff6a1a" /></linearGradient></defs>
-      <path className="decor-fill" d="M0 12 L118 0 L18 98 L0 111 Z" fill="url(#fenixRibbon)" />
-      <path className="decor-fill" d="M0 112 L170 6 L192 10 L0 143 Z" fill="#f05a24" />
-      <path className="decor-fill" d="M0 151 L234 16 L256 20 L0 181 Z" fill="#ef3d22" />
-      <path className="decor-stroke" pathLength="1" d="M0 182 C38 160 76 151 125 147" fill="none" stroke="#e73722" strokeWidth="8" strokeLinecap="round" />
-      <path className="decor-stroke" pathLength="1" d="M0 207 C34 188 67 180 108 176" fill="none" stroke="#f05a24" strokeWidth="7" strokeLinecap="round" />
-      <path className="decor-stroke" pathLength="1" d="M0 229 C26 215 52 207 84 203" fill="none" stroke="#ef3d22" strokeWidth="6" strokeLinecap="round" />
-      <path className="decor-spark" d="M184 72 C190 90 194 94 212 100 C194 106 190 110 184 128 C178 110 174 106 156 100 C174 94 178 90 184 72 Z" fill="#e73722" />
-    </svg>
-    <div className="student-hub-decor-piece decor-right" dangerouslySetInnerHTML={{ __html: studentHubRightWingSvg }} />
-  </div>;
-}
-
-function StudentHubUnderline() {
-  return <svg className="student-hub-underline" viewBox="0 0 260 34" aria-hidden="true" focusable="false">
-    <path className="student-hub-underline-main" pathLength="1" d="M6 20 C54 5 101 8 142 14 C185 20 221 21 254 12" />
-    <path className="student-hub-underline-detail" pathLength="1" d="M156 22 C190 27 223 24 252 17" />
-  </svg>;
-}
 
 function StudentExperience({ items }) {
   return <section className="student-experience student-experience-embedded is-revealed" aria-labelledby="student-experience-title">
@@ -204,114 +200,6 @@ function StudentExperience({ items }) {
       </article>)}</div>
     </div>
   </section>;
-}
-
-function StudentPeople({ teachers }) {
-  const viewportRef = useRef(null);
-  const trackRef = useRef(null);
-  const hoveredRef = useRef(false);
-
-  useEffect(() => {
-    const viewport = viewportRef.current;
-    const track = trackRef.current;
-    if (!viewport || !track || !teachers.length) return undefined;
-
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const compactLayout = window.matchMedia('(max-width: 820px)');
-    const sets = track.querySelectorAll('.student-teacher-set');
-    const cards = track.querySelectorAll('.student-teacher-card');
-    let cycleWidth = 0;
-    let offset = 0;
-    let frame = 0;
-    let previousTime = 0;
-    let inView = false;
-
-    const render = () => {
-      if (!cycleWidth) return;
-      const trackX = offset - cycleWidth;
-      track.style.transform = `translate3d(${trackX}px, 0, 0)`;
-      const center = viewport.clientWidth / 2;
-      const range = center + 100;
-      cards.forEach((card) => {
-        const cardCenter = card.offsetLeft + trackX + card.offsetWidth / 2;
-        const focus = Math.max(0, 1 - Math.abs(cardCenter - center) / range);
-        card.style.setProperty('--teacher-focus', focus.toFixed(3));
-      });
-    };
-
-    const measure = () => {
-      cycleWidth = sets[1].offsetLeft - sets[0].offsetLeft;
-      if (cycleWidth) offset %= cycleWidth;
-      render();
-    };
-
-    const tick = (time) => {
-      if (previousTime && !hoveredRef.current && cycleWidth) {
-        offset = (offset + Math.min(time - previousTime, 64) * 0.018) % cycleWidth;
-      }
-      previousTime = time;
-      render();
-      frame = window.requestAnimationFrame(tick);
-    };
-
-    const stop = () => {
-      window.cancelAnimationFrame(frame);
-      frame = 0;
-      previousTime = 0;
-    };
-
-    const sync = () => {
-      if (reducedMotion.matches || compactLayout.matches) {
-        stop();
-        track.style.removeProperty('transform');
-        cards.forEach((card) => card.style.removeProperty('--teacher-focus'));
-        return;
-      }
-      measure();
-      if (inView && !frame) frame = window.requestAnimationFrame(tick);
-      if (!inView) stop();
-    };
-
-    const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => {
-      inView = entry.isIntersecting;
-      sync();
-    }, { threshold: 0.1 }) : null;
-    if (observer) observer.observe(viewport);
-    else inView = true;
-
-    const resizeObserver = 'ResizeObserver' in window ? new ResizeObserver(sync) : null;
-    if (resizeObserver) resizeObserver.observe(viewport);
-    window.addEventListener('resize', sync);
-    reducedMotion.addEventListener('change', sync);
-    compactLayout.addEventListener('change', sync);
-    sync();
-
-    return () => {
-      stop();
-      observer?.disconnect();
-      resizeObserver?.disconnect();
-      window.removeEventListener('resize', sync);
-      reducedMotion.removeEventListener('change', sync);
-      compactLayout.removeEventListener('change', sync);
-    };
-  }, [teachers.length]);
-
-  return <div className="student-hub-panel student-people">
-    <div className="student-people-heading"><span>Люди</span><h3>С кем ты<br />будешь<br />учиться</h3><p>В нашей школе рядом опытные и внимательные преподаватели. Они знают свой предмет и помогают каждому ученику расти.</p></div>
-    <div className="student-teacher-showcase">
-      <div className="student-teacher-viewport" ref={viewportRef} role="region" aria-label="Преподаватели школы, демонстрационные материалы" onPointerEnter={() => { hoveredRef.current = true; }} onPointerLeave={() => { hoveredRef.current = false; }}>
-        <div className="student-teacher-track" ref={trackRef}>
-          {[0, 1, 2].map((copy) => <div className="student-teacher-set" key={copy} aria-hidden={copy !== 1 ? 'true' : undefined}>
-            {teachers.map((teacher, index) => <article className="student-teacher-card" key={`${copy}-${teacher.subject}-${index}`}>
-              <div className="student-teacher-photo"><img src={teacher.photo} alt={teacher.placeholder ? 'Демонстрационное фото преподавателя' : teacher.name} style={{ objectPosition: teacher.portraitPosition || '50% 38%' }} /><span aria-hidden="true">{teacher.placeholder ? 'ДЕМО' : ''}</span></div>
-              <div className="student-teacher-caption"><strong>{teacher.name}</strong><span>{teacher.subject}</span></div>
-            </article>)}
-          </div>)}
-        </div>
-      </div>
-      <div className="student-teacher-meta"><span>Люди, с которыми можно учиться и говорить</span></div>
-    </div>
-  </div>;
 }
 
 function StudentNews({ items }) {
@@ -336,13 +224,13 @@ function StudentMedia({ items }) {
 
 const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life", "Новости"], ["media", "Фото и видео"]];
 
-function StudentHub() {
+function StudentHub({ audience }) {
   const [active, setActive] = useState("people");
   const [direction, setDirection] = useState("forward");
   const [isRevealed, setIsRevealed] = useState(false);
   const sectionRef = useRef(null);
   const activeIndex = studentHubTabs.findIndex(([id]) => id === active);
-  const panels = { people: <StudentPeople teachers={teachers} />, study: <StudentExperience items={studentAdvantages} />, life: <StudentNews items={studentNews} />, media: <StudentMedia items={studentGallery} /> };
+  const panels = { people: <TeachersSection audience={audience} />, study: <StudentExperience items={studentAdvantages} />, life: <StudentNews items={studentNews} />, media: <StudentMedia items={studentGallery} /> };
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -365,32 +253,15 @@ function StudentHub() {
     setDirection(nextIndex > activeIndex ? "forward" : "backward");
     setActive(id);
   };
-  return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title"><StudentHubDecor /><div className="student-shell"><div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2><StudentHubUnderline /></div><div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>{studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}><span className="student-hub-tab-label"><svg className="student-hub-tab-spark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 2 C27.5 14.5 30 17 42 24 C30 31 27.5 33.5 24 46 C20.5 33.5 18 31 6 24 C18 17 20.5 14.5 24 2 Z" /></svg>{label}<svg className="student-hub-tab-underline" viewBox="0 0 160 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 8 C30 3 57 4 82 7 C108 10 134 9 158 5" /></svg></span></button>)}</div><div className="student-hub-stage-reveal"><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div></div><StudentHubBottomDecor /></section>;
-}
-
-function StudentHubBottomDecor() {
-  const [isRevealed, setIsRevealed] = useState(false);
-  const triggerRef = useRef(null);
-
-  useEffect(() => {
-    const trigger = triggerRef.current;
-    if (!trigger) return undefined;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-      setIsRevealed(true);
-      return undefined;
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setIsRevealed(true);
-      observer.disconnect();
-    }, { threshold: 0.2, rootMargin: "0px 0px -5% 0px" });
-    observer.observe(trigger);
-    return () => observer.disconnect();
-  }, []);
-
-  return <div ref={triggerRef} className={`student-hub-bottom-decor${isRevealed ? " is-revealed" : ""}`} aria-hidden="true">
-    <img src="./images/student-demo/student-people-stories-transition.svg" alt="" draggable="false" />
-  </div>;
+  return <section ref={sectionRef} className={`student-hub${isRevealed ? " is-revealed" : ""}`} id="explore" aria-labelledby="student-hub-title">
+    <div className="student-shell">
+      <div className="student-hub-heading"><span>Феникс изнутри</span><h2 id="student-hub-title">Выбери, что тебе<br />интересно</h2></div>
+      <div className="student-hub-tabs" role="tablist" aria-label="Феникс изнутри" style={{ "--hub-index": activeIndex }}>
+        {studentHubTabs.map(([id, label], index) => <button key={id} id={`student-tab-${id}`} role="tab" aria-selected={active === id} aria-controls={`student-panel-${id}`} className={active === id ? "active" : ""} onClick={() => selectTab(id, index)}><span className="student-hub-tab-label">{label}</span></button>)}
+      </div>
+      <div className="student-hub-stage-reveal"><div className={`student-hub-stage direction-${direction}`} id={`student-panel-${active}`} role="tabpanel" aria-labelledby={`student-tab-${active}`} key={active}>{panels[active]}</div></div>
+    </div>
+  </section>;
 }
 
 function StudentStories({ items, content }) {
@@ -516,36 +387,18 @@ export default function App() {
       <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Documents /><a href="tel:+79122795067">Позвонить в школу</a></div></details>
     </header>
 
-    <section className={`hybrid-hero${audience === "student" ? " student-hero-dynamic" : ""}`} id="top">
-      {!hasChosenAudience && <AudienceWelcome onChoose={changeAudience} />}
-      {audience === "student" ? <>
-        <div className="student-hero-copy">
-          <div className="student-hero-eyebrow"><span>+</span> Твой выбор тоже важен</div>
-          <h1><span>Школа,</span><span>которую</span><em>можно</em><em>выбрать</em><em>самому</em></h1>
-          <p>{content.hero.description}</p>
-          <a className="button student-hero-cta" href="#demo-week">Попробовать 5 дней <span aria-hidden="true">→</span></a>
-        </div>
-        <div className="student-hero-visual">
-          <div className="student-hero-photo"><img src="./images/student-demo/student-hero-seniors.jpg" alt="Старшеклассники обсуждают учебное задание" /><StudentHeroBands /></div>
-        </div>
-      </> : <>
-      <div className="hybrid-hero-copy">
-        <div className="audience-transition" key={audience}><div className="eyebrow">✦ Частная школа в Екатеринбурге</div><h1>{content.hero.title}<br /><em>{content.hero.accent}</em></h1><p>{content.hero.description}</p>
-        <div className="hero-actions"><a className="button button-primary" href="#demo-week">{content.hero.primaryCta}</a><a className="button button-ghost" href="#explore">{content.hero.secondaryCta}</a></div>
-        <div className="hero-meta"><span>⌖ Большакова, 109</span><span>До 14 учеников в классе</span><span>3 минуты до Зелёной рощи</span></div>
-        </div>
-      </div>
-      <div className="hybrid-hero-visual"><img src="./images/school-event.jpg" alt="Ученики школы Феникс на занятии" /><div className="hero-demo-card"><span>Демонеделя</span><strong>5 учебных дней</strong><p>Познакомиться со школой до решения о поступлении</p><a href="tel:+79122795067">Уточнить условия →</a></div></div>
-      </>}
-    </section>
+    {audience === "student" ? <StudentHeroV2 description={content.hero.description} /> : <PhoenixHeroV2
+      ctaLabel={content.hero.primaryCta}
+      welcome={!hasChosenAudience && <AudienceWelcome onChoose={changeAudience} />}
+    />}
 
     {audience === "student" && <>
-      <StudentHub />
+      <StudentHub audience={audience} />
       <StudentStories items={studentReviews} content={content} />
       <StudentNextSteps />
     </>}
 
-    {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} /><Reviews /></section>}
+    {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} audience={audience} /><Reviews /></section>}
 
     <section className="hybrid-contact final-contact" id="contacts">
       <svg className="final-contact-shape" viewBox="0 0 1600 520" preserveAspectRatio="none" aria-hidden="true" focusable="false">

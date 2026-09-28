@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Golos+Text:wght@400;500;600;700&family=Marck+Script&display=swap");
+
+:root {
+  --phoenix-ui-font: "Golos Text", Arial, sans-serif;
+  --phoenix-editorial-font: "Cormorant Garamond", Georgia, serif;
+  --phoenix-primary-start: #f05232;
+  --phoenix-primary-mid: #e43d25;
+  --phoenix-primary-end: #d8301f;
+  --phoenix-primary-edge: rgba(255, 209, 155, 0.72);
+  --phoenix-primary-glow: rgba(224, 62, 33, 0.28);
+  --phoenix-paper-warm: #f8f1e8;
+  --phoenix-section-warm: #faf4ec;
+  --phoenix-section-peach: #faf1e7;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--phoenix-ui-font);
+}
+
+.button,
+.header-cta,
+.documents-trigger,
+.phoenix-hero-v2__cta {
+  font-family: var(--phoenix-ui-font);
+  font-weight: 600;
+}
+
+.button-primary,
+.header-cta,
+.phoenix-hero-v2__cta,
+.final-contact .contact-actions .final-contact-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  background:
+    linear-gradient(112deg, var(--phoenix-primary-start) 0%, var(--phoenix-primary-mid) 52%, var(--phoenix-primary-end) 100%);
+  border-color: rgba(187, 48, 28, 0.92);
+  box-shadow:
+    inset 0 1px 0 var(--phoenix-primary-edge),
+    inset 0 -1px 0 rgba(138, 31, 20, 0.3),
+    0 7px 16px rgba(180, 48, 29, 0.18),
+    0 0 14px var(--phoenix-primary-glow);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease,
+    background-position 180ms ease;
+}
+
+.button-primary:hover,
+.header-cta:hover,
+.phoenix-hero-v2__cta:hover,
+.final-contact .contact-actions .final-contact-cta:hover {
+  color: #fff;
+  background-position: 100% 50%;
+  filter: saturate(1.06) brightness(1.025);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 229, 195, 0.86),
+    inset 0 -1px 0 rgba(138, 31, 20, 0.28),
+    0 10px 20px rgba(180, 48, 29, 0.23),
+    0 0 19px rgba(224, 62, 33, 0.34);
+}
+
+.button-primary:active,
+.header-cta:active,
+.phoenix-hero-v2__cta:active,
+.final-contact .contact-actions .final-contact-cta:active {
+  transform: translateY(0);
+  filter: saturate(0.98) brightness(0.98);
+  box-shadow:
+    inset 0 2px 4px rgba(123, 28, 19, 0.22),
+    0 3px 8px rgba(180, 48, 29, 0.16),
+    0 0 8px rgba(224, 62, 33, 0.2);
+}
+
+.button-primary:focus-visible,
+.header-cta:focus-visible,
+.phoenix-hero-v2__cta:focus-visible,
+.final-contact .contact-actions .final-contact-cta:focus-visible {
+  outline: 2px solid #fff5e8;
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 5px rgba(222, 63, 34, 0.32),
+    inset 0 1px 0 var(--phoenix-primary-edge),
+    0 8px 18px rgba(180, 48, 29, 0.2);
+}
+
+.button-ghost,
+.documents-trigger {
+  border-color: rgba(69, 51, 44, 0.18);
+  background: rgba(255, 251, 245, 0.74);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.button-ghost:hover,
+.documents-trigger:hover {
+  background: rgba(255, 250, 243, 0.94);
+  border-color: rgba(224, 62, 33, 0.32);
+  box-shadow: 0 5px 13px rgba(140, 67, 40, 0.08);
+  transform: translateY(-1px);
+}
+
+.button-ghost:focus-visible,
+.documents-trigger:focus-visible {
+  outline: 2px solid rgba(224, 62, 33, 0.56);
+  outline-offset: 3px;
+}
+
+.header-cta {
+  background-size: 150% 100%;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 218, 177, 0.62),
+    inset 0 -1px 0 rgba(138, 31, 20, 0.24),
+    0 5px 12px rgba(180, 48, 29, 0.16),
+    0 0 9px rgba(224, 62, 33, 0.16);
+}
