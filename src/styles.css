@@ -381,7 +381,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .hero-demo-card p { grid-column: 1; margin: .4rem 0 0; color: var(--muted); font-size: .88rem; }
 .hero-demo-card a { grid-column: 2; grid-row: 1 / 4; align-self: center; min-height: 46px; padding: .7rem 1rem; border-radius: 999px; display: inline-flex; align-items: center; gap: .5rem; background: var(--apricot); font-weight: 900; }
 
-.hybrid-explore { position: relative; isolation: isolate; padding: clamp(4.5rem, 8vw, 8rem) 4vw; background: linear-gradient(180deg, var(--phoenix-paper-warm) 0%, var(--phoenix-section-warm) 18%, var(--phoenix-section-warm) 100%); }
+.hybrid-explore { position: relative; isolation: isolate; padding: clamp(4.5rem, 8vw, 8rem) 4vw; }
 .student-shell { width: min(100%, 1500px); margin-inline: auto; }
 .student-accent { position: absolute; z-index: 0; display: block; color: var(--wine); pointer-events: none; }
 .student-accent svg { width: 100%; height: 100%; display: block; overflow: visible; }
@@ -467,18 +467,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
   #student-panel-study .card-3 .student-study-arrow { width: 30px; height: 30px; border-color: #a77943; color: #dba35b; background: transparent; font-size: 23px; }
 }
 
-.student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw 0; background: linear-gradient(180deg, var(--phoenix-paper-warm) 0%, var(--phoenix-section-warm) 18%, var(--phoenix-section-warm) 100%); box-shadow: 0 -72px 96px 30px rgba(248,241,232,.72); }
-.hybrid-explore::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  top: clamp(-150px, -9vw, -112px);
-  right: 0;
-  left: 0;
-  height: clamp(114px, 9vw, 152px);
-  background: linear-gradient(180deg, rgba(248,241,232,0) 0%, rgba(248,241,232,.5) 48%, var(--phoenix-paper-warm) 100%);
-  pointer-events: none;
-}
+.student-hub { position: relative; overflow: hidden; padding: clamp(5rem, 7.5vw, 8rem) 4vw 0; }
 .student-hub-bottom-decor {
   position: relative;
   left: 50%;
@@ -698,7 +687,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .student-media-socials small { color: var(--muted); font-size: .62rem; font-weight: 400; }
 .student-media-socials i { color: var(--wine); font-style: normal; }
 
-.student-next { position: relative; overflow: hidden; padding: clamp(4rem, 6vw, 6rem) 4vw; background: var(--phoenix-section-peach); }
+.student-next { position: relative; overflow: hidden; padding: clamp(4rem, 6vw, 6rem) 4vw; }
 .student-practical { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(380px, .85fr); gap: 1rem; margin-top: 1rem; }
 .student-practical > article { position: relative; min-width: 0; overflow: hidden; padding: clamp(1.45rem, 2.2vw, 2.25rem); border: 1px solid var(--line); border-radius: 1rem; background: var(--paper); }
 .student-practical > article > span { display: block; }
@@ -856,7 +845,7 @@ footer { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 3rem; padding
 .review-author div { display: grid; }
 .review-author strong { font-size: .95rem; }
 .review-author small { margin-top: .1rem; color: var(--wine); font-size: .8rem; }
-.student-stories { position: relative; width: 100%; padding: clamp(4rem, 6vw, 7rem) 4vw; overflow: hidden; background: var(--phoenix-section-warm); }
+.student-stories { position: relative; width: 100%; padding: clamp(4rem, 6vw, 7rem) 4vw; overflow: hidden; }
 @media (min-width: 821px) { .student-hub + .student-stories { padding-top: clamp(40px, 4vw, 70px); } }
 .student-stories > .student-shell { position: relative; z-index: 1; width: min(100%, 1500px); max-width: 100%; }
 .student-stories-heading { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(250px, .5fr) minmax(150px, .3fr); gap: clamp(1.5rem, 3vw, 3rem); align-items: start; margin-bottom: clamp(1.8rem, 3vw, 3rem); }

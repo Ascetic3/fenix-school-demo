@@ -6,6 +6,8 @@ import "./phoenix-global.scss";
 import "./components/PhoenixHeroV2.scss";
 import "./components/ParentExplore/ParentExplore.scss";
 import "./components/StudentHub/StudentHub.scss";
+import "./styles/phoenix-page-background.scss";
+import "./styles/phoenix-content-system.scss";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode><App /></StrictMode>,

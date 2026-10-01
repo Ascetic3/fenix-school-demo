@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import PhoenixHeroV2 from "./components/PhoenixHeroV2";
 import StudentHeroV2 from "./components/StudentHeroV2";
+import PhoenixPageDecor from "./components/PhoenixPageDecor";
 import TeachersSection from "./components/TeachersSection/TeachersSection";
 import {
   admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
@@ -10,6 +11,7 @@ import {
 const audienceIds = ["parent", "student"];
 const ctaWingUrl = new URL("./assets/cta-wing.svg", import.meta.url).href;
 const ctaShapeUrl = new URL("./assets/cta-shape.svg", import.meta.url).href;
+const parentFinalCtaImageUrl = new URL("./assets/parent-final-cta-books-vase.png", import.meta.url).href;
 
 function readAudienceFromQuery() {
   const value = new URLSearchParams(window.location.search).get("audience");
@@ -93,6 +95,24 @@ const programVisuals = [
   { src: "./images/student-demo/student-demo-talk.jpg", alt: "Старшеклассники общаются в школьном пространстве", position: "50% 48%" },
 ];
 
+function ProgramFeatureIcon({ name }) {
+  return <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+    {name === "book" && <><path d="M24 13c-4-4-9-5-15-3v26c6-2 11-1 15 3M24 13c4-4 9-5 15-3v26c-6-2-11-1-15 3M24 13v26" /></>}
+    {name === "people" && <><circle cx="17" cy="18" r="5" /><circle cx="32" cy="19" r="4" /><path d="M7 37c1-7 5-11 10-11s9 4 10 11M27 28c2-2 4-3 6-3 5 0 8 4 8 10" /></>}
+    {name === "heart" && <path d="M24 39 10 26C3 19 8 9 16 9c4 0 7 2 8 5 2-3 5-5 8-5 9 0 13 10 6 17z" />}
+    {name === "coins" && <><ellipse cx="24" cy="13" rx="12" ry="5" /><path d="M12 13v15c0 7 24 7 24 0V13M12 21c0 7 24 7 24 0M12 28c0 7 24 7 24 0" /></>}
+  </svg>;
+}
+
+function FooterIcon({ name }) {
+  return <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    {name === "pin" && <><path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></>}
+    {name === "phone" && <path d="M8.2 4.2 6.5 5.9c-1 1 .7 4.3 3.5 7.1s6.1 4.5 7.1 3.5l1.7-1.7-2.6-2.6-1.5 1.2c-1.1-.4-2.2-1.2-3.2-2.2s-1.8-2.1-2.2-3.2l1.2-1.5Z" />}
+    {name === "mail" && <><rect x="3.5" y="5.5" width="17" height="13" rx="2" /><path d="m4.5 7 7.5 5.5L19.5 7" /></>}
+    {name === "document" && <><path d="M7 3.5h7l4 4v13H7z" /><path d="M14 3.5v4h4M10 12h5M10 15h5" /></>}
+  </svg>;
+}
+
 function Programs() {
   const [activeStage, setActiveStage] = useState(0);
   const [number, ages, title, text] = programs[activeStage];
@@ -100,7 +120,7 @@ function Programs() {
   const selectStage = (index) => setActiveStage((index + programs.length) % programs.length);
 
   return <section className="tab-panel programs-panel">
-    <div className="programs-overview"><span>Образовательный маршрут</span><h2>От первых букв<br />до выбора профессии</h2><p>Выберите возрастной этап. Здесь собрана программа без переходов на отдельные страницы.</p></div>
+    <div className="programs-overview"><span>Образовательный маршрут</span><h2>От первых букв<br />до выбора профессии</h2><p>Выберите возрастной этап. Здесь собрана программа без переходов на отдельные страницы.</p><a className="programs-overview__cta" href="#active-program-stage">Подробнее <span aria-hidden="true">→</span></a></div>
     <div className="program-stage-selector" role="tablist" aria-label="Этапы образовательного маршрута">
       {programs.map(([stageNumber, stageAges, stageTitle], index) => <button
         key={stageNumber}
@@ -122,7 +142,11 @@ function Programs() {
         <div className="program-feature-card__meta"><span>{number}</span><small>{ages}</small></div>
         <h3>{title}</h3>
         <p>{text}</p>
-        <button type="button" className="program-feature-card__arrow" aria-label="Показать следующий образовательный этап" onClick={() => selectStage(activeStage + 1)}><span aria-hidden="true">→</span></button>
+        <ul className="program-feature-card__features" aria-label="Преимущества обучения">
+          <li><span className="program-feature-card__feature-icon"><ProgramFeatureIcon name="book" /></span><span>Развивающие<br />занятия</span></li>
+          <li><span className="program-feature-card__feature-icon"><ProgramFeatureIcon name="people" /></span><span>Заботливые<br />педагоги</span></li>
+          <li><span className="program-feature-card__feature-icon"><ProgramFeatureIcon name="heart" /></span><span>Комфортная<br />адаптация</span></li>
+        </ul>
       </div>
     </article>
   </section>;
@@ -139,17 +163,40 @@ function Why({ content }) {
 function Pricing() {
   return <section className="tab-panel pricing-panel">
     <div className="panel-heading light"><span>Открытая стоимость</span><h2>Цены до первого звонка</h2><p>Вступительный взнос при поступлении — 75 000 ₽.</p></div>
-    <div className="compact-price-grid">{prices.map(([title, price, period, details]) => <article key={title}><h3>{title}</h3><strong>{price}</strong><p>{period}</p><ul>{details.map((item) => <li key={item}>✓ {item}</li>)}</ul></article>)}</div>
+    <div className="compact-price-grid">{prices.map(([title, price, period, details]) => <article key={title}><h3>{title}</h3><strong>{price}</strong><p>{period}</p><ul>{details.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}</ul></article>)}</div>
     <p className="pricing-note">Ежегодный платёж за учебники и материалы: 33 000 ₽ в начальной школе и 40 000 ₽ в средней.</p>
   </section>;
 }
 
+function AdmissionIcon({ name }) {
+  return <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+    {name === "people" && <><circle cx="17" cy="18" r="5" /><circle cx="32" cy="19" r="4" /><path d="M7 37c1-7 5-11 10-11s9 4 10 11M27 28c2-2 4-3 6-3 5 0 8 4 8 10" /></>}
+    {name === "diagnostic" && <><path d="M12 7h19l7 7v27H12zM31 7v8h7M18 22h12M18 29h8" /><circle cx="33" cy="34" r="5" /><path d="m37 38 4 4" /></>}
+    {name === "document" && <><path d="M13 6h17l7 7v29H13zM30 6v8h7M19 23h12M19 30h12" /></>}
+    {name === "cap" && <><path d="m5 19 19-10 19 10-19 10zM12 24v9c6 6 18 6 24 0v-9M42 20v11" /></>}
+    {name === "calendar" && <><rect x="9" y="12" width="30" height="28" rx="3" /><path d="M16 7v10M32 7v10M9 21h30M17 28h7" /></>}
+    {name === "clock" && <><circle cx="24" cy="24" r="16" /><path d="M24 14v11l7 4" /></>}
+    {name === "meal" && <><path d="M14 8v15M9 8v9c0 4 10 4 10 0V8M14 23v17M31 8v32M31 8c7 4 7 14 0 18" /></>}
+    {name === "coins" && <><ellipse cx="24" cy="13" rx="12" ry="5" /><path d="M12 13v15c0 7 24 7 24 0V13M12 21c0 7 24 7 24 0M12 28c0 7 24 7 24 0" /></>}
+    {name === "bag" && <><path d="M12 17h24l3 23H9zM18 17v-4a6 6 0 0 1 12 0v4M17 25h14M20 32h8" /></>}
+    {name === "clipboard" && <><rect x="11" y="9" width="26" height="32" rx="3" /><path d="M19 9v-3h10v3M18 21h12M18 28h12" /></>}
+  </svg>;
+}
+
 function Admission() {
+  const stepIcons = ["people", "diagnostic", "document", "cap"];
+  const demoIcons = ["people", "calendar", "clock", "meal", "coins", "bag", "clipboard"];
+  const [featuredField, ...demoInfoFields] = demoWeekFields;
+
   return <section className="tab-panel admission-panel">
     <div className="panel-heading"><span>Путь поступления</span><h2>Сначала познакомимся</h2><p>Экскурсия, диагностика, документы и мягкое знакомство с новым учебным ритмом.</p></div>
-    <div className="admission-steps-compact">{admissionSteps.map(([number, title, text]) => <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
-    <section className="demo-details"><div className="demo-details-heading"><div><span>◉ Нужно уточнить у школы</span></div><h3>Условия демонедели</h3><p>Карточки уже готовы. Вместо неподтверждённых сведений внутри оставлены инструкции для заполнения.</p></div>
-      <div className="demo-field-grid">{demoWeekFields.map(([title, instruction]) => <article key={title}><span>Заполнить</span><h4>{title}</h4><p>{instruction}</p></article>)}</div>
+    <div className="admission-steps-compact">{admissionSteps.map(([number, title, text], index) => <article key={number}><span className="admission-step-number">{number.padStart(2, "0")}</span><span className="admission-step-icon"><AdmissionIcon name={stepIcons[index]} /></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+    <section className="demo-details"><div className="demo-details-heading"><div><span>◉ Нужно уточнить у школы</span></div><h3>Условия демодня</h3><p>Карточки уже готовы. Вместо неподтверждённых сведений внутри оставлены инструкции для заполнения.</p></div>
+      <div className="demo-details-layout">
+        <article className="demo-featured-card"><span className="demo-info-icon"><AdmissionIcon name={demoIcons[0]} /></span><div><h4>{featuredField[0]}</h4><p>{featuredField[1]}</p></div><img src="./images/school-event.jpg" alt="Ученики на занятии в школе" /></article>
+        <div className="demo-info-grid">{demoInfoFields.slice(0, 4).map(([title, instruction], index) => <article key={title}><span className="demo-info-icon"><AdmissionIcon name={demoIcons[index + 1]} /></span><div><h4>{title}</h4><p>{instruction}</p></div></article>)}</div>
+        <div className="demo-followup-grid">{demoInfoFields.slice(4).map(([title, instruction], index) => <article key={title}><span className="demo-info-icon"><AdmissionIcon name={demoIcons[index + 5]} /></span><div><h4>{title}</h4><p>{instruction}</p></div></article>)}</div>
+      </div>
     </section>
   </section>;
 }
@@ -157,11 +204,22 @@ function Admission() {
 function SchoolTabs({ content, audience }) {
   const [active, setActive] = useState("programs");
   const panels = { programs: <Programs />, why: <Why content={content} />, teachers: <TeachersSection audience={audience} />, pricing: <Pricing />, admission: <Admission /> };
+  const demoBenefits = [
+    ["people", "До 14 учеников в классе"],
+    ["heart", "Бережное сопровождение"],
+    ["coins", "Открытая стоимость"],
+  ];
   return <div className="school-tabs">
     <div className="school-tabs-list" role="tablist" aria-label="Информация о школе">{tabs.map(([id, label]) => <button key={id} role="tab" aria-selected={active === id} className={active === id ? "active" : ""} onClick={() => setActive(id)}>{label}</button>)}</div>
     <div className="school-tabs-stage">{panels[active]}</div>
-    <section className="demo-ribbon" id="demo-week"><div className="demo-ribbon-icon">✦</div><div><span>Попробовать школу</span><h2>{content.demoTitle}</h2><p>{content.demoDescription}</p></div><a href="tel:+79122795067">{content.demoCta}</a></section>
-    <div className="trust-row">{content.trust.map((item) => <span key={item}>{item}</span>)}</div>
+    <section className="demo-ribbon" id="demo-week" aria-labelledby="demo-ribbon-title">
+      <div className="demo-ribbon-main">
+        <div className="demo-ribbon-icon" aria-hidden="true">✦</div>
+        <div className="demo-ribbon-copy"><span>Попробовать школу</span><h2 id="demo-ribbon-title">{content.demoTitle}</h2><p>{content.demoDescription}</p></div>
+        <div className="demo-ribbon-action"><a href="tel:+79122795067">{content.demoCta}</a></div>
+      </div>
+      <ul className="demo-ribbon-benefits" aria-label="Преимущества демонедели">{demoBenefits.map(([icon, label]) => <li key={label}><span><ProgramFeatureIcon name={icon} /></span>{label}</li>)}</ul>
+    </section>
   </div>;
 }
 
@@ -325,9 +383,9 @@ function ReviewCard({ review, secondary = false }) {
   const initials = review.placeholder ? "✦" : review.name.split(" ").map((part) => part[0]).join("");
   return <article className={`review-card${secondary ? " secondary" : ""}${review.placeholder ? " placeholder" : ""}`}>
     <div className="review-quote">“</div>
-    <h3>{review.title}</h3>
+    <div className="review-card-top"><span className="review-avatar" aria-hidden="true">{review.avatar ? <img src={review.avatar} alt="" /> : initials}</span><h3>{review.title}</h3></div>
     <p>{review.text}</p>
-    <div className="review-author"><span>{initials}</span><div><strong>{review.placeholder ? review.role : review.name}</strong><small>{review.placeholder ? "Текст для демонстрации" : review.role}</small></div></div>
+    <footer className="review-author"><div><strong>{review.placeholder ? review.role : review.name}</strong><small>{review.placeholder ? "Текст для демонстрации" : review.role}</small></div></footer>
   </article>;
 }
 
@@ -335,14 +393,40 @@ function Reviews({ items = reviews }) {
   const [index, setIndex] = useState(0);
   const safeIndex = index % items.length;
   useEffect(() => setIndex(0), [items]);
-  const previous = () => setIndex((value) => (value - 1 + items.length) % items.length);
-  const next = () => setIndex((value) => (value + 1) % items.length);
+  const navigationStep = () => window.matchMedia?.("(min-width: 1200px)").matches ? 2 : 1;
+  const previous = () => setIndex((value) => (value - navigationStep() + items.length) % items.length);
+  const next = () => setIndex((value) => (value + navigationStep()) % items.length);
   const controls = <div className="reviews-controls"><span>{String(safeIndex + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div>;
   return <section className="reviews-section" aria-labelledby="reviews-title">
     <div className="reviews-heading"><div><span>Говорят родители</span><h2 id="reviews-title">Отзывы о школе</h2></div>{controls}</div>
     <div className="reviews-slider" aria-live="polite">
       <ReviewCard key={items[safeIndex].name || items[safeIndex].title} review={items[safeIndex]} />
       <ReviewCard key={items[(safeIndex + 1) % items.length].name || items[(safeIndex + 1) % items.length].title} review={items[(safeIndex + 1) % items.length]} secondary />
+    </div>
+  </section>;
+}
+
+function ParentFinalContact() {
+  const contacts = [
+    ["☎", "+7 912 279-50-67", "tel:+79122795067"],
+    ["✉", "shkola_fenix@mail.ru", "mailto:shkola_fenix@mail.ru"],
+    ["⌖", "Екатеринбург, Большакова, 109", "https://yandex.ru/maps/?text=Екатеринбург%20Большакова%20109"],
+  ];
+
+  return <section className="hybrid-contact final-contact parent-final-contact" id="contacts" aria-labelledby="parent-final-contact-title">
+    <div className="parent-final-contact__main">
+      <div className="final-contact-copy"><span>Остались вопросы?</span><h2 id="parent-final-contact-title">Мы рядом<br />и всегда на связи</h2><p>С радостью расскажем подробнее о школе, поможем подобрать формат обучения и ответим на любые вопросы.</p></div>
+      <figure className="parent-final-contact__image"><img src={parentFinalCtaImageUrl} alt="Книги и ваза с осенними ветвями на залитом солнцем окне" /></figure>
+      <address className="parent-final-contact__contacts">{contacts.map(([icon, label, href]) => <a key={label} href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}><span aria-hidden="true">{icon}</span>{label}</a>)}</address>
+    </div>
+    <div className="parent-final-contact__bottom">
+      <ul className="parent-final-contact__benefits" aria-label="Преимущества консультации">
+        <li><span><AdmissionIcon name="calendar" /></span>Удобное время<br />для встречи</li>
+        <li><span><AdmissionIcon name="people" /></span>Личная консультация</li>
+        <li><span><AdmissionIcon name="document" /></span>Поможем подобрать<br />формат обучения</li>
+        <li><span><ProgramFeatureIcon name="heart" /></span>Душевная атмосфера</li>
+      </ul>
+      <a className="final-contact-cta" href="tel:+79122795067">Записаться на экскурсию <span aria-hidden="true">→</span></a>
     </div>
   </section>;
 }
@@ -379,14 +463,17 @@ export default function App() {
     return () => window.removeEventListener("popstate", syncFromHistory);
   }, []);
 
-  return <main className={`audience-${audience}`}>
+  return <div className={`audience-${audience}`}>
     <header className="site-header">
       <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></a>
-      <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href]) => <a key={href} href={href}>{label}<svg className="desktop-nav-underline" viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 7 C28 2.5 53 3.2 76 5.8 C94 7.6 107 6.9 118 4.5" /></svg></a>)}</nav>
+      <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href], index) => <a className={index === 0 ? "is-active" : ""} key={href} href={href}>{label}<svg className="desktop-nav-underline" viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 7 C28 2.5 53 3.2 76 5.8 C94 7.6 107 6.9 118 4.5" /></svg></a>)}</nav>
       <div className="header-actions">{hasChosenAudience && <AudienceSwitch audience={audience} onChange={changeAudience} compact />}<Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
-      <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Documents /><a href="tel:+79122795067">Позвонить в школу</a></div></details>
+      <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}{hasChosenAudience && <div className="mobile-audience-switch"><AudienceSwitch audience={audience} onChange={changeAudience} /></div>}<Documents /><a className="mobile-nav-cta" href="tel:+79122795067">Записаться →</a></div></details>
     </header>
 
+    <main className="phoenix-page-surface">
+    <PhoenixPageDecor />
+    <div className="phoenix-page-content">
     {audience === "student" ? <StudentHeroV2 description={content.hero.description} /> : <PhoenixHeroV2
       ctaLabel={content.hero.primaryCta}
       welcome={!hasChosenAudience && <AudienceWelcome onChoose={changeAudience} />}
@@ -400,20 +487,31 @@ export default function App() {
 
     {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} audience={audience} /><Reviews /></section>}
 
-    <section className="hybrid-contact final-contact" id="contacts">
+    {audience === "parent" ? <ParentFinalContact /> : <section className="hybrid-contact final-contact" id="contacts">
       <svg className="final-contact-shape" viewBox="0 0 1600 520" preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <image href={ctaShapeUrl} width="1600" height="520" />
       </svg>
       <div className="final-contact-copy"><span>Знакомство со школой</span><h2>Начните с разговора<br />или экскурсии</h2><p>Уточните условия демонедели, свободные места и подходящий формат обучения.</p></div>
       <div className="final-contact-wing" aria-hidden="true">{ctaWingUrl && <img src={ctaWingUrl} alt="" />}</div>
       <div className="contact-actions"><a href="tel:+79122795067"><span aria-hidden="true">☎</span>+7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru"><span aria-hidden="true">✉</span>shkola_fenix@mail.ru</a><a className="final-contact-cta" href="tel:+79122795067">Записаться на экскурсию <span aria-hidden="true">→</span></a></div>
-    </section>
-
-    <footer className="final-footer">
-      <div className="final-footer-brand"><div className="footer-brand footer-logo"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></div><p>Сильные дети.<br />Осознанное будущее.</p></div>
-      <div className="footer-contact"><h3>Контакты</h3><a href="https://yandex.ru/maps/?text=Екатеринбург%20Большакова%20109" target="_blank" rel="noreferrer">Екатеринбург, Большакова, 109</a><a href="tel:+79122795067">+7 912 279-50-67</a><a href="mailto:shkola_fenix@mail.ru">shkola_fenix@mail.ru</a></div>
-      <div className="footer-legal"><h3>Документы</h3><span>Лицензия № Л035-01277-66/00961501<br />от 12.12.2023</span><a href="https://fenix-school.ru/policy" target="_blank" rel="noreferrer">Политика обработки данных</a><div className="footer-links"><Documents /></div></div>
+    </section>}
+    <footer className="final-footer" aria-label="Контакты и документы школы">
+      <div className="final-footer-main">
+        <div className="final-footer-brand"><div className="footer-brand footer-logo"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></div><p>Сильные дети.<br />Осознанное будущее.</p></div>
+        <address className="footer-contact-cards">
+          <a className="footer-contact-card" href="https://yandex.ru/maps/?text=Екатеринбург%20Большакова%20109" target="_blank" rel="noreferrer"><span><FooterIcon name="pin" /></span><b>Екатеринбург,<br />Большакова, 109</b></a>
+          <a className="footer-contact-card" href="tel:+79122795067"><span><FooterIcon name="phone" /></span><b>+7 912 279-50-67</b></a>
+          <a className="footer-contact-card" href="mailto:shkola_fenix@mail.ru"><span><FooterIcon name="mail" /></span><b>shkola_fenix@mail.ru</b></a>
+        </address>
+        <div className="footer-legal">
+          <span className="footer-legal-item"><i><FooterIcon name="document" /></i><span>Лицензия № Л035-01277-66/00961501<br />от 12.12.2023</span></span>
+          <a className="footer-legal-item" href="https://fenix-school.ru/policy" target="_blank" rel="noreferrer"><i><FooterIcon name="document" /></i><span>Политика обработки данных</span></a>
+          <div className="footer-links"><Documents /></div>
+        </div>
+      </div>
       <div className="final-footer-bottom"><span>ЧУ ДО «Школа Феникс» · ИНН 6671349954</span><span>© {new Date().getFullYear()} Школа Феникс. Все права защищены.</span></div>
     </footer>
-  </main>;
+    </div>
+    </main>
+  </div>;
 }

@@ -1,9 +1,6 @@
 .audience-student .student-hub {
   overflow: hidden;
   padding: clamp(5rem, 7vw, 7.5rem) 4vw clamp(5rem, 7vw, 7rem);
-  background:
-    radial-gradient(circle at 52% 48%, rgba(255, 255, 255, .28), transparent 31%),
-    linear-gradient(180deg, var(--phoenix-paper-warm) 0%, var(--phoenix-paper-warm) 18%, var(--phoenix-section-warm) 58%, var(--phoenix-paper-warm) 100%);
   box-shadow: none;
 
   > .student-shell {
@@ -112,13 +109,6 @@
   .student-hub-stage > .teachers-section {
     padding: clamp(2rem, 3vw, 3.25rem) 0 0;
   }
-}
-
-.audience-student .student-hub + .student-stories {
-  margin-top: -1px;
-  background:
-    radial-gradient(circle at 72% 38%, rgba(255, 255, 255, .2), transparent 30%),
-    linear-gradient(180deg, var(--phoenix-paper-warm) 0%, var(--phoenix-paper-warm) 14%, var(--phoenix-section-warm) 48%, var(--phoenix-section-warm) 100%);
 }
 
 @media (max-width: 1020px) {
