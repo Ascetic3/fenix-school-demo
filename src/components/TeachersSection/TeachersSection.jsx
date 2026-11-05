@@ -1,10 +1,17 @@
 import { useEffect, useRef } from "react";
 import { teachers } from "../../data/teachers";
 import { teachersSectionCopy } from "../../data/teachersSectionCopy";
+import ParentTeachersExperience from "./ParentTeachersExperience";
 import TeacherCard from "./TeacherCard";
 import "./TeachersSection.scss";
 
 export default function TeachersSection({ audience }) {
+  if (audience === "parent") return <ParentTeachersExperience />;
+
+  return <LegacyTeachersSection audience={audience} />;
+}
+
+function LegacyTeachersSection({ audience }) {
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
   const hoveredRef = useRef(false);

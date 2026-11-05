@@ -170,11 +170,9 @@
       }
 
       strong {
-        overflow: hidden;
         font-size: .82rem;
         font-weight: 600;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal;
       }
 
       small {

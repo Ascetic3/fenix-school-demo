@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import PhoenixHeroV2 from "./components/PhoenixHeroV2";
 import StudentHeroV2 from "./components/StudentHeroV2";
 import PhoenixPageDecor from "./components/PhoenixPageDecor";
 import TeachersSection from "./components/TeachersSection/TeachersSection";
 import {
-  admissionSteps, audienceContent, demoWeekFields, documents, navigation, prices, programs, reviews,
+  admissionSteps, audienceContent, demoWeekFields, documents, educationStages, navigation, prices, reviews,
   studentAdvantages, studentGallery, studentNews, studentReviews, studentSocials,
 } from "./content";
 
@@ -88,13 +88,6 @@ function Documents({ compact = false }) {
 
 const tabs = [["programs", "Обучение"], ["why", "Почему Феникс"], ["teachers", "Педагоги"], ["pricing", "Стоимость"], ["admission", "Поступление"]];
 
-const programVisuals = [
-  { src: "./images/school-event.jpg", alt: "Ученики начальных классов на занятии", position: "50% 48%" },
-  { src: "./images/student-demo/student-demo-class.jpg", alt: "Ученики работают в классе", position: "52% 58%" },
-  { src: "./images/student-demo/student-demo-discussion.jpg", alt: "Ученики обсуждают учебное задание", position: "50% 48%" },
-  { src: "./images/student-demo/student-demo-talk.jpg", alt: "Старшеклассники общаются в школьном пространстве", position: "50% 48%" },
-];
-
 function ProgramFeatureIcon({ name }) {
   return <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
     {name === "book" && <><path d="M24 13c-4-4-9-5-15-3v26c6-2 11-1 15 3M24 13c4-4 9-5 15-3v26c-6-2-11-1-15 3M24 13v26" /></>}
@@ -113,17 +106,89 @@ function FooterIcon({ name }) {
   </svg>;
 }
 
+function EducationDetailsDialog({ stage, onClose, returnFocusRef }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog.showModal();
+    dialog.querySelector("[data-dialog-close]")?.focus();
+
+    return () => {
+      if (dialog.open) dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [stage.id]);
+
+  const closeOnBackdrop = (event) => {
+    const { left, right, top, bottom } = event.currentTarget.getBoundingClientRect();
+    const outsideDialog = event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom;
+    if (outsideDialog) onClose();
+  };
+
+  return <dialog
+    className="education-details-dialog"
+    id="education-details-dialog"
+    ref={dialogRef}
+    aria-labelledby="education-details-title"
+    aria-describedby="education-details-intro"
+    onCancel={(event) => { event.preventDefault(); onClose(); }}
+    onClick={closeOnBackdrop}
+  >
+    <header className="education-details-dialog__header">
+      <div>
+        <span>Программа обучения · {stage.range}</span>
+        <h2 id="education-details-title">{stage.title}</h2>
+        <p id="education-details-intro">Подробная информация об этапе обучения</p>
+      </div>
+      <button data-dialog-close type="button" aria-label="Закрыть подробности программы" onClick={onClose}>×</button>
+    </header>
+    <div className="education-details-dialog__content">
+      <div className="education-details-dialog__sections">
+        {stage.details.map((section, index) => <section className="education-detail" key={section.id}>
+          <div className="education-detail__heading"><span>{String(index + 1).padStart(2, "0")}</span><h3>{section.title}</h3></div>
+          <span className="education-detail__status">Нужно уточнить у школы</span>
+          <ul>{section.fields.map((field) => <li key={field}>{field}</li>)}</ul>
+          <p>{section.placeholder}</p>
+        </section>)}
+      </div>
+    </div>
+    <footer className="education-details-dialog__actions">
+      <a className="education-details-dialog__primary" href="tel:+79122795067" onClick={onClose}>Записаться на экскурсию <span aria-hidden="true">→</span></a>
+      <a className="education-details-dialog__secondary" href="mailto:shkola_fenix@mail.ru" onClick={onClose}>Задать вопрос</a>
+    </footer>
+  </dialog>;
+}
+
 function Programs() {
   const [activeStage, setActiveStage] = useState(0);
-  const [number, ages, title, text] = programs[activeStage];
-  const visual = programVisuals[activeStage];
-  const selectStage = (index) => setActiveStage((index + programs.length) % programs.length);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const detailsTriggerRef = useRef(null);
+  const dialogWasOpenRef = useRef(false);
+  const stage = educationStages[activeStage];
+  const selectStage = (index) => setActiveStage((index + educationStages.length) % educationStages.length);
+
+  useEffect(() => {
+    if (detailsOpen) {
+      dialogWasOpenRef.current = true;
+      return;
+    }
+    if (dialogWasOpenRef.current) {
+      dialogWasOpenRef.current = false;
+      window.requestAnimationFrame(() => detailsTriggerRef.current?.focus());
+    }
+  }, [detailsOpen]);
 
   return <section className="tab-panel programs-panel">
-    <div className="programs-overview"><span>Образовательный маршрут</span><h2>От первых букв<br />до выбора профессии</h2><p>Выберите возрастной этап. Здесь собрана программа без переходов на отдельные страницы.</p><a className="programs-overview__cta" href="#active-program-stage">Подробнее <span aria-hidden="true">→</span></a></div>
+    <div className="programs-overview"><span>Образовательный маршрут</span><h2>От первых букв<br />до выбора профессии</h2></div>
     <div className="program-stage-selector" role="tablist" aria-label="Этапы образовательного маршрута">
-      {programs.map(([stageNumber, stageAges, stageTitle], index) => <button
-        key={stageNumber}
+      {educationStages.map((item, index) => <button
+        key={item.id}
+        id={`education-tab-${item.id}`}
         type="button"
         role="tab"
         aria-selected={activeStage === index}
@@ -134,21 +199,24 @@ function Programs() {
           if (event.key === "ArrowRight") selectStage(index + 1);
           if (event.key === "ArrowLeft") selectStage(index - 1);
         }}
-      ><span>{stageNumber}</span><strong>{stageTitle}</strong><small>{stageAges}</small></button>)}
+      ><span>{item.index}</span><strong>{item.title}</strong><small>{item.range}</small></button>)}
     </div>
-    <article className="program-feature-card" id="active-program-stage" key={number} role="tabpanel">
-      <div className="program-feature-card__image"><img src={visual.src} alt={visual.alt} style={{ objectPosition: visual.position }} /></div>
+    <article className="program-feature-card" id="active-program-stage" key={stage.id} role="tabpanel" aria-labelledby={`education-tab-${stage.id}`}>
+      <div className="program-feature-card__image"><img src={stage.image.src} alt={stage.image.alt} style={{ objectPosition: stage.image.position }} /></div>
       <div className="program-feature-card__content">
-        <div className="program-feature-card__meta"><span>{number}</span><small>{ages}</small></div>
-        <h3>{title}</h3>
-        <p>{text}</p>
+        <div className="program-feature-card__meta"><span>{stage.index}</span><small>{stage.range}</small></div>
+        <h3>{stage.title}</h3>
+        <p>{stage.shortDescription}</p>
         <ul className="program-feature-card__features" aria-label="Преимущества обучения">
-          <li><span className="program-feature-card__feature-icon"><ProgramFeatureIcon name="book" /></span><span>Развивающие<br />занятия</span></li>
-          <li><span className="program-feature-card__feature-icon"><ProgramFeatureIcon name="people" /></span><span>Заботливые<br />педагоги</span></li>
-          <li><span className="program-feature-card__feature-icon"><ProgramFeatureIcon name="heart" /></span><span>Комфортная<br />адаптация</span></li>
+          {stage.features.map((feature) => <li key={feature.icon}><span className="program-feature-card__feature-icon"><ProgramFeatureIcon name={feature.icon} /></span><span>{feature.label[0]}<br />{feature.label[1]}</span></li>)}
         </ul>
+        <dl className="program-feature-card__quick-facts" aria-label="Кратко о программе">
+          {stage.quickFacts.map((fact) => <div className={fact.pending ? "is-pending" : ""} key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}
+        </dl>
+        <button className="program-feature-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="education-details-dialog" ref={detailsTriggerRef} onClick={() => setDetailsOpen(true)}>Программа и условия <span aria-hidden="true">→</span></button>
       </div>
     </article>
+    {detailsOpen && <EducationDetailsDialog stage={stage} onClose={() => setDetailsOpen(false)} returnFocusRef={detailsTriggerRef} />}
   </section>;
 }
 
@@ -203,14 +271,80 @@ function Admission() {
 
 function SchoolTabs({ content, audience }) {
   const [active, setActive] = useState("programs");
+  const [hasMultiplePages, setHasMultiplePages] = useState(false);
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isLastPage, setIsLastPage] = useState(false);
+  const tabsNavigationRef = useRef(null);
+  const tabsViewportRef = useRef(null);
+  const tabsListRef = useRef(null);
   const panels = { programs: <Programs />, why: <Why content={content} />, teachers: <TeachersSection audience={audience} />, pricing: <Pricing />, admission: <Admission /> };
   const demoBenefits = [
     ["people", "До 14 учеников в классе"],
     ["heart", "Бережное сопровождение"],
     ["coins", "Открытая стоимость"],
   ];
+
+  useLayoutEffect(() => {
+    const navigation = tabsNavigationRef.current;
+    const viewport = tabsViewportRef.current;
+    const list = tabsListRef.current;
+    if (!navigation || !viewport || !list) return undefined;
+
+    const updateScrollState = () => {
+      const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      setHasMultiplePages(maxScroll > 1);
+      setIsAtStart(viewport.scrollLeft <= 2);
+      setIsLastPage(maxScroll > 1 && viewport.scrollLeft >= maxScroll - 2);
+    };
+
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(updateScrollState);
+    observer?.observe(navigation);
+    observer?.observe(list);
+    viewport.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    updateScrollState();
+
+    return () => {
+      observer?.disconnect();
+      viewport.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, []);
+
+  const moveTabs = () => {
+    const viewport = tabsViewportRef.current;
+    if (!viewport) return;
+    const direction = isLastPage ? -1 : 1;
+    viewport.scrollBy({ left: direction * viewport.clientWidth * .78, behavior: "smooth" });
+  };
+  const selectTab = (id, event) => {
+    setActive(id);
+    const viewport = tabsViewportRef.current;
+    if (!viewport) return;
+
+    const viewportRect = viewport.getBoundingClientRect();
+    const tabRect = event.currentTarget.getBoundingClientRect();
+    const inset = Number.parseFloat(window.getComputedStyle(viewport).paddingInlineStart) || 10;
+    const safeLeft = viewportRect.left + inset;
+    const safeRight = viewportRect.right - inset;
+    const delta = tabRect.left < safeLeft
+      ? tabRect.left - safeLeft
+      : tabRect.right > safeRight
+        ? tabRect.right - safeRight
+        : 0;
+
+    if (delta) viewport.scrollBy({ left: delta, behavior: "smooth" });
+  };
+
   return <div className="school-tabs">
-    <div className="school-tabs-list" role="tablist" aria-label="Информация о школе">{tabs.map(([id, label]) => <button key={id} role="tab" aria-selected={active === id} className={active === id ? "active" : ""} onClick={() => setActive(id)}>{label}</button>)}</div>
+    <div className={`school-tabs-navigation${hasMultiplePages ? " is-paged" : ""}${isAtStart ? " is-at-start" : ""}${isLastPage ? " is-at-end" : ""}`} ref={tabsNavigationRef}>
+      <div className="school-tabs-viewport" ref={tabsViewportRef}>
+        <div className="school-tabs-list" ref={tabsListRef} role="tablist" aria-label="Информация о школе">{tabs.map(([id, label]) => <button key={id} type="button" role="tab" aria-selected={active === id} className={active === id ? "active" : ""} onClick={(event) => selectTab(id, event)}>{label}</button>)}</div>
+      </div>
+      {hasMultiplePages && <button className="school-tabs-scroll-control" type="button" aria-label={isLastPage ? "Предыдущие разделы" : "Следующие разделы"} onClick={moveTabs}>
+        <svg className={isLastPage ? "is-reversed" : ""} viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.75 12h14.5m-6.5-6.5 6.5 6.5-6.5 6.5" /></svg>
+      </button>}
+    </div>
     <div className="school-tabs-stage">{panels[active]}</div>
     <section className="demo-ribbon" id="demo-week" aria-labelledby="demo-ribbon-title">
       <div className="demo-ribbon-main">
@@ -432,6 +566,7 @@ function ParentFinalContact() {
 }
 
 export default function App() {
+  const mobileNavRef = useRef(null);
   const [audience, setAudience] = useState(() => readAudienceFromQuery() || readStoredAudience() || "parent");
   const [hasChosenAudience, setHasChosenAudience] = useState(() => Boolean(readAudienceFromQuery() || readStoredAudience()));
   const content = audienceContent[audience];
@@ -454,6 +589,13 @@ export default function App() {
   }, [audience, hasChosenAudience]);
 
   useEffect(() => {
+    const closeMobileMenuOutside = (event) => {
+      if (!mobileNavRef.current?.contains(event.target)) mobileNavRef.current.open = false;
+    };
+    document.addEventListener("pointerdown", closeMobileMenuOutside);
+    return () => document.removeEventListener("pointerdown", closeMobileMenuOutside);
+  }, []);
+  useEffect(() => {
     const syncFromHistory = () => {
       const nextAudience = readAudienceFromQuery() || readStoredAudience();
       setAudience(nextAudience || "parent");
@@ -468,7 +610,7 @@ export default function App() {
       <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></a>
       <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href], index) => <a className={index === 0 ? "is-active" : ""} key={href} href={href}>{label}<svg className="desktop-nav-underline" viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 7 C28 2.5 53 3.2 76 5.8 C94 7.6 107 6.9 118 4.5" /></svg></a>)}</nav>
       <div className="header-actions">{hasChosenAudience && <AudienceSwitch audience={audience} onChange={changeAudience} compact />}<Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
-      <details className="mobile-nav"><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}{hasChosenAudience && <div className="mobile-audience-switch"><AudienceSwitch audience={audience} onChange={changeAudience} /></div>}<Documents /><a className="mobile-nav-cta" href="tel:+79122795067">Записаться →</a></div></details>
+      <details ref={mobileNavRef} className="mobile-nav" onClick={(event) => { if (event.target.closest("a, .mobile-audience-switch button")) mobileNavRef.current.open = false; }}><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}{hasChosenAudience && <div className="mobile-audience-switch"><AudienceSwitch audience={audience} onChange={changeAudience} /></div>}<Documents /><a className="mobile-nav-cta" href="tel:+79122795067">Записаться →</a></div></details>
     </header>
 
     <main className="phoenix-page-surface">
@@ -485,7 +627,7 @@ export default function App() {
       <StudentNextSteps />
     </>}
 
-    {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что хотите узнать</h2><p>Страница не уводит в длинную ленту: основная информация меняется внутри одного пространства.</p></div><SchoolTabs content={content} audience={audience} /><Reviews /></section>}
+    {audience === "parent" && <section className="hybrid-explore" id="explore"><div className="explore-intro"><span>Всё важное в одном месте</span><h2>Выберите, что<br />хотите узнать</h2></div><SchoolTabs content={content} audience={audience} /><Reviews /></section>}
 
     {audience === "parent" ? <ParentFinalContact /> : <section className="hybrid-contact final-contact" id="contacts">
       <svg className="final-contact-shape" viewBox="0 0 1600 520" preserveAspectRatio="none" aria-hidden="true" focusable="false">
