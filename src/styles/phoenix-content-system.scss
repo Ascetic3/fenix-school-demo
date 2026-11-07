@@ -4291,3 +4291,10 @@
     margin-top: 1.4rem;
   }
 }
+
+/* Parent Teachers mobile: keep one outer gutter instead of padding the tab twice. */
+@media (max-width: 767px) {
+  .audience-parent .hybrid-explore .school-tabs-stage:has(> .teachers-section--parent) {
+    padding: 0;
+  }
+}

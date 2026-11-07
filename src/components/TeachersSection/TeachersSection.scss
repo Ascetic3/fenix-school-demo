@@ -547,33 +547,19 @@
   padding-inline: 0;
 }
 
-@media (min-width: 430px) and (max-width: 767px) {
-  .teachers-section--parent {
-    --teachers-gutter: 24px;
-
-    .teachers-section__inner { width: min(1500px, calc(100% - var(--teachers-gutter) - var(--teachers-gutter))); }
-  }
-}
-
-@media (max-width: 429px) {
-  .teachers-section--parent {
-    --teachers-gutter: 20px;
-
-    .teachers-section__inner { width: min(1500px, calc(100% - var(--teachers-gutter) - var(--teachers-gutter))); }
-  }
-}
-
 @media (max-width: 767px) {
   .teachers-section--parent {
+    --teachers-gutter: 8px;
     padding-block: 3.5rem;
     padding-inline: 0;
 
     .teachers-section__inner { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-    .teachers-section__heading h2 { max-width: 12ch; margin-bottom: .8rem; font-size: clamp(2.9rem, 11.5vw, 4.2rem); line-height: .92; }
+    .teachers-section__heading h2 { max-width: none; margin-bottom: .8rem; font-size: clamp(2.25rem, 10.5vw, 2.9rem); line-height: .92; }
     .teachers-section__heading p { font-size: .93rem; }
     .teachers-section__carousel-tools { min-height: 38px; margin-bottom: .45rem; }
     .teachers-section__arrows button { width: 38px; height: 38px; }
-    .teacher-card--parent { flex-basis: calc(83.33% - 3px); width: calc(83.33% - 3px); scroll-snap-align: start; }
+    .teachers-section__track { gap: 12px; }
+    .teacher-card--parent { flex-basis: calc(100% - 36px); width: calc(100% - 36px); scroll-snap-align: start; }
     .teacher-card__photo { height: clamp(250px, 76vw, 340px); }
     .teacher-card__caption { min-height: 171px; }
   }
