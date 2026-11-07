@@ -11,7 +11,7 @@ import {
 const audienceIds = ["parent", "student"];
 const ctaWingUrl = new URL("./assets/cta-wing.svg", import.meta.url).href;
 const ctaShapeUrl = new URL("./assets/cta-shape.svg", import.meta.url).href;
-const parentFinalCtaImageUrl = new URL("./assets/parent-final-cta-books-vase.png", import.meta.url).href;
+const parentFinalCtaImageUrl = new URL("./assets/parent-final-cta-books-vase.webp", import.meta.url).href;
 
 function readAudienceFromQuery() {
   const value = new URLSearchParams(window.location.search).get("audience");
@@ -167,10 +167,34 @@ function EducationDetailsDialog({ stage, onClose, returnFocusRef }) {
 function Programs() {
   const [activeStage, setActiveStage] = useState(0);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [stageMenuOpen, setStageMenuOpen] = useState(false);
   const detailsTriggerRef = useRef(null);
+  const stageMenuRef = useRef(null);
+  const stageMenuTriggerRef = useRef(null);
+  const stageOptionRefs = useRef([]);
   const dialogWasOpenRef = useRef(false);
   const stage = educationStages[activeStage];
   const selectStage = (index) => setActiveStage((index + educationStages.length) % educationStages.length);
+
+  useEffect(() => {
+    if (!stageMenuOpen) return undefined;
+
+    const closeOnOutsidePointer = (event) => {
+      if (!stageMenuRef.current?.contains(event.target)) setStageMenuOpen(false);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key !== "Escape") return;
+      setStageMenuOpen(false);
+      stageMenuTriggerRef.current?.focus();
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePointer);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [stageMenuOpen]);
 
   useEffect(() => {
     if (detailsOpen) {
@@ -185,6 +209,57 @@ function Programs() {
 
   return <section className="tab-panel programs-panel">
     <div className="programs-overview"><span>Образовательный маршрут</span><h2>От первых букв<br />до выбора профессии</h2></div>
+    <div className={`program-stage-mobile${stageMenuOpen ? " is-open" : ""}`} ref={stageMenuRef}>
+      <button
+        className="program-stage-mobile__trigger"
+        id="education-stage-mobile-trigger"
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={stageMenuOpen}
+        aria-controls="education-stage-mobile-options"
+        ref={stageMenuTriggerRef}
+        onClick={() => setStageMenuOpen((open) => !open)}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+          event.preventDefault();
+          setStageMenuOpen(true);
+          window.requestAnimationFrame(() => stageOptionRefs.current[activeStage]?.focus());
+        }}
+      >
+        <span className="program-stage-mobile__label">Этап обучения</span>
+        <span className="program-stage-mobile__value">{stage.title}</span>
+        <span className="program-stage-mobile__chevron" aria-hidden="true" />
+      </button>
+      {stageMenuOpen && <div className="program-stage-mobile__options" id="education-stage-mobile-options" role="listbox" aria-label="Выберите этап обучения">
+        {educationStages.map((item, index) => <button
+          key={item.id}
+          type="button"
+          role="option"
+          aria-selected={activeStage === index}
+          className={activeStage === index ? "is-active" : ""}
+          ref={(element) => { stageOptionRefs.current[index] = element; }}
+          onClick={() => {
+            selectStage(index);
+            setStageMenuOpen(false);
+            window.requestAnimationFrame(() => stageMenuTriggerRef.current?.focus());
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              event.preventDefault();
+              const direction = event.key === "ArrowDown" ? 1 : -1;
+              stageOptionRefs.current[(index + direction + educationStages.length) % educationStages.length]?.focus();
+            }
+            if (event.key === "Home" || event.key === "End") {
+              event.preventDefault();
+              stageOptionRefs.current[event.key === "Home" ? 0 : educationStages.length - 1]?.focus();
+            }
+          }}
+        >
+          <span>{item.title}</span>
+          {activeStage === index && <span className="program-stage-mobile__check" aria-hidden="true">✓</span>}
+        </button>)}
+      </div>}
+    </div>
     <div className="program-stage-selector" role="tablist" aria-label="Этапы образовательного маршрута">
       {educationStages.map((item, index) => <button
         key={item.id}
@@ -202,7 +277,7 @@ function Programs() {
       ><span>{item.index}</span><strong>{item.title}</strong><small>{item.range}</small></button>)}
     </div>
     <article className="program-feature-card" id="active-program-stage" key={stage.id} role="tabpanel" aria-labelledby={`education-tab-${stage.id}`}>
-      <div className="program-feature-card__image"><img src={stage.image.src} alt={stage.image.alt} style={{ objectPosition: stage.image.position }} /></div>
+      <div className="program-feature-card__image"><img loading="lazy" decoding="async" src={stage.image.src} alt={stage.image.alt} style={{ objectPosition: stage.image.position }} /></div>
       <div className="program-feature-card__content">
         <div className="program-feature-card__meta"><span>{stage.index}</span><small>{stage.range}</small></div>
         <h3>{stage.title}</h3>
@@ -224,7 +299,7 @@ function Why({ content }) {
   return <section className="tab-panel why-panel"><div className="why-compact">
     <div className="why-compact-heading"><span>Почему Феникс</span><h2>{content.whyTitle}</h2><p>{content.whyDescription}</p></div>
     <div className="why-list">{content.advantages.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
-    <aside className="founder-mini"><img src="./images/founder.jpg" alt="Наталья Сергеевна Маковецкая" /><div><span>Основатель школы</span><h3>Наталья Сергеевна Маковецкая</h3><p>Педагог с 25-летним стажем, тренер по олимпиадной математике и ТРИЗ-играм.</p></div></aside>
+    <aside className="founder-mini"><img loading="lazy" decoding="async" src="./images/founder.jpg" alt="Наталья Сергеевна Маковецкая" /><div><span>Основатель школы</span><h3>Наталья Сергеевна Маковецкая</h3><p>Педагог с 25-летним стажем, тренер по олимпиадной математике и ТРИЗ-играм.</p></div></aside>
   </div></section>;
 }
 
@@ -261,7 +336,7 @@ function Admission() {
     <div className="admission-steps-compact">{admissionSteps.map(([number, title, text], index) => <article key={number}><span className="admission-step-number">{number.padStart(2, "0")}</span><span className="admission-step-icon"><AdmissionIcon name={stepIcons[index]} /></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
     <section className="demo-details"><div className="demo-details-heading"><div><span>◉ Нужно уточнить у школы</span></div><h3>Условия демодня</h3><p>Карточки уже готовы. Вместо неподтверждённых сведений внутри оставлены инструкции для заполнения.</p></div>
       <div className="demo-details-layout">
-        <article className="demo-featured-card"><span className="demo-info-icon"><AdmissionIcon name={demoIcons[0]} /></span><div><h4>{featuredField[0]}</h4><p>{featuredField[1]}</p></div><img src="./images/school-event.jpg" alt="Ученики на занятии в школе" /></article>
+        <article className="demo-featured-card"><span className="demo-info-icon"><AdmissionIcon name={demoIcons[0]} /></span><div><h4>{featuredField[0]}</h4><p>{featuredField[1]}</p></div><img loading="lazy" decoding="async" src="./images/school-event.jpg" alt="Ученики на занятии в школе" /></article>
         <div className="demo-info-grid">{demoInfoFields.slice(0, 4).map(([title, instruction], index) => <article key={title}><span className="demo-info-icon"><AdmissionIcon name={demoIcons[index + 1]} /></span><div><h4>{title}</h4><p>{instruction}</p></div></article>)}</div>
         <div className="demo-followup-grid">{demoInfoFields.slice(4).map(([title, instruction], index) => <article key={title}><span className="demo-info-icon"><AdmissionIcon name={demoIcons[index + 5]} /></span><div><h4>{title}</h4><p>{instruction}</p></div></article>)}</div>
       </div>
@@ -386,7 +461,7 @@ function StudentExperience({ items }) {
         <span className="student-advantage-icon"><StudentIcon name={icon} /></span>
         <h3>{index === 1 ? <><span className="student-study-title-line">{title.split(" ").slice(0, 2).join(" ")}</span>{" "}<span className="student-study-title-line">{title.split(" ")[2]}</span>{" "}<span className="student-study-title-line">{title.split(" ").slice(3).join(" ")}</span></> : title}</h3>
         <p>{text}</p>
-        {(image || index === 1) && <img className={`student-advantage-photo${!image ? " student-study-added-photo" : ""}`} src={image || "./images/student-demo/teachers/teacher-russian-demo.png"} alt="" />}
+        {(image || index === 1) && <img loading="lazy" decoding="async" className={`student-advantage-photo${!image ? " student-study-added-photo" : ""}`} src={image || "./images/student-demo/teachers/teacher-russian-demo.webp"} alt="" />}
           <span className="student-study-arrow" aria-hidden="true">→</span>
           {index === 0 && <svg className="student-study-spark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 2 C27.5 14.5 30 17 42 24 C30 31 27.5 33.5 24 46 C20.5 33.5 18 31 6 24 C18 17 20.5 14.5 24 2 Z" /></svg>}
       </article>)}</div>
@@ -399,7 +474,7 @@ function StudentNews({ items }) {
     <div className="student-panel-heading"><span>Новости школы</span><h3>Что происходит<br />в школе</h3><p>Здесь мы делимся новостями, событиями, анонсами и важными объявлениями из жизни Феникса.</p></div>
     <div className="student-news-grid">{items.map((item, index) =>
       <a className={`student-news-card${index === 0 ? " is-featured" : ""}`} href={`#news/${item.slug}`} data-news-id={item.id} key={item.id} aria-label={`Читать: ${item.title}`}>
-        <img src={item.image} alt={item.imageAlt} style={{ objectPosition: item.imagePosition }} />
+        <img loading="lazy" decoding="async" src={item.image} alt={item.imageAlt} style={{ objectPosition: item.imagePosition }} />
         <div className="student-news-copy">
           <div className="student-news-meta"><time dateTime={item.date}>{item.dateLabel}</time><span>{item.category}</span></div>
           <h4>{item.title}</h4><p>{item.excerpt}</p>
@@ -411,7 +486,7 @@ function StudentNews({ items }) {
 }
 
 function StudentMedia({ items }) {
-  return <div className="student-hub-panel student-media"><div className="student-panel-heading"><span>Фото и видео</span><h3>Посмотри школу своими глазами</h3><p>Видео, несколько кадров и соцсети — как второй способ увидеть актуальную жизнь школы.</p></div><div className="student-media-layout"><article className="student-media-video"><img src="./images/student-demo/student-demo-talk.jpg" alt="Временная демонстрационная фотография для видеоблока" /><span aria-hidden="true">▶</span><div><small>Видео · placeholder</small><strong>Школа в движении</strong></div></article><div className="student-media-side"><div className="student-media-previews">{items.slice(1, 3).map((item) => <figure key={item.title}><img src={item.src} alt={item.title} style={{ objectPosition: item.position }} /><figcaption>{item.title}</figcaption></figure>)}</div><div className="student-media-socials">{studentSocials.map(({ icon, title, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span>{title}<small>Ссылка уточняется</small></span><i aria-hidden="true">↗</i></a>)}</div></div></div></div>;
+  return <div className="student-hub-panel student-media"><div className="student-panel-heading"><span>Фото и видео</span><h3>Посмотри школу своими глазами</h3><p>Видео, несколько кадров и соцсети — как второй способ увидеть актуальную жизнь школы.</p></div><div className="student-media-layout"><article className="student-media-video"><img loading="lazy" decoding="async" src="./images/student-demo/student-demo-talk.jpg" alt="Временная демонстрационная фотография для видеоблока" /><span aria-hidden="true">▶</span><div><small>Видео · placeholder</small><strong>Школа в движении</strong></div></article><div className="student-media-side"><div className="student-media-previews">{items.slice(1, 3).map((item) => <figure key={item.title}><img loading="lazy" decoding="async" src={item.src} alt={item.title} style={{ objectPosition: item.position }} /><figcaption>{item.title}</figcaption></figure>)}</div><div className="student-media-socials">{studentSocials.map(({ icon, title, href }) => <a key={title} href={href} aria-disabled={href === "#"} onClick={(event) => href === "#" && event.preventDefault()}><b aria-hidden="true">{icon}</b><span>{title}<small>Ссылка уточняется</small></span><i aria-hidden="true">↗</i></a>)}</div></div></div></div>;
 }
 
 const studentHubTabs = [["people", "Люди"], ["study", "Учёба"], ["life", "Новости"], ["media", "Фото и видео"]];
@@ -488,7 +563,7 @@ function StudentStories({ items, content }) {
   return <section ref={sectionRef} className={`student-stories${isRevealed ? " is-revealed" : ""}`} id="reviews" aria-labelledby="student-stories-title"><div className="student-shell">
     <div className="student-stories-heading"><div><span>Истории учеников</span><h2 id="student-stories-title">Настоящие люди.<br />Настоящие истории.</h2></div><p>В Фениксе учатся такие же ребята, как ты. Они рассказывают, что на самом деле значит быть здесь — учиться, находить друзей, развиваться и верить в себя.</p></div>
     <div className="student-stories-grid">
-      <div className="student-stories-photo-layer"><div className="student-stories-photo-backing" aria-hidden="true"><div className="student-backing-spray student-backing-red" /><div className="student-backing-spray student-backing-peach" /></div><figure className="student-stories-photo"><img src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure></div>
+      <div className="student-stories-photo-layer"><div className="student-stories-photo-backing" aria-hidden="true"><div className="student-backing-spray student-backing-red" /><div className="student-backing-spray student-backing-peach" /></div><figure className="student-stories-photo"><img loading="lazy" decoding="async" src={photo.src} alt={photo.title} style={{ objectPosition: photo.position }} /></figure></div>
       <article className="student-story-review" aria-live="polite" key={review.title}>
         <div className="student-story-quote" aria-hidden="true">“</div><h3>{review.title === "В маленьком классе тебя реально замечают" ? review.title.split(/(?<=маленьком) |(?<=реально) /).map((line, lineIndex) => <span className="student-story-title-line" key={line}>{lineIndex > 0 && " "}{line}</span>) : review.title}</h3><p>{review.text}</p>
         <div className="student-story-footer"><div className="student-story-author"><span><StudentIcon name="group" /></span><div><strong>{review.role}</strong><small>Текст для демонстрации</small></div></div><div className="reviews-controls"><span>{safeIndex + 1} / {carouselItems.length}</span><button onClick={previous} aria-label="Предыдущий отзыв">←</button><button onClick={next} aria-label="Следующий отзыв">→</button></div></div>
@@ -517,7 +592,7 @@ function ReviewCard({ review, secondary = false }) {
   const initials = review.placeholder ? "✦" : review.name.split(" ").map((part) => part[0]).join("");
   return <article className={`review-card${secondary ? " secondary" : ""}${review.placeholder ? " placeholder" : ""}`}>
     <div className="review-quote">“</div>
-    <div className="review-card-top"><span className="review-avatar" aria-hidden="true">{review.avatar ? <img src={review.avatar} alt="" /> : initials}</span><h3>{review.title}</h3></div>
+    <div className="review-card-top"><span className="review-avatar" aria-hidden="true">{review.avatar ? <img loading="lazy" decoding="async" src={review.avatar} alt="" /> : initials}</span><h3>{review.title}</h3></div>
     <p>{review.text}</p>
     <footer className="review-author"><div><strong>{review.placeholder ? review.role : review.name}</strong><small>{review.placeholder ? "Текст для демонстрации" : review.role}</small></div></footer>
   </article>;
@@ -550,7 +625,7 @@ function ParentFinalContact() {
   return <section className="hybrid-contact final-contact parent-final-contact" id="contacts" aria-labelledby="parent-final-contact-title">
     <div className="parent-final-contact__main">
       <div className="final-contact-copy"><span>Остались вопросы?</span><h2 id="parent-final-contact-title">Мы рядом<br />и всегда на связи</h2><p>С радостью расскажем подробнее о школе, поможем подобрать формат обучения и ответим на любые вопросы.</p></div>
-      <figure className="parent-final-contact__image"><img src={parentFinalCtaImageUrl} alt="Книги и ваза с осенними ветвями на залитом солнцем окне" /></figure>
+      <figure className="parent-final-contact__image"><img loading="lazy" decoding="async" src={parentFinalCtaImageUrl} alt="Книги и ваза с осенними ветвями на залитом солнцем окне" /></figure>
       <address className="parent-final-contact__contacts">{contacts.map(([icon, label, href]) => <a key={label} href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}><span aria-hidden="true">{icon}</span>{label}</a>)}</address>
     </div>
     <div className="parent-final-contact__bottom">
@@ -607,7 +682,7 @@ export default function App() {
 
   return <div className={`audience-${audience}`}>
     <header className="site-header">
-      <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></a>
+      <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.webp" alt="Школа Феникс" /></a>
       <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href], index) => <a className={index === 0 ? "is-active" : ""} key={href} href={href}>{label}<svg className="desktop-nav-underline" viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 7 C28 2.5 53 3.2 76 5.8 C94 7.6 107 6.9 118 4.5" /></svg></a>)}</nav>
       <div className="header-actions">{hasChosenAudience && <AudienceSwitch audience={audience} onChange={changeAudience} compact />}<Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
       <details ref={mobileNavRef} className="mobile-nav" onClick={(event) => { if (event.target.closest("a, .mobile-audience-switch button")) mobileNavRef.current.open = false; }}><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}{hasChosenAudience && <div className="mobile-audience-switch"><AudienceSwitch audience={audience} onChange={changeAudience} /></div>}<Documents /><a className="mobile-nav-cta" href="tel:+79122795067">Записаться →</a></div></details>
@@ -639,7 +714,7 @@ export default function App() {
     </section>}
     <footer className="final-footer" aria-label="Контакты и документы школы">
       <div className="final-footer-main">
-        <div className="final-footer-brand"><div className="footer-brand footer-logo"><img src="./images/logo-fenix-header.png" alt="Школа Феникс" /></div><p>Сильные дети.<br />Осознанное будущее.</p></div>
+        <div className="final-footer-brand"><div className="footer-brand footer-logo"><img src="./images/logo-fenix-header.webp" alt="Школа Феникс" /></div><p>Сильные дети.<br />Осознанное будущее.</p></div>
         <address className="footer-contact-cards">
           <a className="footer-contact-card" href="https://yandex.ru/maps/?text=Екатеринбург%20Большакова%20109" target="_blank" rel="noreferrer"><span><FooterIcon name="pin" /></span><b>Екатеринбург,<br />Большакова, 109</b></a>
           <a className="footer-contact-card" href="tel:+79122795067"><span><FooterIcon name="phone" /></span><b>+7 912 279-50-67</b></a>

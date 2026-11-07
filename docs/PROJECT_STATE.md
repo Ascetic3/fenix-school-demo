@@ -76,3 +76,7 @@ Unless explicitly requested, preserve:
 - Production content should be verified before replacing placeholders or publishing new factual claims.
 
 See `docs/CONTENT_TODO.md`.
+
+## 2026-11-07 — Parent Education mobile stage picker
+
+Parent → Education keeps its existing four-stage data and desktop/tablet tabs. At widths below 768px, the stage control is a single labelled dropdown; the options open as an absolutely positioned overlay, so opening it does not move the program card. Selection continues to drive the existing program image and content. Build passed. Mobile closed-state rendered screenshot was checked in Chrome; open-state interaction was not visually confirmed because the isolated Chrome DevTools connection closed during capture.

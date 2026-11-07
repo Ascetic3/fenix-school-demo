@@ -154,6 +154,8 @@ export default function ParentTeachersExperience() {
             >
               <span className="teacher-card__photo">
                 <img
+                  loading="lazy"
+                  decoding="async"
                   src={teacher.image}
                   alt=""
                   draggable="false"

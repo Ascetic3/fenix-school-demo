@@ -69,7 +69,7 @@ export default function TeacherProfileDialog({ teacher, onClose, returnFocusRef 
       <div className="teacher-profile__body">
         {teacher.placeholder && <p className="teacher-profile__notice">Демонстрационные материалы. Имя, фотографию и сведения о преподавателе необходимо подтвердить у школы.</p>}
         <div className="teacher-profile__gallery" aria-label="Фотографии преподавателя">
-          {images.map((image) => <img key={image.src} src={image.src} alt={image.alt || `Фотография преподавателя: ${teacher.name}`} />)}
+          {images.map((image) => <img key={image.src} loading="lazy" decoding="async" src={image.src} alt={image.alt || `Фотография преподавателя: ${teacher.name}`} />)}
         </div>
         <div className="teacher-profile__content">
           <p className="teacher-profile__lead">{teacher.parent.short}</p>

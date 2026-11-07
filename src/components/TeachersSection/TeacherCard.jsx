@@ -4,6 +4,8 @@ export default function TeacherCard({ teacher, audience }) {
   return <article className="teacher-card">
     <div className="teacher-card__photo">
       <img
+        loading="lazy"
+        decoding="async"
         src={teacher.image}
         alt={teacher.placeholder ? "Демонстрационное фото преподавателя" : teacher.name}
         style={{ objectPosition: teacher.portraitPosition || "50% 38%" }}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
-import phoenixEditorialRender from "../assets/phoenix-v2-editorial.png";
-import leftBackgroundWave from "../assets/phoenix-left-bg-wave.png";
-import rightBackgroundWave from "../assets/phoenix-right-bg-wave.png";
+import phoenixEditorialRender from "../assets/phoenix-v2-editorial.webp";
+import leftBackgroundWave from "../assets/phoenix-left-bg-wave.webp";
+import rightBackgroundWave from "../assets/phoenix-right-bg-wave.webp";
 
 const entranceEase = [0.33, 0, 0.2, 1];
 const parallaxSpring = { stiffness: 72, damping: 19, mass: 0.55 };
@@ -82,7 +82,7 @@ export default function PhoenixHeroV2({ ctaLabel, welcome }) {
             animate={waveAnimate}
             transition={{ duration: shouldReduceMotion ? 0.2 : 1.45, delay: 0, ease: entranceEase }}
           >
-            <img className="phoenix-hero-v2__wave phoenix-hero-v2__wave--left" src={leftBackgroundWave} alt="" aria-hidden="true" />
+            <img className="phoenix-hero-v2__wave phoenix-hero-v2__wave--left" src={leftBackgroundWave} alt="" aria-hidden="true" decoding="async" fetchPriority="low" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -98,7 +98,7 @@ export default function PhoenixHeroV2({ ctaLabel, welcome }) {
             animate={waveAnimate}
             transition={{ duration: shouldReduceMotion ? 0.2 : 1.35, delay: shouldReduceMotion ? 0 : 0.06, ease: entranceEase }}
           >
-            <img className="phoenix-hero-v2__wave phoenix-hero-v2__wave--right" src={rightBackgroundWave} alt="" aria-hidden="true" />
+            <img className="phoenix-hero-v2__wave phoenix-hero-v2__wave--right" src={rightBackgroundWave} alt="" aria-hidden="true" decoding="async" fetchPriority="low" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -138,14 +138,14 @@ export default function PhoenixHeroV2({ ctaLabel, welcome }) {
               className="phoenix-hero-v2__bird-entrance"
               initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.99 }}
               animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: shouldReduceMotion ? 0.2 : 1.42, delay: shouldReduceMotion ? 0 : 0.42, ease: entranceEase }}
+              transition={{ duration: shouldReduceMotion ? 0.2 : 0.38, delay: shouldReduceMotion ? 0 : 0.06, ease: entranceEase }}
             >
               <motion.div
                 className="phoenix-hero-v2__bird-idle"
                 animate={shouldReduceMotion ? undefined : { y: [0, -5, 0], scale: [1, 1.004, 1] }}
                 transition={{ delay: 1.66, duration: 7, ease: "easeInOut", repeat: Infinity }}
               >
-                <img className="phoenix-hero-v2__bird" src={phoenixEditorialRender} alt="Стилизованный феникс с раскрытыми крыльями" />
+                <img className="phoenix-hero-v2__bird" src={phoenixEditorialRender} alt="Стилизованный феникс с раскрытыми крыльями" width="1024" height="1536" decoding="async" fetchPriority="high" />
               </motion.div>
             </motion.div>
           </motion.div>

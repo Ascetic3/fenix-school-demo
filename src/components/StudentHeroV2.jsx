@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
-import studentPhoenix from "../assets/phoenix-student-v2-matched.png";
-import leftBackgroundWave from "../assets/phoenix-left-bg-wave.png";
-import rightBackgroundWave from "../assets/phoenix-right-bg-wave.png";
+import studentPhoenix from "../assets/phoenix-student-v2-matched.webp";
+import leftBackgroundWave from "../assets/phoenix-left-bg-wave.webp";
+import rightBackgroundWave from "../assets/phoenix-right-bg-wave.webp";
 import "./StudentHeroV2.scss";
 
 const entranceEase = [0.33, 0, 0.2, 1];
@@ -80,7 +80,7 @@ export default function StudentHeroV2({ description }) {
             animate={waveAnimate}
             transition={{ duration: shouldReduceMotion ? 0.2 : 1.45, delay: 0, ease: entranceEase }}
           >
-            <img className="student-hero-v2__wave student-hero-v2__wave--left" src={leftBackgroundWave} alt="" aria-hidden="true" />
+            <img className="student-hero-v2__wave student-hero-v2__wave--left" src={leftBackgroundWave} alt="" aria-hidden="true" decoding="async" fetchPriority="low" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -96,7 +96,7 @@ export default function StudentHeroV2({ description }) {
             animate={waveAnimate}
             transition={{ duration: shouldReduceMotion ? 0.2 : 1.35, delay: shouldReduceMotion ? 0 : 0.06, ease: entranceEase }}
           >
-            <img className="student-hero-v2__wave student-hero-v2__wave--right" src={rightBackgroundWave} alt="" aria-hidden="true" />
+            <img className="student-hero-v2__wave student-hero-v2__wave--right" src={rightBackgroundWave} alt="" aria-hidden="true" decoding="async" fetchPriority="low" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -137,14 +137,14 @@ export default function StudentHeroV2({ description }) {
               className="student-hero-v2__bird-entrance"
               initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.99 }}
               animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: shouldReduceMotion ? 0.2 : 1.42, delay: shouldReduceMotion ? 0 : 0.42, ease: entranceEase }}
+              transition={{ duration: shouldReduceMotion ? 0.2 : 0.38, delay: shouldReduceMotion ? 0 : 0.06, ease: entranceEase }}
             >
               <motion.div
                 className="student-hero-v2__bird-idle"
                 animate={shouldReduceMotion ? undefined : { y: [0, -5, 0], scale: [1, 1.004, 1] }}
                 transition={{ delay: 1.66, duration: 7, ease: "easeInOut", repeat: Infinity }}
               >
-                <img className="student-hero-v2__bird" src={studentPhoenix} alt="Стилизованный феникс в полёте" />
+                <img className="student-hero-v2__bird" src={studentPhoenix} alt="Стилизованный феникс в полёте" width="1024" height="1536" decoding="async" fetchPriority="high" />
               </motion.div>
             </motion.div>
           </motion.div>
