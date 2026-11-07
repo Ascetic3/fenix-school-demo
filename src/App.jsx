@@ -8,55 +8,9 @@ import {
   studentAdvantages, studentGallery, studentNews, studentReviews, studentSocials,
 } from "./content";
 
-const audienceIds = ["parent", "student"];
 const ctaWingUrl = new URL("./assets/cta-wing.svg", import.meta.url).href;
 const ctaShapeUrl = new URL("./assets/cta-shape.svg", import.meta.url).href;
 const parentFinalCtaImageUrl = new URL("./assets/parent-final-cta-books-vase.webp", import.meta.url).href;
-
-function readAudienceFromQuery() {
-  const value = new URLSearchParams(window.location.search).get("audience");
-  return audienceIds.includes(value) ? value : null;
-}
-
-function readStoredAudience() {
-  try {
-    const value = window.localStorage.getItem("fenix-audience");
-    return audienceIds.includes(value) ? value : null;
-  } catch {
-    return null;
-  }
-}
-
-function AudienceSwitch({ audience, onChange, compact = false }) {
-  return <div className={`audience-switch is-${audience}${compact ? " compact" : ""}`} aria-label="Выбор аудитории">
-    {audienceIds.map((id) => <button key={id} type="button" aria-pressed={audience === id} className={audience === id ? "active" : ""} onClick={() => onChange(id)}>{compact ? audienceContent[id].switchLabel : audienceContent[id].choiceLabel}</button>)}
-  </div>;
-}
-
-const audienceChoices = {
-  parent: "Программа, условия, стоимость и поступление",
-  student: "Атмосфера, экзамены и школьная жизнь",
-};
-
-function AudienceWelcome({ onChoose }) {
-  return <div className="audience-welcome-layer">
-    <section className="audience-welcome" role="dialog" aria-labelledby="audience-welcome-title" aria-describedby="audience-welcome-description">
-      <div className="audience-welcome-heading">
-        <span>Персональная версия сайта</span>
-        <h2 id="audience-welcome-title">Кто выбирает школу?</h2>
-        <p id="audience-welcome-description">Мы немного изменим сайт под то, что важно именно вам.</p>
-      </div>
-      <div className="audience-choice-list">
-        {audienceIds.map((id) => <button key={id} type="button" onClick={() => onChoose(id)}>
-          <strong>{audienceContent[id].choiceLabel}</strong>
-          <span>{audienceChoices[id]}</span>
-          <b aria-hidden="true">→</b>
-        </button>)}
-      </div>
-      <small>Выбор можно изменить в любой момент</small>
-    </section>
-  </div>;
-}
 
 function Documents({ compact = false }) {
   const [open, setOpen] = useState(false);
@@ -642,26 +596,8 @@ function ParentFinalContact() {
 
 export default function App() {
   const mobileNavRef = useRef(null);
-  const [audience, setAudience] = useState(() => readAudienceFromQuery() || readStoredAudience() || "parent");
-  const [hasChosenAudience, setHasChosenAudience] = useState(() => Boolean(readAudienceFromQuery() || readStoredAudience()));
-  const content = audienceContent[audience];
-
-  const changeAudience = (nextAudience) => {
-    setAudience(nextAudience);
-    setHasChosenAudience(true);
-    const nextUrl = new URL(window.location.href);
-    nextUrl.searchParams.set("audience", nextAudience);
-    window.history.replaceState({}, "", nextUrl);
-  };
-
-  useEffect(() => {
-    if (!hasChosenAudience) return;
-    try {
-      window.localStorage.setItem("fenix-audience", audience);
-    } catch {
-      // The selector remains usable when storage is unavailable.
-    }
-  }, [audience, hasChosenAudience]);
+  const audience = "parent";
+  const content = audienceContent.parent;
 
   useEffect(() => {
     const closeMobileMenuOutside = (event) => {
@@ -670,31 +606,18 @@ export default function App() {
     document.addEventListener("pointerdown", closeMobileMenuOutside);
     return () => document.removeEventListener("pointerdown", closeMobileMenuOutside);
   }, []);
-  useEffect(() => {
-    const syncFromHistory = () => {
-      const nextAudience = readAudienceFromQuery() || readStoredAudience();
-      setAudience(nextAudience || "parent");
-      setHasChosenAudience(Boolean(nextAudience));
-    };
-    window.addEventListener("popstate", syncFromHistory);
-    return () => window.removeEventListener("popstate", syncFromHistory);
-  }, []);
-
   return <div className={`audience-${audience}`}>
     <header className="site-header">
       <a className="brand brand-logo" href="#top" aria-label="Школа Феникс — на главную"><img src="./images/logo-fenix-header.webp" alt="Школа Феникс" /></a>
       <nav className="desktop-nav" aria-label="Основная навигация">{navigation.map(([label, href], index) => <a className={index === 0 ? "is-active" : ""} key={href} href={href}>{label}<svg className="desktop-nav-underline" viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" vectorEffect="non-scaling-stroke" d="M2 7 C28 2.5 53 3.2 76 5.8 C94 7.6 107 6.9 118 4.5" /></svg></a>)}</nav>
-      <div className="header-actions">{hasChosenAudience && <AudienceSwitch audience={audience} onChange={changeAudience} compact />}<Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
-      <details ref={mobileNavRef} className="mobile-nav" onClick={(event) => { if (event.target.closest("a, .mobile-audience-switch button")) mobileNavRef.current.open = false; }}><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}{hasChosenAudience && <div className="mobile-audience-switch"><AudienceSwitch audience={audience} onChange={changeAudience} /></div>}<Documents /><a className="mobile-nav-cta" href="tel:+79122795067">Записаться →</a></div></details>
+      <div className="header-actions"><Documents compact /><a className="header-cta" href="tel:+79122795067">Записаться →</a></div>
+      <details ref={mobileNavRef} className="mobile-nav" onClick={(event) => { if (event.target.closest("a, .mobile-audience-switch button")) mobileNavRef.current.open = false; }}><summary aria-label="Открыть меню">☰</summary><div className="mobile-nav-panel">{navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Documents /><a className="mobile-nav-cta" href="tel:+79122795067">Записаться →</a></div></details>
     </header>
 
     <main className="phoenix-page-surface">
     <PhoenixPageDecor />
     <div className="phoenix-page-content">
-    {audience === "student" ? <StudentHeroV2 description={content.hero.description} /> : <PhoenixHeroV2
-      ctaLabel={content.hero.primaryCta}
-      welcome={!hasChosenAudience && <AudienceWelcome onChoose={changeAudience} />}
-    />}
+    <PhoenixHeroV2 ctaLabel={content.hero.primaryCta} />
 
     {audience === "student" && <>
       <StudentHub audience={audience} />

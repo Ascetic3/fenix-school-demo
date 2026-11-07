@@ -47,9 +47,9 @@ body { background: var(--phoenix-page-bg); }
   pointer-events: none;
 }
 
-/* Existing composition — positions, assets and visual treatment are unchanged. */
+/* Preserve decorative offsets from the actual Hero end, with a viewport fallback. */
 .phoenix-page-decor__asset--hero-handoff {
-  top: 100svh;
+  top: var(--phoenix-decor-start, 100svh);
   left: 50%;
   width: 110vw;
   aspect-ratio: 2172 / 724;
@@ -60,7 +60,7 @@ body { background: var(--phoenix-page-bg); }
 }
 
 .phoenix-page-decor__asset--section-header-left {
-  top: calc(100svh + 3.5rem);
+  top: calc(var(--phoenix-decor-start, 100svh) + 3.5rem);
   left: -11rem;
   width: clamp(32.5rem, 43vw, 42.5rem);
   aspect-ratio: 1448 / 1086;
@@ -69,7 +69,7 @@ body { background: var(--phoenix-page-bg); }
 }
 
 .phoenix-page-decor__asset--section-header-right {
-  top: calc(100svh + 11rem);
+  top: calc(var(--phoenix-decor-start, 100svh) + 11rem);
   right: -12rem;
   width: clamp(27.5rem, 36vw, 36.25rem);
   aspect-ratio: 1448 / 1086;
@@ -78,7 +78,7 @@ body { background: var(--phoenix-page-bg); }
 }
 
 .phoenix-page-decor__asset--tabs-flow {
-  top: calc(100svh + 35rem);
+  top: calc(var(--phoenix-decor-start, 100svh) + 35rem);
   left: 50%;
   width: 82vw;
   aspect-ratio: 2172 / 724;
@@ -89,7 +89,7 @@ body { background: var(--phoenix-page-bg); }
 }
 
 .phoenix-page-decor__asset--teachers-scatter {
-  top: calc(100svh + 61rem);
+  top: calc(var(--phoenix-decor-start, 100svh) + 61rem);
   right: -20vw;
   width: min(58vw, 60rem);
   aspect-ratio: 2172 / 724;
@@ -99,7 +99,7 @@ body { background: var(--phoenix-page-bg); }
 }
 
 .phoenix-page-decor__asset--section-bridge {
-  top: calc(100svh + 91rem);
+  top: calc(var(--phoenix-decor-start, 100svh) + 91rem);
   left: 50%;
   width: 98vw;
   aspect-ratio: 2172 / 724;
@@ -110,7 +110,7 @@ body { background: var(--phoenix-page-bg); }
 }
 
 .phoenix-page-decor__asset--stories-wave {
-  top: calc(100svh + 122rem);
+  top: calc(var(--phoenix-decor-start, 100svh) + 122rem);
   left: 50%;
   width: 110vw;
   aspect-ratio: 2172 / 724;
@@ -121,7 +121,7 @@ body { background: var(--phoenix-page-bg); }
 }
 
 .phoenix-page-decor__asset--cta-flow {
-  top: calc(100svh + 190rem);
+  top: calc(var(--phoenix-decor-start, 100svh) + 190rem);
   left: 50%;
   width: 96vw;
   aspect-ratio: 2172 / 724;
@@ -163,19 +163,19 @@ body { background: var(--phoenix-page-bg); }
   }
 
   .phoenix-page-decor__asset--section-header-left {
-    top: calc(100svh + 4rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 4rem);
     left: -15rem;
     width: 34rem;
   }
 
   .phoenix-page-decor__asset--section-header-right {
-    top: calc(100svh + 15rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 15rem);
     right: -17rem;
     width: 29rem;
   }
 
   .phoenix-page-decor__asset--tabs-flow {
-    top: calc(100svh + 42rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 42rem);
     width: 112vw;
   }
 
@@ -183,12 +183,12 @@ body { background: var(--phoenix-page-bg); }
   .phoenix-page-decor__asset--cta-flow { display: none; }
 
   .phoenix-page-decor__asset--section-bridge {
-    top: calc(100svh + 84rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 84rem);
     width: 118vw;
   }
 
   .phoenix-page-decor__asset--stories-wave {
-    top: calc(100svh + 110rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 110rem);
     width: 124vw;
     opacity: .37;
   }
@@ -204,7 +204,7 @@ body { background: var(--phoenix-page-bg); }
   .phoenix-page-decor__asset--hero-handoff { width: 136vw; }
 
   .phoenix-page-decor__asset--section-header-left {
-    top: calc(100svh + 4rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 4rem);
     left: -17rem;
     width: 31rem;
   }
@@ -215,12 +215,12 @@ body { background: var(--phoenix-page-bg); }
   .phoenix-page-decor__asset--cta-flow { display: none; }
 
   .phoenix-page-decor__asset--tabs-flow {
-    top: calc(100svh + 39rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 39rem);
     width: 130vw;
   }
 
   .phoenix-page-decor__asset--stories-wave {
-    top: calc(100svh + 95rem);
+    top: calc(var(--phoenix-decor-start, 100svh) + 95rem);
     width: 140vw;
     opacity: .3;
   }

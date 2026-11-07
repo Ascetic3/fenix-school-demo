@@ -2492,7 +2492,7 @@
   min-width: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.16fr);
   gap: .6rem;
   font-style: normal;
 }
@@ -2601,7 +2601,7 @@
 
 @media (min-width: 768px) and (max-width: 1199px) {
   .final-footer-main { grid-template-columns: 1fr; gap: 1.35rem; }
-  .footer-contact-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .footer-contact-cards { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.16fr); }
   .footer-legal { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
   .final-footer .footer-links { margin: 0; }
 }
@@ -3012,6 +3012,26 @@
 
 /* Tablet header: use the existing menu instead of compressing desktop navigation. */
 @media (min-width: 768px) and (max-width: 1399px) {
+  .audience-parent .site-header {
+    width: min(calc(100% - 2 * clamp(1.5rem, 5vw, 4rem)), 1180px);
+    min-height: 4.75rem;
+    margin-top: .65rem;
+    padding: .4rem .8rem;
+  }
+
+  .audience-parent .site-header .brand-logo {
+    width: 6.2rem;
+    height: 3.75rem;
+  }
+
+  .audience-parent .site-header .brand-logo img {
+    width: auto;
+    height: 3.75rem;
+    max-width: 100%;
+    max-height: 3.75rem;
+    object-fit: contain;
+  }
+
   .site-header {
     grid-template-columns: minmax(7.4rem, 1fr) auto auto;
     gap: clamp(.55rem, 1.4vw, .9rem);
