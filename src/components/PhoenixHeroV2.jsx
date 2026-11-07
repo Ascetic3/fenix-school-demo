@@ -22,14 +22,10 @@ function useFinePointer() {
   return hasFinePointer;
 }
 
-export default function PhoenixHeroV2({ ctaLabel, welcome }) {
+export default function PhoenixHeroV2({ welcome }) {
   const shouldReduceMotion = useReducedMotion();
   const hasFinePointer = useFinePointer();
   const parallaxEnabled = hasFinePointer && !shouldReduceMotion;
-  const ctaMatch = ctaLabel.match(/^(.*?)(\s[↓→])$/);
-  const ctaText = ctaMatch ? ctaMatch[1] : ctaLabel;
-  const ctaArrow = ctaMatch ? ctaMatch[2].trim() : null;
-
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const phoenixParallaxX = useSpring(useTransform(pointerX, [-1, 1], [-8, 8]), parallaxSpring);
@@ -118,16 +114,6 @@ export default function PhoenixHeroV2({ ctaLabel, welcome }) {
         <motion.p className="phoenix-hero-v2__description" initial={textInitial(7)} animate={textAnimate} transition={revealTransition(0.94)}>
           Учиться. Общаться. Становиться собой.
         </motion.p>
-        <motion.a
-          className="phoenix-hero-v2__cta"
-          href="#demo-week"
-          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 7, scale: 0.99 }}
-          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-          transition={revealTransition(1.08)}
-        >
-          <span>{ctaText}</span>
-          {ctaArrow && <span className="phoenix-hero-v2__cta-arrow" aria-hidden="true">{ctaArrow}</span>}
-        </motion.a>
       </motion.div>
       <div className="phoenix-hero-v2__visual">
         <span className="phoenix-hero-v2__glow" aria-hidden="true" />

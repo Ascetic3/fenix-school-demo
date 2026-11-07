@@ -617,7 +617,7 @@ export default function App() {
     <main className="phoenix-page-surface">
     <PhoenixPageDecor />
     <div className="phoenix-page-content">
-    <PhoenixHeroV2 ctaLabel={content.hero.primaryCta} />
+    <PhoenixHeroV2 />
 
     {audience === "student" && <>
       <StudentHub audience={audience} />
